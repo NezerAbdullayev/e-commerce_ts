@@ -1,24 +1,31 @@
-import { addProduct, listProduct, removeProduct } from "../controllers/productController.js";
+import {
+    createProduct,
+    deleteProduct,
+    getAllProducts,
+    getFeaturedProducts,
+    getProductByCategory,
+    getRecommendedProducts,
+    toggleFeaturedProduct,
+} from "../controllers/productController.js";
 import express from "express";
-import multer from "multer";
+import { adminRoute, protectRoute } from "../middleware/authMiddleware.js";
 
 const productRouter = express.Router();
 
 // image strorage engine
 
-const storage = multer.diskStorage({
-    destination: "uploads",
-    filename: (req, file, cb) => {
-        return cb(null, `${Date.now()}${file.originalname}`);
-    },
-});
+productRouter.get("/", protectRoute, adminRoute, getAllProducts);
 
-const upload = multer({ storage: storage });
+productRouter.get("/featured", getFeaturedProducts);
 
-// post
-productRouter.post("/add", upload.single("image"), addProduct);
-// get
-productRouter.get("/list", listProduct);
+productRouter.get("/category/:category", getProductByCategory);
 
-productRouter.post("/remove", removeProduct);
+productRouter.get("/recommendations", getRecommendedProducts);
+
+productRouter.post("/", protectRoute, adminRoute, createProduct);
+
+productRouter.put("/:id", protectRoute, adminRoute, toggleFeaturedProduct);
+
+productRouter.delete("/:id", protectRoute, adminRoute, deleteProduct);
+
 export default productRouter;

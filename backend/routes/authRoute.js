@@ -1,4 +1,4 @@
-import { signup, login, logout, refreshToken } from "../controllers/authController.js";
+import { signup, login, logout, refreshToken, } from "../controllers/authController.js";
 
 import express from "express";
 
@@ -8,5 +8,7 @@ authRouter.post("/signup", signup);
 authRouter.post("/login", login);
 authRouter.post("/logout", logout);
 authRouter.post("/refresh-token", refreshToken);
+// authRouter.get("/profile",getProfile)
+
 
 export default authRouter;

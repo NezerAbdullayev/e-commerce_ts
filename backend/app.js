@@ -1,12 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser"
 import cors from "cors";
 import { connectDB } from "./config/db.js";
 
 // routes
 import productRouter from "./routes/productRoute.js";
 import authRouter from "./routes/authRoute.js";
-import cookieParser from "cookie-parser"
+import cartRouter from "./routes/cartRoute.js"
 
 dotenv.config();
 
@@ -20,9 +21,12 @@ app.use(cookieParser())
 app.use(cors());
 
 // api entpoints
-app.use("/api/product", productRouter);
 app.use("/images", express.static("uploads"));
+
 app.use("/api/auth", authRouter);
+app.use("/api/products", productRouter);
+app.use("/api/cart", cartRouter);
+
 
 app.subscribe;
 

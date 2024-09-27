@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AppLayout from "./layout/AppLayout";
+import HomePage from "./pages/home/HomePage";
+import CartPage from "./pages/cart/CartPage";
 
 const App: React.FC = () => {
-  const [message, setMessage] = useState("");
+    const router = createBrowserRouter([
+        {
+            path: "/",
+            element: <AppLayout />,
+            children: [
+                { path: "/", element: <HomePage /> },
+                { path: "/cart", element: <CartPage /> },
+            ],
+        },
+    ]);
 
-  useEffect(() => {
-    fetch("http://localhost:3000")
-      .then((response) => response.text())
-      .then((data) => setMessage(data));
-  }, []);
-
-  return (
-    <div className="App">
-      <h1>{message}</h1>
-    </div>
-  );
+    return <RouterProvider router={router} />;
 };
 
 export default App;

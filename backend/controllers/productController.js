@@ -122,10 +122,11 @@ const getRecommendedProducts = async (req, res) => {
 };
 
 const getProductByCategory = async (req, res) => {
-    const { category } = req.params;
+    const { categories } = req.params;
 
     try {
-        const products = await ProductModel.find({ category });
+        const categoryArray = categories.split(",");
+        const products = await ProductModel.find({ category: { $in: categoryArray } });
         res.json(products);
     } catch (error) {
         console.log("Error in getProductsByCategory controller", error.message);

@@ -107,6 +107,7 @@ export const logout = async (req, res) => {
         res.status(500).json({ message: "Server errror", error: error.message });
     }
 };
+
 // this will refresh the access token
 export const refreshToken = async (req, res) => {
     try {
@@ -146,3 +147,4 @@ export const getProfile = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+

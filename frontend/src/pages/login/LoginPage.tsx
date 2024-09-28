@@ -1,13 +1,14 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 // library
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
-import { Button, Col, Form, Input, Row } from "antd";
+import { Alert, Button, Col, Form, Input, Row } from "antd";
 import bgImage from "../../assets/bg-shopping.jpg";
 
 // type
 import { LoginResponce } from "../../types/globalTypes";
+import { useLoginMutation } from "../../redux/services/userApi";
 
 // shema
 const schema = object().shape({
@@ -16,15 +17,23 @@ const schema = object().shape({
 });
 
 const LoginPage: FC = () => {
+    // RHF hook
     const {
         handleSubmit,
         control,
         formState: { errors },
     } = useForm<LoginResponce>({ resolver: yupResolver(schema) });
 
-    const onSubmit: SubmitHandler<LoginResponce> = (data) => {
-        console.log(data);
-    };
+    // rtk hooks
+    const [login, { isLoading, error }] = useLoginMutation();
+
+    // sumbit
+    const onSubmit: SubmitHandler<LoginResponce> = useCallback(
+        async (data) => {
+            login(data);
+        },
+        [login]
+    );
 
     return (
         <Row
@@ -36,6 +45,17 @@ const LoginPage: FC = () => {
             }}
         >
             <Col>
+                {error && (
+                    <Alert
+                        style={{ marginBottom: "10px" }}
+                        message="Hata"
+                        description={"Invalid Email or Password"}
+                        type="error"
+                        showIcon
+                        closable
+                    />
+                )}
+
                 <Form
                     onFinish={handleSubmit(onSubmit)}
                     style={{
@@ -65,7 +85,7 @@ const LoginPage: FC = () => {
                     </Form.Item>
 
                     <Form.Item style={{ marginBottom: "0" }}>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" disabled={isLoading}>
                             Submit
                         </Button>
                     </Form.Item>

@@ -7,7 +7,7 @@ import { Alert, Button, Col, Form, Input, Row } from "antd";
 import bgImage from "../../assets/bg-shopping.jpg";
 
 // type
-import { LoginResponce } from "../../types/globalTypes";
+import { LoginResponse } from "../../types/globalTypes";
 import { useLoginMutation } from "../../redux/services/userApi";
 
 // shema
@@ -16,23 +16,36 @@ const schema = object().shape({
     password: string().required("Password is required").min(6, "Password must be at least 6 characters"),
 });
 
+const formItemLayout = {
+    labelCol: {
+        xs: { span: 24 },
+        sm: { span: 6 },
+    },
+    wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 14 },
+    },
+};
+
 const LoginPage: FC = () => {
     // RHF hook
     const {
         handleSubmit,
         control,
+        reset,
         formState: { errors },
-    } = useForm<LoginResponce>({ resolver: yupResolver(schema) });
+    } = useForm<LoginResponse>({ resolver: yupResolver(schema) });
 
     // rtk hooks
     const [login, { isLoading, error }] = useLoginMutation();
 
     // sumbit
-    const onSubmit: SubmitHandler<LoginResponce> = useCallback(
+    const onSubmit: SubmitHandler<LoginResponse> = useCallback(
         async (data) => {
             login(data);
+            reset();
         },
-        [login]
+        [login, reset]
     );
 
     return (
@@ -44,7 +57,15 @@ const LoginPage: FC = () => {
                 backgroundImage: `url(${bgImage})`,
             }}
         >
-            <Col>
+            <Col
+                style={{
+                    maxWidth: 600,
+                    border: "2px solid #4f696339",
+                    padding: "30px 20px",
+                    borderRadius: "8px",
+                    background: "#ffffff",
+                }}
+            >
                 {error && (
                     <Alert
                         style={{ marginBottom: "10px" }}
@@ -56,16 +77,7 @@ const LoginPage: FC = () => {
                     />
                 )}
 
-                <Form
-                    onFinish={handleSubmit(onSubmit)}
-                    style={{
-                        maxWidth: 600,
-                        border: "1px solid #9ac3b945",
-                        padding: "30px 20px",
-                        borderRadius: "8px",
-                        background: "rgb(35 201 213)",
-                    }}
-                >
+                <Form onFinish={handleSubmit(onSubmit)} {...formItemLayout}>
                     <Form.Item label="Email" validateStatus={errors.email ? "error" : ""} help={errors.email?.message}>
                         <Controller
                             name="email"
@@ -90,6 +102,12 @@ const LoginPage: FC = () => {
                         </Button>
                     </Form.Item>
                 </Form>
+                <Col style={{ marginTop: "10px" }}>
+                    <Row>Don't have an account? </Row>
+                    <Button type="link" danger>
+                        Sign up now!
+                    </Button>
+                </Col>
             </Col>
         </Row>
     );

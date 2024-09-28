@@ -5,6 +5,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import userReducer from "./slice/userSlice";
 import authApi from "./services/userApi";
 
+
 const store = configureStore({
     reducer: {
         user: userReducer,

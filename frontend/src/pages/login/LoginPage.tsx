@@ -9,6 +9,7 @@ import bgImage from "../../assets/bg-shopping.jpg";
 // type
 import { LoginResponse } from "../../types/globalTypes";
 import { useLoginMutation } from "../../redux/services/userApi";
+import { NavLink } from "react-router-dom";
 
 // shema
 const schema = object().shape({
@@ -108,6 +109,8 @@ const LoginPage: FC = () => {
                         Sign up now!
                     </Button>
                 </Col>
+
+                <NavLink to={"/admin"}>admin</NavLink>
             </Col>
         </Row>
     );

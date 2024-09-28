@@ -3,10 +3,23 @@ import { redis } from "../config/redis.js";
 import ProductModel from "../models/productModel.js";
 
 const getAllProducts = async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
     try {
         // get all products
-        const products = await ProductModel.find({});
-        res.json({ products });
+        const products = await ProductModel.find({})
+            .sort({ $natural: -1 })
+            .limit(limit)
+            .skip((page - 1) * limit);
+
+        const totalProducts = await ProductModel.countDocuments();
+
+        res.json({
+            products,
+            currentPage: page,
+            totalPages: Math.ceil(totalProducts / limit),
+            totalProducts,
+        });
     } catch (error) {
         console.log("Error in getAllProducts controller", error.message);
         res.status(500).json({ message: "Server error", error: error.message });

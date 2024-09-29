@@ -14,7 +14,7 @@ const productRouter = express.Router();
 
 // image strorage engine
 
-productRouter.get("/", protectRoute, getAllProducts);
+productRouter.get("/", getAllProducts);
 
 productRouter.get("/featured", getFeaturedProducts);
 

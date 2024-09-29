@@ -7,9 +7,11 @@ import { Alert, Button, Col, Form, Input, Row } from "antd";
 import bgImage from "../../assets/bg-shopping.jpg";
 
 // type
-import { LoginResponse } from "../../types/globalTypes";
+import { Login } from "../../types/globalTypes";
 import { useLoginMutation } from "../../redux/services/userApi";
 import { NavLink } from "react-router-dom";
+import AccountInput from "../../components/AccountInput";
+import { formItemLayout } from "../../utils/formLayoutsize";
 
 // shema
 const schema = object().shape({
@@ -17,16 +19,7 @@ const schema = object().shape({
     password: string().required("Password is required").min(6, "Password must be at least 6 characters"),
 });
 
-const formItemLayout = {
-    labelCol: {
-        xs: { span: 24 },
-        sm: { span: 6 },
-    },
-    wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 14 },
-    },
-};
+const formArr:Array<keyof Login>  = ["email", "password"];
 
 const LoginPage: FC = () => {
     // RHF hook
@@ -35,13 +28,13 @@ const LoginPage: FC = () => {
         control,
         reset,
         formState: { errors },
-    } = useForm<LoginResponse>({ resolver: yupResolver(schema) });
+    } = useForm<Login>({ resolver: yupResolver(schema) });
 
     // rtk hooks
     const [login, { isLoading, error }] = useLoginMutation();
 
     // sumbit
-    const onSubmit: SubmitHandler<LoginResponse> = useCallback(
+    const onSubmit: SubmitHandler<Login> = useCallback(
         async (data) => {
             login(data);
             reset();
@@ -96,6 +89,8 @@ const LoginPage: FC = () => {
                             render={({ field }) => <Input.Password {...field} autoComplete="current-password" />}
                         />
                     </Form.Item>
+                    {/* inputs */}
+                    <AccountInput formArr={formArr} control={control} errors={errors} />
 
                     <Form.Item style={{ marginBottom: "0" }}>
                         <Button type="primary" htmlType="submit" disabled={isLoading}>

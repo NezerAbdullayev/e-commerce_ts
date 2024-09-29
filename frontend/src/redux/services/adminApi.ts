@@ -8,9 +8,16 @@ const adminApi = createApi({
         getAllProducts: builder.query({
             query: ({ page, limit }) => `?page=${page}&limit=${limit}`,
         }),
+        createNewProduct: builder.mutation({
+            query: (newProduct) => ({
+                url: "",
+                method: "POST",
+                body: newProduct,
+            }),
+        }),
     }),
 });
 
-export const { useGetAllProductsQuery } = adminApi;
+export const { useGetAllProductsQuery, useCreateNewProductMutation } = adminApi;
 
 export default adminApi;

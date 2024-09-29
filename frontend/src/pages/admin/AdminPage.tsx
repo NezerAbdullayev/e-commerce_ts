@@ -1,11 +1,12 @@
 import React, { FC, useCallback, useState } from "react";
 
-import { AppstoreAddOutlined, } from "@ant-design/icons";
-import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
+import { AppstoreAddOutlined } from "@ant-design/icons";
+import PlaylistAddCircleIcon from '@mui/icons-material/PlaylistAddCircle';
 import { Layout, Menu, MenuProps, theme } from "antd";
 
 import Analytics from "./components/analytics/Analytics.tsx";
 import Products from "./components/products/Products.tsx";
+import AddNewProduct from "./components/products/AddNewProduct.tsx";
 
 const { Header, Content, Sider } = Layout;
 
@@ -24,15 +25,7 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
     { key: "1", icon: <AppstoreAddOutlined />, label: "Dashboard" },
-    {
-        key: "sub1",
-        label: "Management",
-        icon: <AutoAwesomeMotionIcon />,
-        children: [
-            { key: "4", label: "Add new Product" },
-            { key: "5", label: "Add Order" },
-        ],
-    },
+    { key: "2", icon: <PlaylistAddCircleIcon />, label: "Add new Product" },
     { key: "3", icon: <div />, label: "Analytics" },
 ];
 
@@ -52,7 +45,7 @@ const AdminPage: FC = () => {
             case "1":
                 return <Products />;
             case "2":
-                return <div>crud</div>;
+                return <AddNewProduct />;
             case "3":
                 return <Analytics />;
             default:
@@ -61,7 +54,7 @@ const AdminPage: FC = () => {
     }, [current]);
 
     return (
-        <Layout hasSider style={{ padding: 0,minHeight:"100vh" }}>
+        <Layout hasSider style={{ padding: 0, minHeight: "100vh" }}>
             <Sider style={siderStyle}>
                 <Menu
                     theme="dark"

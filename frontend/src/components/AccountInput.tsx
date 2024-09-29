@@ -2,7 +2,7 @@ import { Form, Input } from "antd";
 import { Control, Controller, FieldErrors, FieldValues, Path } from "react-hook-form";
 
 interface AccountInputProps<T extends FieldValues> {
-    formArr: Path<T>[];  // Path<T> kullanıyoruz.
+    formArr: Path<T>[];
     control: Control<T>;
     errors: FieldErrors<T>;
 }
@@ -18,7 +18,7 @@ const AccountInput = <T extends FieldValues>({ formArr, control, errors }: Accou
                     help={errors[field]?.message ? String(errors[field]?.message) : null}
                 >
                     <Controller
-                        name={field}  // Path<T> burada kullanılıyor.
+                        name={field}
                         control={control}
                         render={({ field: { onChange, onBlur, value, ref } }) =>
                             field === "password" ? (
@@ -30,13 +30,7 @@ const AccountInput = <T extends FieldValues>({ formArr, control, errors }: Accou
                                     autoComplete="current-password"
                                 />
                             ) : (
-                                <Input
-                                    onChange={onChange}
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}
-                                    autoComplete={field}
-                                />
+                                <Input onChange={onChange} onBlur={onBlur} value={value} ref={ref} autoComplete={field} />
                             )
                         }
                     />

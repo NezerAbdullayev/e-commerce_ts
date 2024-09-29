@@ -1,27 +1,18 @@
 import { FC, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string } from "yup";
 import { Alert, Button, Form } from "antd";
 import { Signup } from "../../types/globalTypes";
-import { useSignupMutation } from "../../redux/services/userApi";
 import AccountInput from "../../components/AccountInput";
 import AuthContainer from "../../components/AuthContainer";
+// api
+import { useSignupMutation } from "../../redux/services/userApi";
+import { formItemLayout } from "../../utils/formLayoutsize";
+import { signupSchema } from "../../validations/authform.validation";
 
 const formArr: Array<keyof Signup> = ["name", "email", "password"];
 
-// Validation schema
-const schema = object().shape({
-    name: string().required("Name is required").min(3, "Minimum 3 characters"),
-    email: string().required("Email is required").email("Invalid email"),
-    password: string().required("Password is required").min(6, "Minimum 6 characters"),
-});
-
 // Form layout
-const formItemLayout = {
-    labelCol: { xs: { span: 24 }, sm: { span: 6 } },
-    wrapperCol: { xs: { span: 24 }, sm: { span: 14 } },
-};
 
 const SignupPage: FC = () => {
     // rhf library
@@ -30,7 +21,7 @@ const SignupPage: FC = () => {
         control,
         reset,
         formState: { errors },
-    } = useForm<Signup>({ resolver: yupResolver(schema) });
+    } = useForm<Signup>({ resolver: yupResolver(signupSchema) });
 
     // query hooks
     const [signup, { isLoading, error }] = useSignupMutation();

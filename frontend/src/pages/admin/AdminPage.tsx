@@ -1,12 +1,12 @@
 import React, { FC, useCallback, useState } from "react";
-
+// components
 import { AppstoreAddOutlined } from "@ant-design/icons";
 import PlaylistAddCircleIcon from '@mui/icons-material/PlaylistAddCircle';
 import { Layout, Menu, MenuProps, theme } from "antd";
-
 import Analytics from "./components/analytics/Analytics.tsx";
 import Products from "./components/products/Products.tsx";
 import AddNewProduct from "./components/products/AddNewProduct.tsx";
+
 
 const { Header, Content, Sider } = Layout;
 

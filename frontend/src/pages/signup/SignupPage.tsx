@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Alert, Button, Form } from "antd";
 import { FormItem, Signup } from "../../types/globalTypes";
-import AccountInput from "../../components/AccountInput";
+import AntFormItem from "../../components/AntFormItem";
 import AuthContainer from "../../components/AuthContainer";
 // api
 import { useSignupMutation } from "../../redux/services/userApi";
@@ -46,7 +46,7 @@ const SignupPage: FC = () => {
 
             <Form onFinish={handleSubmit(onSubmit)} {...formItemLayout}>
                 {/* inputs */}
-                <AccountInput formArr={formArr} control={control} errors={errors} />
+                <AntFormItem formArr={formArr} control={control} errors={errors} />
 
                 <Form.Item style={{ marginBottom: "0" }}>
                     <Button type="primary" htmlType="submit" disabled={isLoading}>

@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Alert, Button, Col, Form, Row } from "antd";
 import { NavLink } from "react-router-dom";
-import AccountInput from "../../components/AccountInput";
+import AntFormItem from "../../components/AntFormItem";
 import AuthContainer from "../../components/AuthContainer";
 import { formItemLayout } from "../../utils/formLayoutsize";
 // api
@@ -12,8 +12,6 @@ import { useLoginMutation } from "../../redux/services/userApi";
 // type
 import { FormItem, Login } from "../../types/globalTypes";
 import { loginSchema } from "../../validations/authform.validation";
-
-
 
 const formArr: FormItem[] = [
     { label: "email", type: "email" },
@@ -56,7 +54,7 @@ const LoginPage: FC = () => {
 
             <Form onFinish={handleSubmit(onSubmit)} {...formItemLayout}>
                 {/* inputs */}
-                <AccountInput formArr={formArr} control={control} errors={errors} />
+                <AntFormItem formArr={formArr} control={control} errors={errors} />
 
                 <Form.Item style={{ marginBottom: "0" }}>
                     <Button type="primary" htmlType="submit" disabled={isLoading}>

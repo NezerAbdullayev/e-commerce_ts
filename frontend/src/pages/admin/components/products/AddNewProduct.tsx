@@ -1,64 +1,69 @@
 import { FC } from "react";
 import { useCreateNewProductMutation } from "../../../../redux/services/adminApi";
 import { createProductSchema } from "../../../../validations/product.validation";
-import { FormItem } from "../../../../types/globalTypes";
-import AccountInput from "../../../../components/AccountInput";
-import { useForm } from "react-hook-form";
+import { FileObject, FormItem } from "../../../../types/globalTypes";
+import AccountInput from "../../../../components/AntFormItem";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Form } from "antd";
 import { formItemLayout } from "../../../../utils/formLayoutsize";
+import { convertImagesToBase64 } from "../../../../utils/convertImagesToBase64";
 
 const productFormArr: FormItem[] = [
     { label: "name", type: "text" },
-    { label: "image", type: "file" },
     { label: "price", type: "number" },
-    { label: "description", type: "text" },
+    { label: "stock", type: "number" },
+    { label: "brand", type: "text" },
     {
         label: "category",
         type: "select",
         options: [
-            { value: "electronics", label: "Electronics" },
-            { value: "furniture", label: "Furniture" },
+            { value: "köynək", label: "Köynək" },
+            { value: "T-shirt", label: "T-Shirt" },
+            { value: "ayaqqabı", label: "Ayaqqabı" },
         ],
     },
+    { label: "image", type: "file" },
+    { label: "description", type: "textarea" },
 ];
 
+interface NewProduct {
+    brand?: string;
+    category: string;
+    description: string;
+    image: FileObject[];
+    name: string;
+    price: number;
+    stock: number;
+}
+
 const AddNewProduct: FC = () => {
-    const [createNewProduct, { data: createdData, error, isLoading }] = useCreateNewProductMutation();
+    const [createNewProduct, { data: createdData, error: createProductError, isLoading }] = useCreateNewProductMutation();
     const userRole = useSelector((state: RootState) => state.user.role);
 
     console.log(userRole, "role");
     const {
         control,
         handleSubmit,
+        reset,
         formState: { errors },
-    } = useForm({ resolver: yupResolver(createProductSchema) });
+    } = useForm<NewProduct>({ resolver: yupResolver(createProductSchema) });
 
-    const onSubmit = (data) => {
-        console.log(data);
-        const file = data.image; 
-        const reader = new FileReader(); 
-
-        reader.onloadend = () => {
-            const base64String = reader.result;
-
+    const onSubmit: SubmitHandler<NewProduct> = async (data) => {
+        try {
+            const base64Images = await convertImagesToBase64(data.image);
             const newProduct = {
                 ...data,
-                image: base64String, 
+                image: base64Images,
             };
+            createNewProduct({ newProduct });
+        } catch (error) {
+            console.error("Error converting images to base64:", error);
+        }
 
-            console.log(newProduct);
-
-            // createNewProduct funksiyasına məlumatları göndər
-            createNewProduct({newProduct});  // POST sorğusu ilə məlumatları göndər
-        };
-
-        reader.readAsDataURL(file);
-        console.log(data);
-
-        // createNewProduct({ newProduct: data });
+        reset();
     };
 
     if (isLoading) {
@@ -70,7 +75,7 @@ const AddNewProduct: FC = () => {
         // );
     }
 
-    console.log(error, "error", createdData, "data");
+    console.log(createProductError, "createProductError", createdData, "data");
 
     return (
         <Form onFinish={handleSubmit(onSubmit)} {...formItemLayout}>

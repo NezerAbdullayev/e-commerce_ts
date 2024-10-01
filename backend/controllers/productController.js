@@ -54,10 +54,10 @@ const createProduct = async (req, res) => {
 
         let cloudinaryResponses = [];
 
-        if (image && image.length > 0) {
-            for (const image of image) {
+        if (Array.isArray(image) && image.length > 0) {
+            for (const img of image) {
                 try {
-                    const cloudinaryResponse = await cloudinary.uploader.upload(image, { folder: "products" });
+                    const cloudinaryResponse = await cloudinary.uploader.upload(img, { folder: "products" });
                     console.log("Image uploaded successfully", cloudinaryResponse);
                     cloudinaryResponses.push(cloudinaryResponse.secure_url);
                 } catch (err) {
@@ -74,7 +74,7 @@ const createProduct = async (req, res) => {
             image: cloudinaryResponses,
             category,
             stock,
-            brand,
+            brand: brand ? brand : "",
             reviews: [],
         });
 

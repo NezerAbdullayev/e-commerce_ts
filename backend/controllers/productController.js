@@ -72,7 +72,7 @@ const createProduct = async (req, res) => {
             description,
             price,
             image: cloudinaryResponses,
-            category,
+            category: category,
             stock,
             brand: brand ? brand : "",
             reviews: [],

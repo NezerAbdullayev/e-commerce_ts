@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import { useGetAllProductsQuery } from "../../../../redux/services/adminApi";
-import { Alert, Col, Spin, Table } from "antd";
+import { Alert, Col, Table } from "antd";
 import type { TableColumnsType } from "antd";
 
 interface DataType {
@@ -37,7 +37,7 @@ interface Product {
     name: string;
     price: number;
     image: string;
-    category: string;
+    category: string[];
     description: string;
     isFeatured: boolean;
 }
@@ -46,7 +46,7 @@ const Products: FC = () => {
     const [data, setData] = useState<DataType[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-    const limit = 1;
+    const limit = 15;
 
     console.log("re-render");
 
@@ -59,8 +59,8 @@ const Products: FC = () => {
                 id: product._id,
                 name: product.name,
                 price: product.price,
-                image: product.image,
-                category: product.category,
+                image: product.image?.[0],
+                category: product.category.toString().replace(/,/g, " "),
                 description: product.description,
             }));
             setData(formattedData);
@@ -75,7 +75,7 @@ const Products: FC = () => {
     }, []);
 
     if (isLoading) {
-        console.log(isLoading)
+        console.log(isLoading);
         // return (
         //     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999 }}>
         //         <Spin tip="Loading..." size="large" />

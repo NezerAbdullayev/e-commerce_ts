@@ -22,7 +22,7 @@ productRouter.get("/category/:category", getProductByCategory);
 
 productRouter.get("/recommendations", getRecommendedProducts);
 
-productRouter.post("/", protectRoute, adminRoute, createProduct);
+productRouter.post("/new", protectRoute, adminRoute, createProduct);
 
 productRouter.put("/:id", protectRoute, adminRoute, toggleFeaturedProduct);
 

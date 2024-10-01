@@ -2,6 +2,8 @@ import cloudinary from "../config/cloudinary.js";
 import { redis } from "../config/redis.js";
 import ProductModel from "../models/productModel.js";
 
+
+
 const getAllProducts = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
@@ -50,12 +52,27 @@ const getFeaturedProducts = async (req, res) => {
 };
 const createProduct = async (req, res) => {
     try {
-        const { name, description, price, image, category } = req.body;
+        const { name, description, price, image, category } = req.body.newProduct;
+
+        console.log(req.body,"body");
 
         let cloudinaryResponse = null;
+
+        console.log(image,"images")
+
         if (image) {
-            cloudinaryResponse = await cloudinary.uploader.upload(image, { folder: "products" });
+            console.log(image)
+            console.log("Uploading image...");
+            try {
+                cloudinaryResponse = await cloudinary.uploader.upload(image, { folder: "products" });
+                console.log("Image uploaded successfully",cloudinaryResponse);
+            } catch (err) {
+                // console.error("Error uploading image:", err.message);
+                return res.status(500).json({ message: "Image upload failed", error: err.message || "Unknown error" });
+            }
         }
+
+        console.log(cloudinaryResponse, "Cloudinary Response");
 
         const product = await ProductModel.create({
             name,
@@ -67,9 +84,8 @@ const createProduct = async (req, res) => {
 
         res.status(201).json(product);
     } catch (error) {
-        console.log("Error in createProduct contoller", error.message);
+        // console.log("Error in createProduct controller", error);
         res.status(500).json({ message: "Server error", error: error.message });
-        // res.
     }
 };
 

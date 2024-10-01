@@ -11,6 +11,7 @@ const authApi = createApi({
                 url: "login",
                 method: "POST",
                 body: user,
+                credentials: "include"
             }), // _  =user
             async onQueryStarted(_, { dispatch, queryFulfilled }) {
                 try {

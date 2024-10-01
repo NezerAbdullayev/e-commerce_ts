@@ -2,7 +2,7 @@ import { FC, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Alert, Button, Form } from "antd";
-import { Signup } from "../../types/globalTypes";
+import { FormItem, Signup } from "../../types/globalTypes";
 import AccountInput from "../../components/AccountInput";
 import AuthContainer from "../../components/AuthContainer";
 // api
@@ -10,7 +10,12 @@ import { useSignupMutation } from "../../redux/services/userApi";
 import { formItemLayout } from "../../utils/formLayoutsize";
 import { signupSchema } from "../../validations/authform.validation";
 
-const formArr: Array<keyof Signup> = ["name", "email", "password"];
+// const formArr: Array<keyof Signup> = ["name", "email", "password"];
+const formArr: FormItem[] = [
+    { label: "name", type: "text" },
+    { label: "email", type: "email" },
+    { label: "password", type: "password" },
+];
 
 // Form layout
 

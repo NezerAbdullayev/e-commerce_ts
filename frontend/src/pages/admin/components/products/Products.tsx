@@ -75,13 +75,12 @@ const Products: FC = () => {
     }, []);
 
     if (isLoading) {
-        return (
-            <Spin
-                tip="Loading..."
-                size="large"
-                style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}
-            />
-        );
+        console.log(isLoading)
+        // return (
+        //     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999 }}>
+        //         <Spin tip="Loading..." size="large" />
+        //     </div>
+        // );
     }
 
     if (error) {

@@ -10,9 +10,10 @@ const adminApi = createApi({
         }),
         createNewProduct: builder.mutation({
             query: (newProduct) => ({
-                url: "",
+                url: "/new",
                 method: "POST",
                 body: newProduct,
+                credentials: "include",
             }),
         }),
     }),

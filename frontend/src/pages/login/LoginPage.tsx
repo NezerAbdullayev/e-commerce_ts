@@ -7,14 +7,18 @@ import { NavLink } from "react-router-dom";
 import AccountInput from "../../components/AccountInput";
 import AuthContainer from "../../components/AuthContainer";
 import { formItemLayout } from "../../utils/formLayoutsize";
-
 // api
 import { useLoginMutation } from "../../redux/services/userApi";
 // type
-import { Login } from "../../types/globalTypes";
+import { FormItem, Login } from "../../types/globalTypes";
 import { loginSchema } from "../../validations/authform.validation";
 
-const formArr: Array<keyof Login> = ["email", "password"];
+
+
+const formArr: FormItem[] = [
+    { label: "email", type: "email" },
+    { label: "password", type: "password" },
+];
 
 const LoginPage: FC = () => {
     // RHF hook

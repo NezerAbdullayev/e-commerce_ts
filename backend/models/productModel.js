@@ -7,6 +7,19 @@ const productSchema = new mongoose.Schema(
         price: { type: Number, min: 0, required: true },
         image: { type: String, required: [true, "Image is required"] },
         category: { type: String, required: true },
+        brand: { type: String },
+        stock: { type: Number, min: 1, required: true },
+        reviews: {
+            type: [
+                {
+                    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+                    rating: { type: Number, min: 1, max: 5 },
+                    comment: { type: String },
+                    date: { type: Date, default: Date.now },
+                },
+            ],
+            default: [],
+        },
         isFeatured: { type: Boolean, default: false },
     },
     { timestamps: true }

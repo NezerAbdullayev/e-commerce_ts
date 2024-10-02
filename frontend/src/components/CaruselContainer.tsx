@@ -1,33 +1,28 @@
 import { FC } from "react";
 
-import React from "react";
-import { Carousel } from "antd";
-
-const contentStyle: React.CSSProperties = {
-    margin: 0,
-    height: "300px",
-    color: "#fff",
-    lineHeight: "160px",
-    textAlign: "center",
-    background: "#364d79",
-};
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+import { Navigation, Autoplay } from "swiper/modules";
+import { useGetRandomProductsQuery } from "../redux/services/productsApi";
+import { Box } from "@mui/material";
 
 const CaruselContainer: FC = () => {
+    const { data, isLoading, error } = useGetRandomProductsQuery({ count: 8 });
+
+    console.log(data);
+
     return (
-        <Carousel arrows infinite={false}>
-            <div>
-                <h3 style={contentStyle}>1</h3>
-            </div>
-            <div>
-                <h3 style={contentStyle}>2</h3>
-            </div>
-            <div>
-                <h3 style={contentStyle}>3</h3>
-            </div>
-            <div>
-                <h3 style={contentStyle}>4</h3>
-            </div>
-        </Carousel>
+        <Box sx={{ margin: "80px 0 " }}>
+            <Swiper spaceBetween={30} slidesPerView={4} navigation modules={[Navigation, Autoplay]} autoplay={{ delay: 3000 }}>
+                {data?.length > 0 &&
+                    data.map((product) => (
+                        <SwiperSlide key={product._id}>
+                            <img src={product?.image?.[0]} alt={product.name} className="h-[300px] w-[300px] object-cover" />
+                        </SwiperSlide>
+                    ))}
+            </Swiper>
+        </Box>
     );
 };
 

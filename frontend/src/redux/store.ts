@@ -7,14 +7,17 @@ import userReducer from "./slice/userSlice";
 // apis
 import authApi from "./services/userApi";
 import adminApi from "./services/adminApi";
+import productsApi from "./services/productsApi";
 
 const store = configureStore({
     reducer: {
         user: userReducer,
         [authApi.reducerPath]: authApi.reducer,
         [adminApi.reducerPath]: adminApi.reducer,
+        [productsApi.reducerPath]: productsApi.reducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware).concat(adminApi.middleware),
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(authApi.middleware).concat(adminApi.middleware).concat(productsApi.middleware),
 });
 
 setupListeners(store.dispatch);

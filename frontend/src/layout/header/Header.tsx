@@ -1,154 +1,75 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import FavoriteSharpIcon from "@mui/icons-material/FavoriteSharp";
-import { NavLink } from "react-router-dom";
-
-const pages = ["Home", "Products", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import StoreIcon from "@mui/icons-material/Store";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Tab, Tabs } from "@mui/material";
+import { NavLink, useLocation } from "react-router-dom";
 
 function Header() {
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const location = useLocation();
+    const [navBar, setNavBar] = useState<number>(0);
 
-    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
-    };
-
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
-
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
+    useEffect(() => {
+        switch (location.pathname) {
+            case "/":
+                setNavBar(0);
+                break;
+            case "/products":
+                setNavBar(1);
+                break;
+            case "/about":
+                setNavBar(2);
+                break;
+            default:
+                setNavBar(0);
+        }
+    }, [location.pathname]);
 
     return (
         <AppBar position="sticky" sx={{ background: "#102e42" }}>
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                    {/* logo */}
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        sx={{
-                            mr: 2,
-                            display: { xs: "none", md: "flex" },
-                            fontFamily: "monospace",
-                            fontWeight: 700,
-                            letterSpacing: ".3rem",
-                            color: "inherit",
-                            textDecoration: "none",
-                        }}
-                    >
-                        TrendTee
-                    </Typography>
+            <Toolbar>
+                <Typography variant="h6" component={NavLink} to="/" sx={{ mr: 2 }}>
+                    <StoreIcon sx={{ mr: 1 }} />
+                    TrendTee
+                </Typography>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-                        {/* menu item */}
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
-                            color="inherit"
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: "bottom",
-                                horizontal: "left",
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: "top",
-                                horizontal: "left",
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
-                            sx={{ display: { xs: "block", md: "none" } }}
-                        >
-                            {/* {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography sx={{ textAlign: "center" }}>{page}</Typography>
-                                </MenuItem>
-                            ))} */}
-                        </Menu>
-                    </Box>
+                <Tabs
+                    textColor="inherit"
+                    value={navBar}
+                    onChange={(_, value) => setNavBar(value)}
+                    indicatorColor="primary"
+                    sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
+                >
+                    <Tab label="Home" component={NavLink} to="/" />
+                    <Tab label="Products" component={NavLink} to="/products" />
+                    <Tab label="About" component={NavLink} to="/about" />
+                </Tabs>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex", gap: "10px" } }}>
-                        <Typography>
-                            <NavLink className="text-white" to="/">
-                                Home
-                            </NavLink>
-                        </Typography>
+                <Box sx={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
+                    <IconButton size="large" edge="end" color="inherit" aria-label="Favorites" sx={{ mr: 2 }}>
+                        <FavoriteIcon />
+                    </IconButton>
 
-                        <Typography>
-                            <NavLink className="text-white" to="/products">
-                                Products
-                            </NavLink>
-                        </Typography>
+                    <IconButton size="large" edge="end" color="inherit" aria-label="Cart" sx={{ mr: 2 }}>
+                        <ShoppingCartIcon />
+                    </IconButton>
 
-                        <Typography>
-                            <NavLink className="text-white" to="/about">
-                                About
-                            </NavLink>
-                        </Typography>
-                    </Box>
-                    <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
-                        <Typography>
-                            <FavoriteSharpIcon />
-                        </Typography>
-
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: "45px" }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: "top",
-                                horizontal: "right",
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: "top",
-                                horizontal: "right",
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography sx={{ textAlign: "center" }}>{setting}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </Box>
-                </Toolbar>
-            </Container>
+                    <Button component={NavLink} to="/login" variant="contained" sx={{ mr: 2, backgroundColor: "#159792" }}>
+                        Login
+                    </Button>
+                    <Button component={NavLink} to="/signup" variant="contained" sx={{ backgroundColor: "#406e84" }}>
+                        Sign Up
+                    </Button>
+                </Box>
+            </Toolbar>
         </AppBar>
     );
 }
+
 export default Header;

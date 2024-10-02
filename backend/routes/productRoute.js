@@ -3,6 +3,7 @@ import {
     deleteProduct,
     getAllProducts,
     getFeaturedProducts,
+    getRandomProducts,
     getProductByCategory,
     getRecommendedProducts,
     toggleFeaturedProduct,
@@ -17,6 +18,8 @@ const productRouter = express.Router();
 productRouter.get("/", getAllProducts);
 
 productRouter.get("/featured", getFeaturedProducts);
+
+productRouter.get("/random/:count",getRandomProducts);
 
 productRouter.get("/category/:category", getProductByCategory);
 

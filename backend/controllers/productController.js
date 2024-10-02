@@ -132,6 +132,23 @@ const getRecommendedProducts = async (req, res) => {
     }
 };
 
+const getRandomProducts=async(req,res)=>{
+    const count = parseInt(req.params.count) || 5; 
+
+    try {
+        const randomProducts = await ProductModel.aggregate([{ $sample: { size: count } }]); 
+
+        if (randomProducts.length === 0) {
+            return res.status(404).json({ message: "No products found" });
+        }
+
+        res.json(randomProducts);
+    } catch (error) {
+        console.error("Error in getting random products", error.message);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+}
+
 const getProductByCategory = async (req, res) => {
     const { categories } = req.params;
 
@@ -180,5 +197,6 @@ export {
     deleteProduct,
     getRecommendedProducts,
     getProductByCategory,
+    getRandomProducts,
     toggleFeaturedProduct,
 };

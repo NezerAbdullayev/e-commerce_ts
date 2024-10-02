@@ -9,6 +9,7 @@ import AuthContainer from "../../components/AuthContainer";
 import { useSignupMutation } from "../../redux/services/userApi";
 import { formItemLayout } from "../../utils/formLayoutsize";
 import { signupSchema } from "../../validations/authform.validation";
+import { useNavigate } from "react-router";
 
 // const formArr: Array<keyof Signup> = ["name", "email", "password"];
 const formArr: FormItem[] = [
@@ -20,6 +21,7 @@ const formArr: FormItem[] = [
 // Form layout
 
 const SignupPage: FC = () => {
+    const navigate = useNavigate();
     // rhf library
     const {
         handleSubmit,
@@ -34,10 +36,14 @@ const SignupPage: FC = () => {
     // Submit handler
     const onSubmit = useCallback(
         async (data: Signup) => {
-            await signup(data);
+            const res = await signup(data);
+            if (res?.data?.role) {
+                console.log("role", res?.data?.role);
+                navigate("/");
+            }
             reset();
         },
-        [signup, reset]
+        [signup, reset, navigate]
     );
 
     return (

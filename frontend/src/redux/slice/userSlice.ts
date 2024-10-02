@@ -18,7 +18,6 @@ const userSlice = createSlice({
             console.log("claisfi");
             state.isAuthenticated = true;
             state.role = action.payload.role;
-            console.log("state", state.role);
         },
         logout: (state) => {
             state.isAuthenticated = false;

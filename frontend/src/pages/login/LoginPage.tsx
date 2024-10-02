@@ -3,7 +3,7 @@ import { FC, useCallback } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Alert, Button, Col, Form, Row } from "antd";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AntFormItem from "../../components/AntFormItem";
 import AuthContainer from "../../components/AuthContainer";
 import { formItemLayout } from "../../utils/formLayoutsize";
@@ -19,6 +19,7 @@ const formArr: FormItem[] = [
 ];
 
 const LoginPage: FC = () => {
+    const navigate = useNavigate();
     // RHF hook
     const {
         handleSubmit,
@@ -30,13 +31,20 @@ const LoginPage: FC = () => {
     // rtk hooks
     const [login, { isLoading, error }] = useLoginMutation();
 
-    // sumbit
+    // submit
     const onSubmit: SubmitHandler<Login> = useCallback(
         async (data) => {
-            login(data);
+            const res = await login(data);
+            console.log(res?.data);
+            if (res?.data?.role === "admin") {
+                navigate("/admin");
+            } else if (res?.data?.role === "customer") {
+                console.log("22", res.data.role);
+                navigate("/");
+            }
             reset();
         },
-        [login, reset]
+        [login, reset, navigate]
     );
 
     return (

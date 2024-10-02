@@ -58,7 +58,6 @@ const createProduct = async (req, res) => {
             for (const img of image) {
                 try {
                     const cloudinaryResponse = await cloudinary.uploader.upload(img, { folder: "products" });
-                    console.log("Image uploaded successfully", cloudinaryResponse);
                     cloudinaryResponses.push(cloudinaryResponse.secure_url);
                 } catch (err) {
                     console.error("Error uploading image:", err.message);

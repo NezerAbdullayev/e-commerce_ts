@@ -14,6 +14,7 @@ import LoginPage from "./pages/login/LoginPage";
 import SignupPage from "./pages/signup/SignupPage";
 import ProductsPage from "./pages/products/PorductsPage";
 import DetailsPage from "./pages/details/DetailsPage";
+import FavoritesPage from "./pages/favorites/FavoritesPage";
 
 const App: React.FC = () => {
     const userRole = useSelector((state: RootState) => state.user.role);
@@ -33,7 +34,8 @@ const App: React.FC = () => {
                     <Route path="cart" element={<CartPage />} />
 
                     <Route path="products" element={<ProductsPage />} />
-                    {/* <Route path="product/:id" element={<DetailsPage />} /> */}
+                    <Route path="favorites" element={<FavoritesPage />} />
+                    <Route path="product/:id" element={<DetailsPage />} />
                     <Route path="about" element={<DetailsPage />} />
                 </Route>
             </Routes>

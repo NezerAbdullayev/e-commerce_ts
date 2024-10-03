@@ -13,7 +13,7 @@ import { NavLink, useLocation } from "react-router-dom";
 
 function Header() {
     const location = useLocation();
-    const [navBar, setNavBar] = useState<number>(0);
+    const [navBar, setNavBar] = useState<number|null>(0);
 
     useEffect(() => {
         switch (location.pathname) {
@@ -27,7 +27,7 @@ function Header() {
                 setNavBar(2);
                 break;
             default:
-                setNavBar(0);
+                setNavBar(null);
         }
     }, [location.pathname]);
 
@@ -52,7 +52,15 @@ function Header() {
                 </Tabs>
 
                 <Box sx={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
-                    <IconButton size="large" edge="end" color="inherit" aria-label="Favorites" sx={{ mr: 2 }}>
+                    <IconButton
+                        size="large"
+                        edge="end"
+                        color="inherit"
+                        aria-label="Favorites"
+                        sx={{ mr: 2 }}
+                        component={NavLink}
+                        to="/favorites"
+                    >
                         <FavoriteIcon />
                     </IconButton>
 

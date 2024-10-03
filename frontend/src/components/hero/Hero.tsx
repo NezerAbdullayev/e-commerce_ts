@@ -39,8 +39,8 @@ const Hero: FC = () => {
                     left: "50%",
                     minWidth: "100%",
                     minHeight: "100%",
-                    width: "auto",
-                    height: "auto",
+                    width: "100vw",
+                    height: "100vh",
                     zIndex: -1,
                     transform: "translate(-50%, -50%)",
                 }}

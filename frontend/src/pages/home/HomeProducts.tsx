@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import ProductsGroup from "../../components/products/ProductGroup";
 import { useGetProductsByCategoryQuery } from "../../redux/services/productsApi";
 
@@ -12,9 +12,13 @@ const HomeProducts: FC = () => {
 
     console.log(tShirtProductData?.products);
 
+    const productData = useMemo(() => {
+        return tShirtProductData?.products || [];
+    }, [tShirtProductData]);
+
     return (
         <div>
-            <ProductsGroup catgoryTitle={"T-shirt"} productData={tShirtProductData?.products || []} />
+            <ProductsGroup catgoryTitle={"T-shirt"} productData={productData} />
 
             {/* <ProductsGroup catgoryTitle={"Oversized"} productData={oversizedProductData || []} />
 

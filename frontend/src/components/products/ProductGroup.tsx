@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { FC } from "react";
+import { FC, memo } from "react";
 import CardContainer from "../card/CardContainer";
 import ProductCard from "../card/ProductCard";
 import { Products } from "../../types/globalTypes";
@@ -10,10 +10,9 @@ interface ProductsGroupProps {
 }
 
 const ProductsGroup: FC<ProductsGroupProps> = ({ catgoryTitle, productData }) => {
-    console.log();
     return (
         <Box>
-            {productData?.length > 0 ? (
+            {productData?.length > 0 && (
                 <>
                     <Typography
                         variant="h2"
@@ -38,11 +37,9 @@ const ProductsGroup: FC<ProductsGroupProps> = ({ catgoryTitle, productData }) =>
                             ))}
                     </CardContainer>
                 </>
-            ) : (
-                ""
             )}
         </Box>
     );
 }; // id, name, image, price, raiting
 
-export default ProductsGroup;
+export default memo(ProductsGroup);

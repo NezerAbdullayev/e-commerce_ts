@@ -1,7 +1,5 @@
-import { Box, Button, Card, CardContent, CardMedia, Grid2, Rating, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, CardMedia, Grid2 as Grid, Rating, Typography } from "@mui/material";
 import { FC, useState } from "react";
-import Image from "../../../../../../Downloads/lg_1.webp";
-import CardContainer from "./CardContainer";
 
 interface ProductCardProps {
     id: string;
@@ -14,14 +12,14 @@ interface ProductCardProps {
 const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) => {
     const [value, setValue] = useState<number | null>(2);
     return (
-        <Grid2 size={{ xs: 2, sm: 4, md: 3 }}>
+        <Grid size={{ xs: 2, sm: 4, md: 3 }}>
             <Card sx={{ maxWidth: 300, boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)" }}>
-                <Box className="group overflow-hidden rounded">
+                <Box className="group max-w-[300px] overflow-hidden rounded">
                     <CardMedia
                         component="img"
                         image={image}
                         alt={name}
-                        sx={{ width: "100%", height: 400, objectFit: "cover", padding: "10px" }}
+                        sx={{ width: "100%", height: 300, objectFit: "cover" }}
                         className="h-full w-full transform transition-transform duration-300 group-hover:scale-105"
                     />
 
@@ -58,12 +56,11 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) =
                     </Typography>
                 </CardContent>
             </Card>
-        </Grid2>
+        </Grid>
     );
 };
 
 export default ProductCard;
-
 
 // brand: "Zara"
 // category: ["T-shirt"]

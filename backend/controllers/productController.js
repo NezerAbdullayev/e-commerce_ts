@@ -48,6 +48,7 @@ const getFeaturedProducts = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
 const createProduct = async (req, res) => {
     try {
         const { name, description, price, image, category, stock, brand } = req.body.newProduct;
@@ -149,6 +150,19 @@ const getRandomProducts=async(req,res)=>{
     }
 }
 
+const getProductById= async(req,res)=>{
+    try {
+        const productId = req.params.id;
+        const product = await ProductModel.findById(productId); 
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+        res.json(product);
+    } catch (error) {
+        res.status(500).json({ message: "Server error",error:error.message});
+    }
+}
+
 const getProductByCategory = async (req, res) => {
     const { categories } = req.params;
     const page = parseInt(req.query.page) || 1;  
@@ -215,4 +229,5 @@ export {
     getProductByCategory,
     getRandomProducts,
     toggleFeaturedProduct,
+    getProductById,
 };

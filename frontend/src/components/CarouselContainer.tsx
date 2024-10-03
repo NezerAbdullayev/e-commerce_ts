@@ -2,12 +2,11 @@ import { FC } from "react";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/swiper-bundle.css";
 import { Navigation, Autoplay } from "swiper/modules";
 import { useGetRandomProductsQuery } from "../redux/services/productsApi";
 import { Box } from "@mui/material";
 
-const CaruselContainer: FC = () => {
+const CarouselContainer: FC = () => {
     const { data, isLoading, error } = useGetRandomProductsQuery({ count: 8 });
 
     return (
@@ -29,4 +28,4 @@ const CaruselContainer: FC = () => {
     );
 };
 
-export default CaruselContainer;
+export default CarouselContainer;

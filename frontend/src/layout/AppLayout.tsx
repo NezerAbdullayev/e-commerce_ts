@@ -2,16 +2,17 @@ import { FC } from "react";
 import { Outlet } from "react-router";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
+import { Box } from "@mui/material";
 
 const AppLayout: FC = () => {
     return (
-        <div>
+        <Box>
             <Header />
-            <div style={{ minHeight: "100vh" }}>
+            <Box sx={{ minHeight: "100vh", mb: 10 }}>
                 <Outlet />
-            </div>
+            </Box>
             <Footer />
-        </div>
+        </Box>
     );
 };
 

@@ -15,7 +15,13 @@ const ProductsGroup: FC<ProductsGroupProps> = ({ catgoryTitle, productData }) =>
         <Box>
             {productData?.length > 0 ? (
                 <>
-                    <Typography variant="h2" component="h2">
+                    <Typography
+                        variant="h2"
+                        component="h2"
+                        align="center"
+                        color="textSecondary"
+                        sx={{ mb: 2.5, fontFamily: "gutterBottom" }}
+                    >
                         {catgoryTitle}
                     </Typography>
                     <CardContainer>
@@ -33,7 +39,7 @@ const ProductsGroup: FC<ProductsGroupProps> = ({ catgoryTitle, productData }) =>
                     </CardContainer>
                 </>
             ) : (
-                <Typography variant="body1">No products available.</Typography>
+                ""
             )}
         </Box>
     );

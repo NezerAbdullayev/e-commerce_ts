@@ -1,20 +1,17 @@
 import { FC } from "react";
-import CaruselContainer from "../../components/CaruselContainer";
+import CarouselContainer from "../../components/CarouselContainer";
 import Hero from "../../components/hero/Hero";
 import { Box } from "@mui/material";
-import ProductCard from "../../components/card/ProductCard";
 import HomeProducts from "./HomeProducts";
 
 const HomePage: FC = () => {
     return (
         <Box>
             <Hero />
-            <CaruselContainer />
 
-            {/* <ProductCard /> */}
+            <CarouselContainer />
 
             <HomeProducts />
-            {/* <Products /> */}
         </Box>
     );
 };

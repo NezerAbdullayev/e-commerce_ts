@@ -24,6 +24,7 @@ const Hero: FC = () => {
                 height: "100vh",
                 width: "100vw",
                 overflow: "hidden",
+                zIndex:22
             }}
         >
             <Box

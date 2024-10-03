@@ -44,7 +44,7 @@ function Header() {
                     value={navBar}
                     onChange={(_, value) => setNavBar(value)}
                     indicatorColor="primary"
-                    sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
+                    sx={{ flexGrow: 1, display: "flex" }}
                 >
                     <Tab label="Home" component={NavLink} to="/" />
                     <Tab label="Products" component={NavLink} to="/products" />

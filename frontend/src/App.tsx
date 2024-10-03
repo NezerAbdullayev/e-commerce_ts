@@ -36,4 +36,6 @@ const App: React.FC = () => {
     );
 };
 
+// https://au.pinterest.com/alarnahope/mens-style-types/trend-setter/
+
 export default App;

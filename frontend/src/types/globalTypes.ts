@@ -29,7 +29,7 @@ export interface Products {
     _id: string;
     name: string;
     brand: string;
-    rating: string;
+    rating: number;
     isFeatured: string;
     description: string;
     category: string[];

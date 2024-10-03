@@ -3,6 +3,7 @@ import CaruselContainer from "../../components/CaruselContainer";
 import Hero from "../../components/hero/Hero";
 import { Box } from "@mui/material";
 import ProductCard from "../../components/card/ProductCard";
+import HomeProducts from "./HomeProducts";
 
 const HomePage: FC = () => {
     return (
@@ -10,9 +11,9 @@ const HomePage: FC = () => {
             <Hero />
             <CaruselContainer />
 
-            <ProductCard />
-            {/* category filterleme */}
-            {/* products  --> 3 product category gore   */}
+            {/* <ProductCard /> */}
+
+            <HomeProducts />
             {/* <Products /> */}
         </Box>
     );

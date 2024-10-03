@@ -1,4 +1,4 @@
-import { Box, Grid2 as Grid, List, ListItemText, Stack, Typography } from "@mui/material";
+import { Box, Grid2 as Grid, List, ListItemText, Typography } from "@mui/material";
 import { FC } from "react";
 import { FooterTitle } from "./FooterStyed";
 

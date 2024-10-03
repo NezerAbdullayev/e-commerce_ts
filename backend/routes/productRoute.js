@@ -21,7 +21,7 @@ productRouter.get("/featured", getFeaturedProducts);
 
 productRouter.get("/random/:count",getRandomProducts);
 
-productRouter.get("/category/:category", getProductByCategory);
+productRouter.get("/category/:categories", getProductByCategory);
 
 productRouter.get("/recommendations", getRecommendedProducts);
 

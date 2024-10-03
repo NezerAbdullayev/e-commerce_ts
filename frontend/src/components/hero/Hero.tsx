@@ -24,7 +24,7 @@ const Hero: FC = () => {
                 height: "100vh",
                 width: "100vw",
                 overflow: "hidden",
-                zIndex:22
+                zIndex: 22,
             }}
         >
             <Box
@@ -47,10 +47,10 @@ const Hero: FC = () => {
             />
 
             <HeroContainer sx={{ color: "#ffffff", backgroundColor: "#ffffff2e", height: "100%" }}>
-                <Typography variant="h2" component="h1" gutterBottom>
+                <Typography variant="h2" component="h1" gutterBottom sx={{ fontSize: "80px", fontFamily: "gutterBottom" }}>
                     TrendTee Store
                 </Typography>
-                <Typography variant="h5" component="p" gutterBottom>
+                <Typography variant="h5" component="p" gutterBottom sx={{ fontSize: "40px", fontFamily: "gutterBottom" }}>
                     Discover amazing products at unbeatable prices!
                 </Typography>
             </HeroContainer>

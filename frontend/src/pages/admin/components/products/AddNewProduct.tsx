@@ -20,9 +20,11 @@ const productFormArr: FormItem[] = [
         label: "category",
         type: "select",
         options: [
-            { value: "köynək", label: "Köynək" },
+            { value: "overSized", label: "OverSized" },
             { value: "T-shirt", label: "T-Shirt" },
-            { value: "ayaqqabı", label: "Ayaqqabı" },
+            { value: "Long-sleeve", label: "Long-sleeve" },
+            { value: "Basic Tees", label: "Basic Tees" },
+            { value: "Hoodie", label: "Hoodie" },
         ],
     },
     { label: "image", type: "file" },

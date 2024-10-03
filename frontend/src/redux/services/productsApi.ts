@@ -12,9 +12,15 @@ const productsApi = createApi({
         getRandomProducts: builder.query<Products[], { count: number }>({
             query: ({ count }) => `random/${count}`,
         }),
+        getProductsByCategory: builder.query({
+            query: ({ categories, page = 1, limit = 10 }) => ({
+                url: `/category/${categories}`,
+                params: { page, limit },
+            }),
+        }),
     }),
 });
 
-export const { useGetAllProductsQuery, useGetRandomProductsQuery } = productsApi;
+export const { useGetAllProductsQuery, useGetRandomProductsQuery, useGetProductsByCategoryQuery } = productsApi;
 
 export default productsApi;

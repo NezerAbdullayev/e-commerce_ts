@@ -95,15 +95,15 @@ const deleteProduct = async (req, res) => {
             const publicId = product.image.split("/").pop().split(".")[0];
             try {
                 await cloudinary.uploader.destroy(`products/${publicId}`);
-                console.log("deleted image from clodinary");
+                console.log("deleted image from cloudinary");
             } catch (error) {
-                console.log("error deleting image in clodinary", error);
+                console.log("error deleting image in cloudinary", error);
             }
         }
 
         await ProductModel.findByIdAndDelete(req.params.id);
 
-        res.json({ message: "Prodcut deleted successfully" });
+        res.json({ message: "Product deleted successfully" });
     } catch (error) {
         console.log("Error in deleteProduct controller", error.message);
         res.status(500).json({ message: "Server error", error: error.message });
@@ -151,11 +151,27 @@ const getRandomProducts=async(req,res)=>{
 
 const getProductByCategory = async (req, res) => {
     const { categories } = req.params;
+    const page = parseInt(req.query.page) || 1;  
+    const limit = parseInt(req.query.limit) || 10; 
+
+    console.log(categories)
 
     try {
         const categoryArray = categories.split(",");
-        const products = await ProductModel.find({ category: { $in: categoryArray } });
-        res.json(products);
+
+
+        const products = await ProductModel.find({ category: { $in: categoryArray } })
+            .limit(limit)
+            .skip((page - 1) * limit);
+
+        const totalProducts = await ProductModel.countDocuments({ category: { $in: categoryArray } });
+
+        res.json({
+            products,
+            currentPage: page,
+            totalPages: Math.ceil(totalProducts / limit),
+            totalProducts
+        });
     } catch (error) {
         console.log("Error in getProductsByCategory controller", error.message);
         res.status(500).json({ message: "Server error", error: error.message });

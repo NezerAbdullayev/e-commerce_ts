@@ -1,39 +1,18 @@
 import { FC, useCallback, useEffect, useState } from "react";
-import { useGetAllProductsQuery } from "../../../../redux/services/adminApi";
+import { useDeleteProductMutation, useGetAllProductsQuery } from "../../../../redux/services/adminApi";
 import { Alert, Col, Table } from "antd";
 import type { TableColumnsType } from "antd";
 import { Products as ProductsType } from "../../../../types/globalTypes";
 
 interface DataType {
     key: React.Key;
+    id: string;
     name: string;
     price: number;
     image: string;
     category: string;
     description: string;
 }
-
-const columns: TableColumnsType<DataType> = [
-    { title: "id", dataIndex: "id", key: "id", width: "20px" },
-    { title: "Name", dataIndex: "name", key: "name", sorter: (a, b) => a.name.localeCompare(b.name) },
-    {
-        title: "Image",
-        dataIndex: "image",
-        key: "image",
-        width: "10%",
-        render: (image) => <img src={image} alt="product" style={{ width: "50px", height: "50px", objectFit: "cover" }} />,
-    },
-    { title: "stock", dataIndex: "stock", key: "stock" },
-    { title: "brand", dataIndex: "brand", key: "brand" },
-    { title: "Price", dataIndex: "price", key: "price", sorter: (a, b) => a.price - b.price, render: (text) => `$${text}` },
-    { title: "category", dataIndex: "category", key: "category" },
-    {
-        title: "Action",
-        dataIndex: "x",
-        key: "x",
-        render: () => <a>Delete</a>,
-    },
-];
 
 const Products: FC = () => {
     const [products, setProducts] = useState<DataType[]>([]);
@@ -42,6 +21,15 @@ const Products: FC = () => {
     const limit = 15;
 
     const { data: productsData, error, isLoading } = useGetAllProductsQuery({ page: currentPage, limit });
+
+    const [deleteProduct] = useDeleteProductMutation();
+
+    const handleProductDelete = async (id: string) => {
+        console.log(id);
+        const res = await deleteProduct({ id });
+        if (res) console.log(res);
+        else console.log("xeta bas verdi ");
+    };
 
     useEffect(() => {
         if (productsData?.products?.length > 0) {
@@ -67,6 +55,28 @@ const Products: FC = () => {
     const handlePageChange = useCallback((page: number) => {
         setCurrentPage(page);
     }, []);
+
+    const columns: TableColumnsType<DataType> = [
+        { title: "id", dataIndex: "id", key: "id", width: "20px" },
+        { title: "Name", dataIndex: "name", key: "name", sorter: (a, b) => a.name.localeCompare(b.name) },
+        {
+            title: "Image",
+            dataIndex: "image",
+            key: "image",
+            width: "10%",
+            render: (image) => <img src={image} alt="product" style={{ width: "50px", height: "50px", objectFit: "cover" }} />,
+        },
+        { title: "stock", dataIndex: "stock", key: "stock" },
+        { title: "brand", dataIndex: "brand", key: "brand" },
+        { title: "Price", dataIndex: "price", key: "price", sorter: (a, b) => a.price - b.price, render: (text) => `$${text}` },
+        { title: "category", dataIndex: "category", key: "category" },
+        {
+            title: "Action",
+            dataIndex: "x",
+            key: "x",
+            render: (_, record) => <a onClick={() => handleProductDelete(record.id)}>Delete</a>,
+        },
+    ];
 
     if (isLoading) {
         console.log(isLoading);

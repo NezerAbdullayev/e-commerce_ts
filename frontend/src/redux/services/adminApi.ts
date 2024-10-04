@@ -16,9 +16,15 @@ const adminApi = createApi({
                 credentials: "include",
             }),
         }),
+        deleteProduct: builder.mutation({
+            query: ({ id }) => ({
+                url: `/${id}`,
+                method: "DELETE",
+            }),
+        }),
     }),
 });
 
-export const { useGetAllProductsQuery, useCreateNewProductMutation } = adminApi;
+export const { useGetAllProductsQuery, useCreateNewProductMutation, useDeleteProductMutation } = adminApi;
 
 export default adminApi;

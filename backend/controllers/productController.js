@@ -86,19 +86,23 @@ const createProduct = async (req, res) => {
 };
 
 const deleteProduct = async (req, res) => {
+
+    console.log(req.params.id)
     try {
         const product = await ProductModel.findById(req.params.id);
 
         if (!product) return res.status(404).json({ message: "Product not found" });
 
-        if (product.image) {
-            // this willl get the id of the image from cloudinary
-            const publicId = product.image.split("/").pop().split(".")[0];
-            try {
-                await cloudinary.uploader.destroy(`products/${publicId}`);
-                console.log("deleted image from cloudinary");
-            } catch (error) {
-                console.log("error deleting image in cloudinary", error);
+        if (product.image && Array.isArray(product.image)) {
+            for (const img of product.image) {
+
+                const publicId = img.split("/").pop().split(".")[0];
+                try {
+                    await cloudinary.uploader.destroy(`products/${publicId}`);
+                    console.log(`Deleted image from Cloudinary: ${img}`);
+                } catch (error) {
+                    console.log("Error deleting image in Cloudinary", error);
+                }
             }
         }
 

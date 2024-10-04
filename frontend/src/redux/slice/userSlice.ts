@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 interface UserState {
     role: string;
@@ -25,6 +26,8 @@ const userSlice = createSlice({
         },
     },
 });
+
+export const userRole = (state: RootState) => state.user.role;
 
 export const { setUser, logout } = userSlice.actions;
 

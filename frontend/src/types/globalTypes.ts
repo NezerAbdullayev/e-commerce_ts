@@ -13,6 +13,7 @@ export interface Auth extends Login {
 export interface FormItem {
     label: string;
     type: string;
+    multiple?: boolean;
     options?: Array<{ value: string; label: string }>;
 }
 

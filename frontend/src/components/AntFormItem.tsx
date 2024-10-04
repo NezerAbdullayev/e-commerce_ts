@@ -26,6 +26,26 @@ const AntFormItem = <T extends FieldValues>({ formArr, control, errors }: Accoun
                         name={field.label as Path<T>}
                         control={control}
                         render={({ field: { onChange, onBlur, value, ref } }) => {
+                            if (field.type === "select" || field.multiple) {
+                                return (
+                                    <Select
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        ref={ref}
+                                        value={value}
+                                        style={{ width: "100%" }}
+                                        mode="multiple"
+                                        placeholder={`Select ${field.label}`}
+                                    >
+                                        {field.options?.map((option) => (
+                                            <Option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </Option>
+                                        ))}
+                                    </Select>
+                                );
+                            }
+
                             if (field.type === "select") {
                                 return (
                                     <Select

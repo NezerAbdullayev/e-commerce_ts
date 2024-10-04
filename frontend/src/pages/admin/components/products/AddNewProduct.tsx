@@ -4,8 +4,6 @@ import { createProductSchema } from "../../../../validations/product.validation"
 import { FileObject, FormItem } from "../../../../types/globalTypes";
 import AccountInput from "../../../../components/AntFormItem";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../redux/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Form } from "antd";
 import { formItemLayout } from "../../../../utils/formLayoutsize";
@@ -19,8 +17,9 @@ const productFormArr: FormItem[] = [
     {
         label: "category",
         type: "select",
+        multiple: true,
         options: [
-            { value: "overSized", label: "OverSized" },
+            { value: "OverSized", label: "OverSized" },
             { value: "T-shirt", label: "T-Shirt" },
             { value: "Long-sleeve", label: "Long-sleeve" },
             { value: "Basic Tees", label: "Basic Tees" },
@@ -33,7 +32,7 @@ const productFormArr: FormItem[] = [
 
 interface NewProduct {
     brand?: string;
-    category: string;
+    category: string[];
     description: string;
     image: FileObject[];
     name: string;
@@ -43,9 +42,6 @@ interface NewProduct {
 
 const AddNewProduct: FC = () => {
     const [createNewProduct, { data: createdData, error: createProductError, isLoading }] = useCreateNewProductMutation();
-    const userRole = useSelector((state: RootState) => state.user.role);
-
-    console.log(userRole, "role");
     const {
         control,
         handleSubmit,

@@ -2,6 +2,7 @@ import { FC, useCallback, useEffect, useState } from "react";
 import { useGetAllProductsQuery } from "../../../../redux/services/adminApi";
 import { Alert, Col, Table } from "antd";
 import type { TableColumnsType } from "antd";
+import { Products as ProductsType } from "../../../../types/globalTypes";
 
 interface DataType {
     key: React.Key;
@@ -22,6 +23,8 @@ const columns: TableColumnsType<DataType> = [
         width: "10%",
         render: (image) => <img src={image} alt="product" style={{ width: "50px", height: "50px", objectFit: "cover" }} />,
     },
+    { title: "stock", dataIndex: "stock", key: "stock" },
+    { title: "brand", dataIndex: "brand", key: "brand" },
     { title: "Price", dataIndex: "price", key: "price", sorter: (a, b) => a.price - b.price, render: (text) => `$${text}` },
     { title: "category", dataIndex: "category", key: "category" },
     {
@@ -32,38 +35,29 @@ const columns: TableColumnsType<DataType> = [
     },
 ];
 
-interface Product {
-    _id: string;
-    name: string;
-    price: number;
-    image: string;
-    category: string[];
-    description: string;
-    isFeatured: boolean;
-}
-
 const Products: FC = () => {
-    const [data, setData] = useState<DataType[]>([]);
+    const [products, setProducts] = useState<DataType[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const limit = 15;
-
-    console.log("re-render");
 
     const { data: productsData, error, isLoading } = useGetAllProductsQuery({ page: currentPage, limit });
 
     useEffect(() => {
         if (productsData?.products?.length > 0) {
-            const formattedData = productsData.products.map((product: Product) => ({
+            const formattedData = productsData.products.map((product: ProductsType) => ({
                 key: product._id,
                 id: product._id,
                 name: product.name,
                 price: product.price,
+                stock: product.stock,
+                brand: product.brand,
+                rating: product.rating,
                 image: product.image?.[0],
                 category: product.category.toString().replace(/,/g, " "),
                 description: product.description,
             }));
-            setData(formattedData);
+            setProducts(formattedData);
             setTotalPages(productsData.totalPages);
         }
     }, [productsData]);
@@ -104,7 +98,7 @@ const Products: FC = () => {
                     expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.description}</p>,
                     rowExpandable: (record) => record.name !== "Not Expandable",
                 }}
-                dataSource={data}
+                dataSource={products}
                 pagination={{ pageSize: limit, position: ["bottomCenter"], total: totalPages * limit, onChange: handlePageChange }}
             />
         </Col>

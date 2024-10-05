@@ -20,6 +20,7 @@ const adminApi = createApi({
             query: ({ id }) => ({
                 url: `/${id}`,
                 method: "DELETE",
+                credentials: "include",
             }),
         }),
     }),

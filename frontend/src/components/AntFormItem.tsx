@@ -81,7 +81,7 @@ const AntFormItem = <T extends FieldValues>({ formArr, control, errors }: Accoun
                                         showUploadList={true}
                                     >
                                         <Button>
-                                            <UploadOutlined /> Yüklə
+                                            <UploadOutlined /> Download
                                         </Button>
                                     </Upload>
                                 );

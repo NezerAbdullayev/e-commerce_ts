@@ -30,7 +30,7 @@ const productFormArr: FormItem[] = [
     { label: "description", type: "textarea" },
 ];
 
-interface NewProduct {
+export interface NewProduct {
     brand?: string;
     category: string[];
     description: string;

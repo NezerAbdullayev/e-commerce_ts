@@ -139,7 +139,9 @@ const Products: FC = () => {
                 }}
                 pagination={{ pageSize: limit, position: ["bottomCenter"], total: totalPages * limit, onChange: handlePageChange }}
             />
-            <Modal title="Edit Product" open={isEdit} onCancel={onCloseEditModal} onOk={() => setIsEdit(false)} okText="Save"></Modal>
+            <Modal title="Edit Product" open={isEdit} onCancel={onCloseEditModal} onOk={() => setIsEdit(false)} okText="Save">
+                
+            </Modal>
         </Col>
     );
 };

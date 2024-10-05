@@ -32,7 +32,6 @@ app.use(
 );
 
 // api entpoints
-app.use("/images", express.static("uploads"));
 
 app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);

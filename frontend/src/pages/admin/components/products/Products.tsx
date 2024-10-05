@@ -1,8 +1,11 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import { useDeleteProductMutation, useGetAllProductsQuery } from "../../../../redux/services/adminApi";
-import { Alert, Col, Table } from "antd";
+import { Alert, Button, Col, Flex, Table, Modal } from "antd";
 import type { TableColumnsType } from "antd";
 import { Products as ProductsType } from "../../../../types/globalTypes";
+
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface DataType {
     key: React.Key;
@@ -15,6 +18,7 @@ interface DataType {
 }
 
 const Products: FC = () => {
+    const [isEdit, setIsEdit] = useState<boolean>(false);
     const [products, setProducts] = useState<DataType[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
@@ -24,12 +28,29 @@ const Products: FC = () => {
 
     const [deleteProduct] = useDeleteProductMutation();
 
-    const handleProductDelete = async (id: string) => {
-        console.log(id);
-        const res = await deleteProduct({ id });
-        if (res) console.log(res);
-        else console.log("xeta bas verdi ");
+    console.log(isEdit);
+
+    const onDeleteProduct = async (id: string) => {
+        Modal.confirm({
+            title: "Do you want to delete this product?",
+            onOk: () => {
+                console.log(id);
+                // const res = await deleteProduct({ id });
+                // if (res) console.log(res);
+                // else console.log("xeta bas verdi ");
+            },
+            okText: "Yes",
+            okType: "danger",
+        });
     };
+    const onEditProduct = async (id: string) => {
+        setIsEdit(true);
+        console.log(id);
+    };
+
+    const onCloseEditModal = useCallback(() => {
+        setIsEdit(false);
+    }, []);
 
     useEffect(() => {
         if (productsData?.products?.length > 0) {
@@ -74,7 +95,14 @@ const Products: FC = () => {
             title: "Action",
             dataIndex: "x",
             key: "x",
-            render: (_, record) => <a onClick={() => handleProductDelete(record.id)}>Delete</a>,
+            render: (_, record) => {
+                return (
+                    <Flex gap={10}>
+                        <Button icon={<EditIcon />} onClick={() => onEditProduct(record.id)} />
+                        <Button icon={<DeleteIcon />} onClick={() => onDeleteProduct(record.id)} danger />
+                    </Flex>
+                );
+            },
         },
     ];
 
@@ -104,13 +132,14 @@ const Products: FC = () => {
             <Table
                 style={{ minWidth: 800 }}
                 columns={columns}
+                dataSource={products}
                 expandable={{
                     expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.description}</p>,
                     rowExpandable: (record) => record.name !== "Not Expandable",
                 }}
-                dataSource={products}
                 pagination={{ pageSize: limit, position: ["bottomCenter"], total: totalPages * limit, onChange: handlePageChange }}
             />
+            <Modal title="Edit Product" open={isEdit} onCancel={onCloseEditModal} onOk={() => setIsEdit(false)} okText="Save"></Modal>
         </Col>
     );
 };

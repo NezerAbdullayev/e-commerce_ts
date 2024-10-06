@@ -1,5 +1,10 @@
-import { Box, Button, Card, CardContent, CardMedia, Grid2 as Grid, Rating, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Grid2 as Grid, IconButton, Rating, Typography } from "@mui/material";
 import { FC, useState } from "react";
+import { useNavigate } from "react-router";
+
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 interface ProductCardProps {
     id: string;
@@ -10,11 +15,27 @@ interface ProductCardProps {
 }
 
 const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) => {
-    const [value, setValue] = useState<number | null>(2);
+    const [value, setValue] = useState<number | null>(rating < 3 ? 3 : rating);
+    const navigate = useNavigate();
+
+    const onDetailsClick = () => {
+        navigate(`/product/${id}`);
+    };
+
+    const onFavoritesClick = () => {
+        console.log(image, id, name, price);
+        // add to favorites
+    };
+
+    const onAddToBasket = () => {
+        console.log(image, id, name, price, "count +1");
+    };
+
     return (
         <Grid size={{ xs: 2, sm: 4, md: 3 }}>
             <Card sx={{ maxWidth: 300, boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)" }}>
-                <Box className="group max-w-[300px] overflow-hidden rounded">
+                {/* image */}
+                <Box className="group relative z-10 h-[300px] max-w-[300px] cursor-pointer overflow-hidden rounded">
                     <CardMedia
                         component="img"
                         image={image}
@@ -23,9 +44,26 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) =
                         className="h-full w-full transform transition-transform duration-300 group-hover:scale-105"
                     />
 
-                    <Button className="w-full cursor-pointer">Add to cart</Button>
+                    <Box className="absolute bottom-3 right-3 z-40 rounded-md bg-stone-50/40">
+                        <IconButton aria-label="Add to favorites" color="error" onClick={onFavoritesClick}>
+                            <FavoriteIcon
+                                className="w-5 text-stone-50 transition-all duration-300 hover:text-red-700"
+                                sx={{ fontSize: 30 }}
+                            />
+                        </IconButton>
+                        <IconButton aria-label="Add to basket" color="primary" onClick={onAddToBasket}>
+                            <AddShoppingCartIcon className="hover:text-blue-400" />
+                        </IconButton>
+                    </Box>
+
+                    <Box className="absolute left-0 top-0 z-10 hidden h-full w-full place-items-center bg-stone-950/30 transition-all group-hover:grid">
+                        <IconButton color="primary">
+                            <VisibilityIcon className="text-stone-300/50" sx={{ fontSize: 40 }} onClick={onDetailsClick} />
+                        </IconButton>
+                    </Box>
                 </Box>
 
+                {/* content */}
                 <CardContent>
                     <Box className="flex items-center justify-between">
                         <Typography component="h4" variant="h6" fontWeight="bold">
@@ -52,7 +90,7 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) =
                                 setValue(newValue);
                             }}
                         />
-                        <Box className="font-bold">({rating})</Box>
+                        <Box className="font-bold">({rating < 3 ? 3 : rating}.0)</Box>
                     </Typography>
                 </CardContent>
             </Card>
@@ -61,18 +99,3 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) =
 };
 
 export default ProductCard;
-
-// brand: "Zara"
-// category: ["T-shirt"]
-// createdAt: "2024-10-01T15:10:30.868Z"
-// description: "lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun"
-// image: ["https://res.cloudinary.com/dyrqjvw6d/image/upload/v1727795428/products/ti1hiuy4ti7eux9kutzz.webp",…]
-// isFeatured: false
-// name: "T-shirt C1"
-// price: 43.9
-// rating: 0
-// reviews: []
-// stock: 10
-// updatedAt: "2024-10-01T15:10:30.868Z"
-// __v: 0
-// _id: "66fc10e60687e21c860102d0"

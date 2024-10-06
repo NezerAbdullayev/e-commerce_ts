@@ -7,37 +7,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 
 const DetailsPage: FC = () => {
-    // const { id } = useParams();
+    const { id } = useParams();
     const [value, setValue] = useState<number | null>(2);
     const [navBar, setNavBar] = useState<number>(0);
 
     const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
         setNavBar(newValue);
     };
-
-    const id = "66fbfac354d072829dae3ed2";
-
-    // const data = {
-    //     brand: "zara",
-    //     category: ["T-shirt", "veli", "elder"],
-    //     createdAt: "2024-10-01T13:36:03.027Z",
-    //     description:
-    //         "Printed Crew Neck Plus Size Salas Shirt,\nDIMENSIONS: , XXL: Width 63 cm Length: 74 cm,\nFABRIC: Made of 1st class cotton yarn, does not pill for a long time,\nPRINT: Printed as a screen print with water-based inks that do not contain carcinogens. Not one of the pasted tracks on the site. You can use 30 addresses for a long time.\nWASHING: Wash 30 times and iron reversely.\nCLEANING: cannot be dry cleaned,\nDRYING: Do not hang to dry.",
-    //     image: [
-    //         "https://res.cloudinary.com/dyrqjvw6d/image/upload/v1727789760/products/ddosvxk79xk7sgpw2ms2.webp",
-    //         "https://res.cloudinary.com/dyrqjvw6d/image/upload/v1727789761/products/byfao9af82yc09ldvkb6.webp",
-    //         "https://res.cloudinary.com/dyrqjvw6d/image/upload/v1727789762/products/d7hrkvzyr5ovrtyq1lry.webp",
-    //     ],
-    //     isFeatured: false,
-    //     name: "rr Milyor",
-    //     price: 80,
-    //     rating: 0,
-    //     reviews: [],
-    //     stock: 30,
-    //     updatedAt: "2024-10-01T13:36:03.027Z",
-    //     __v: 0,
-    //     _id: "66fbfac354d072829dae3ed2",
-    // };
 
     const { data, isLoading, error } = useGetProductByIdQuery({ id });
 
@@ -134,24 +110,5 @@ const DetailsPage: FC = () => {
         </Box>
     );
 };
-
-// brand: "zara";
-// category: ["T-shirt"];
-// createdAt: "2024-10-01T13:36:03.027Z";
-// description: "Printed Crew Neck Plus Size Salas Shirt,\nDIMENSIONS: , XXL: Width 63 cm Length: 74 cm,\nFABRIC: Made of 1st class cotton yarn, does not pill for a long time,\nPRINT: Printed as a screen print with water-based inks that do not contain carcinogens. Not one of the pasted tracks on the site. You can use 30 addresses for a long time.\nWASHING: Wash 30 times and iron reversely.\nCLEANING: cannot be dry cleaned,\nDRYING: Do not hang to dry.";
-// image: (3)[
-//     ("https://res.cloudinary.com/dyrqjvw6d/image/upload/v1727789760/products/ddosvxk79xk7sgpw2ms2.webp",
-//     "https://res.cloudinary.com/dyrqjvw6d/image/upload/v1727789761/products/byfao9af82yc09ldvkb6.webp",
-//     "https://res.cloudinary.com/dyrqjvw6d/image/upload/v1727789762/products/d7hrkvzyr5ovrtyq1lry.webp")
-// ];
-// isFeatured: false;
-// name: "rr Milyor";
-// price: 80;
-// rating: 0;
-// reviews: [];
-// stock: 30;
-// updatedAt: "2024-10-01T13:36:03.027Z";
-// __v: 0;
-// _id: "66fbfac354d072829dae3ed2";
 
 export default DetailsPage;

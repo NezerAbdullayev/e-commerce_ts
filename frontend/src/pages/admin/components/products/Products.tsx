@@ -1,11 +1,20 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import { useDeleteProductMutation, useGetAllProductsQuery } from "../../../../redux/services/adminApi";
-import { Alert, Button, Col, Flex, Table, Modal } from "antd";
+import { Alert, Button, Col, Flex, Table, Modal, Form } from "antd";
 import type { TableColumnsType } from "antd";
 import { Products as ProductsType } from "../../../../types/globalTypes";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import FormInput from "../../../../components/Forms/FormInput";
+import { NewProduct } from "./AddNewProduct";
+import FormTextarea from "../../../../components/Forms/FormTextarea";
+import FormInputFile from "../../../../components/Forms/FormInputFile";
+import FormSelect from "../../../../components/Forms/FormSellect";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { createProductSchema } from "../../../../validations/product.validation";
+import { formItemLayout } from "../../../../utils/formLayoutsize";
 
 interface DataType {
     key: React.Key;
@@ -26,6 +35,27 @@ const Products: FC = () => {
 
     const { data: productsData, error, isLoading } = useGetAllProductsQuery({ page: currentPage, limit });
 
+    const options = [
+        { value: "OverSized", label: "OverSized" },
+        { value: "T-shirt", label: "T-Shirt" },
+        { value: "Long-sleeve", label: "Long-sleeve" },
+        { value: "Basic Tees", label: "Basic Tees" },
+        { value: "Hoodie", label: "Hoodie" },
+    ];
+
+    const {
+        control,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<NewProduct>({ resolver: yupResolver(createProductSchema) });
+
+    const onSubmit: SubmitHandler<NewProduct> = async (data) => {
+        console.log(data);
+
+        reset();
+    };
+
     const [deleteProduct] = useDeleteProductMutation();
 
     console.log(isEdit);
@@ -33,16 +63,17 @@ const Products: FC = () => {
     const onDeleteProduct = async (id: string) => {
         Modal.confirm({
             title: "Do you want to delete this product?",
-            onOk: () => {
+            onOk: async () => {
                 console.log(id);
-                // const res = await deleteProduct({ id });
-                // if (res) console.log(res);
-                // else console.log("xeta bas verdi ");
+                const res = await deleteProduct({ id });
+                if (res) console.log(res);
+                else console.log("xeta bas verdi ");
             },
             okText: "Yes",
             okType: "danger",
         });
     };
+    
     const onEditProduct = async (id: string) => {
         setIsEdit(true);
         console.log(id);
@@ -70,8 +101,6 @@ const Products: FC = () => {
             setTotalPages(productsData.totalPages);
         }
     }, [productsData]);
-
-    console.log("error", error, isLoading);
 
     const handlePageChange = useCallback((page: number) => {
         setCurrentPage(page);
@@ -105,6 +134,8 @@ const Products: FC = () => {
             },
         },
     ];
+
+    console.log("re-render-admin");
 
     if (isLoading) {
         console.log(isLoading);
@@ -140,7 +171,17 @@ const Products: FC = () => {
                 pagination={{ pageSize: limit, position: ["bottomCenter"], total: totalPages * limit, onChange: handlePageChange }}
             />
             <Modal title="Edit Product" open={isEdit} onCancel={onCloseEditModal} onOk={() => setIsEdit(false)} okText="Save">
-                
+                <Form onFinish={handleSubmit(onSubmit)} {...formItemLayout}>
+                    <FormInput<NewProduct> errors={errors} name="name" control={control} />
+                    <FormInput<NewProduct> errors={errors} name="price" type="number" control={control} />
+                    <FormInput<NewProduct> errors={errors} name="stock" type="number" control={control} />
+                    <FormInput<NewProduct> errors={errors} name="brand" control={control} />
+                    <FormTextarea<NewProduct> errors={errors} name="description" control={control} />
+                    <FormInputFile<NewProduct> errors={errors} name="image" control={control} />
+                    <FormSelect<NewProduct> errors={errors} name="category" control={control} options={options} multiple={true} />
+
+                    <Button htmlType="submit">Submit</Button>
+                </Form>
             </Modal>
         </Col>
     );

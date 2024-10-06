@@ -1,19 +1,17 @@
 import { FC } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import Video from "../../assets/video_hero .mp4";
+
 
 const HeroContainer = styled(Box)({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    height: "60vh",
-    backgroundImage: "url('../../assets/')",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    color: "#fff",
+    height: "100%",
     textAlign: "center",
+    color: "#fff",
 });
 
 const Hero: FC = () => {
@@ -37,20 +35,29 @@ const Hero: FC = () => {
                     position: "absolute",
                     top: "50%",
                     left: "50%",
-                    minWidth: "100%",
-                    minHeight: "100%",
-                    width: "100vw",
-                    height: "100vh",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover", 
                     zIndex: -1,
                     transform: "translate(-50%, -50%)",
                 }}
             />
 
-            <HeroContainer sx={{ color: "#ffffff", backgroundColor: "#ffffff2e", height: "100%" }}>
-                <Typography variant="h2" component="h1" gutterBottom sx={{ fontSize: "80px", fontFamily: "gutterBottom" }}>
+            <HeroContainer sx={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+                <Typography
+                    variant="h2"
+                    component="h1"
+                    gutterBottom
+                    sx={{ fontSize: { xs: "40px", md: "80px" }, fontFamily: "gutterBottom" }}
+                >
                     TrendTee Store
                 </Typography>
-                <Typography variant="h5" component="p" gutterBottom sx={{ fontSize: "40px", fontFamily: "gutterBottom" }}>
+                <Typography
+                    variant="h5"
+                    component="p"
+                    gutterBottom
+                    sx={{ fontSize: { xs: "20px", md: "40px" }, fontFamily: "gutterBottom" }}
+                >
                     Discover amazing products at unbeatable prices!
                 </Typography>
             </HeroContainer>

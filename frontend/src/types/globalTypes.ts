@@ -10,11 +10,9 @@ export interface Auth extends Login {
     name?: string;
 }
 
-export interface FormItem {
+export interface Options {
+    value: string;
     label: string;
-    type: string;
-    multiple?: boolean;
-    options?: Array<{ value: string; label: string }>;
 }
 
 export interface FileObject {

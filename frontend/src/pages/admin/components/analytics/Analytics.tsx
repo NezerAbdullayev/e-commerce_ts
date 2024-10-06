@@ -8,6 +8,7 @@ import FormInput from "../../../../components/Forms/FormInput";
 import FormInputFile from "../../../../components/Forms/FormInputFile";
 import FormTextarea from "../../../../components/Forms/FormTextarea";
 import FormSelect from "../../../../components/Forms/FormSellect";
+import { formItemLayout } from "../../../../utils/formLayoutsize";
 
 export interface NewProduct {
     brand?: string;
@@ -42,19 +43,16 @@ export default function DataTable() {
     };
 
     return (
-        <Form onFinish={handleSubmit(onSubmit)}>
+        <Form onFinish={handleSubmit(onSubmit)} className="mx-auto max-w-[1000px]" {...formItemLayout}>
             <FormInput<NewProduct> errors={errors} name="name" control={control} />
             <FormInput<NewProduct> errors={errors} name="price" type="number" control={control} />
             <FormInput<NewProduct> errors={errors} name="stock" type="number" control={control} />
             <FormInput<NewProduct> errors={errors} name="brand" control={control} />
-            <FormTextarea name="description" control={control} />
+            <FormTextarea errors={errors} name="description" control={control} />
+            <FormSelect errors={errors} name="category" control={control} options={options} multiple={true} />
+            <FormInputFile<NewProduct> errors={errors} name="image" control={control} />
 
-            <Form.Item label="Category" validateStatus={errors.category ? "error" : ""} help={errors.category?.message}>
-                <FormSelect name="category" control={control} options={options} multiple={true} />
-            </Form.Item>
-            <FormInputFile<NewProduct> name="image" control={control} />
-
-            <Button htmlType="submit">submit</Button>
+            <Button htmlType="submit">Submit</Button>
         </Form>
     );
 }

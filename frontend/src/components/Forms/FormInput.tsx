@@ -9,7 +9,7 @@ interface FormInputProps<T extends FieldValues> {
     type?: string;
 }
 
-const FormInput = <T extends FieldValues>({ name, control, errors, defaultValue, type = "text" }: FormInputProps<T>) => {
+const FormInput = <T extends FieldValues>({ name, control, errors, defaultValue, type = "text", ...rest }: FormInputProps<T>) => {
     return (
         <Form.Item
             label={name.charAt(0).toUpperCase() + name.slice(1)}
@@ -21,7 +21,15 @@ const FormInput = <T extends FieldValues>({ name, control, errors, defaultValue,
                 control={control}
                 defaultValue={defaultValue}
                 render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <Input type={type} onChange={onChange} onBlur={onBlur} value={value} ref={ref} />
+                    <Input
+                        type={type}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                        ref={ref}
+                        className="rounded bg-stone-50 p-2 hover:bg-stone-50"
+                        {...rest}
+                    />
                 )}
             />
         </Form.Item>

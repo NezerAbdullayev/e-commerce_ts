@@ -23,13 +23,21 @@ const userSchema = new mongoose.Schema(
         },
         cartItem: [
             {
+                name:{
+                    type: String,
+                },
+                image:{
+                    type: String,
+                },
+                price:{
+                    type:Number,
+                },
                 quantity: {
                     type: Number,
                     default: 1,
                 },
-                product: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "Product",
+                productId: {
+                    type: String,
                 },
             },
         ],

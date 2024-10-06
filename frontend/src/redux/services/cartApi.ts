@@ -6,7 +6,7 @@ const cartApi = createApi({
 
     tagTypes: ["Cart"],
     endpoints: (builder) => ({
-        getAllCart: builder.query({
+        getAllCart: builder.query<any, void>({
             query: () => ({
                 url: "/",
                 method: "GET",
@@ -16,10 +16,10 @@ const cartApi = createApi({
         }),
 
         addToCart: builder.mutation({
-            query: ({ productId }) => ({
-                url: "/",
+            query: ({ name, productId: id, image, price }) => ({
+                url: "/addcart",
                 method: "POST",
-                body: productId,
+                body: { name, productId: id, image, price },
                 credentials: "include",
             }),
             invalidatesTags: ["Cart"],
@@ -44,6 +44,6 @@ const cartApi = createApi({
     }),
 });
 
-export const { useGetAllCartQuery, useAddToCartMutation, useRemoveAllCartMutation, useUpdateCartQuantityMutation } = cartApi;
+export const { useLazyGetAllCartQuery, useAddToCartMutation, useRemoveAllCartMutation, useUpdateCartQuantityMutation } = cartApi;
 
 export default cartApi;

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { useAddToCartMutation } from "../../redux/services/cartApi";
 
 interface ProductCardProps {
     id: string;
@@ -15,6 +16,8 @@ interface ProductCardProps {
 }
 
 const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) => {
+    const [addToCart] = useAddToCartMutation();
+
     const [value, setValue] = useState<number | null>(rating < 3 ? 3 : rating);
     const navigate = useNavigate();
 
@@ -27,8 +30,10 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) =
         // add to favorites
     };
 
-    const onAddToBasket = () => {
+    const onAddToBasket = async () => {
         console.log(image, id, name, price, "count +1");
+        const res = await addToCart({ name, productId: id, image, price });
+        console.log(res, { productId: id });
     };
 
     return (

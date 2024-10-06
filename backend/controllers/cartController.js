@@ -47,6 +47,7 @@ const removeAllFromCart = async (req, res) => {
     }
 };
 
+
 const updateQuantity = async (req, res) => {
     try {
         const { id: productId } = req.params;
@@ -71,4 +72,4 @@ const updateQuantity = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
-export { addToCart, removeAllFromCart, updateQuantity, getCartProducts };
+export { addToCart, removeAllFromCart, updateQuantity, getCartProducts, };

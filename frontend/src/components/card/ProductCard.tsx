@@ -56,9 +56,12 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) =
                         </IconButton>
                     </Box>
 
-                    <Box className="absolute left-0 top-0 z-10 hidden h-full w-full place-items-center bg-stone-950/30 transition-all group-hover:grid">
-                        <IconButton color="primary">
-                            <VisibilityIcon className="text-stone-300/50" sx={{ fontSize: 40 }} onClick={onDetailsClick} />
+                    <Box
+                        onClick={onDetailsClick}
+                        className="absolute left-0 top-0 z-10 hidden h-full w-full place-items-center bg-stone-950/30 transition-all group-hover:grid"
+                    >
+                        <IconButton color="primary" onClick={onDetailsClick}>
+                            <VisibilityIcon className="text-stone-300/50" sx={{ fontSize: 40 }} />
                         </IconButton>
                     </Box>
                 </Box>

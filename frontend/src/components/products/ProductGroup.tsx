@@ -40,6 +40,6 @@ const ProductsGroup: FC<ProductsGroupProps> = ({ catgoryTitle, productData }) =>
             )}
         </Box>
     );
-}; // id, name, image, price, raiting
+};
 
 export default memo(ProductsGroup);

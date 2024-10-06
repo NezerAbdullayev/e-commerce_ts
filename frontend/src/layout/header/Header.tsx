@@ -13,7 +13,7 @@ import { NavLink, useLocation } from "react-router-dom";
 
 function Header() {
     const location = useLocation();
-    const [navBar, setNavBar] = useState<number|null>(0);
+    const [navBar, setNavBar] = useState<number | null>(0);
 
     useEffect(() => {
         switch (location.pathname) {
@@ -64,7 +64,7 @@ function Header() {
                         <FavoriteIcon />
                     </IconButton>
 
-                    <IconButton size="large" edge="end" color="inherit" aria-label="Cart" sx={{ mr: 2 }}>
+                    <IconButton component={NavLink} to="/cart" size="large" edge="end" color="inherit" aria-label="Cart" sx={{ mr: 2 }}>
                         <ShoppingCartIcon />
                     </IconButton>
 

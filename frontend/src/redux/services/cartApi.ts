@@ -35,7 +35,7 @@ const cartApi = createApi({
         removeAllCart: builder.mutation({
             query: ({ productId }) => ({
                 url: `/`,
-                body: productId ? productId : "",
+                body: { productId },
                 method: "DELETE",
                 credentials: "include",
             }),
@@ -44,6 +44,6 @@ const cartApi = createApi({
     }),
 });
 
-export const { useLazyGetAllCartQuery, useAddToCartMutation, useRemoveAllCartMutation, useUpdateCartQuantityMutation } = cartApi;
+export const { useGetAllCartQuery, useAddToCartMutation, useRemoveAllCartMutation, useUpdateCartQuantityMutation } = cartApi;
 
 export default cartApi;

@@ -2,20 +2,11 @@ import ProductModel from "../models/productModel.js";
 
 const getCartProducts = async (req, res) => {
     try {
-       
-        const productIds = req.user.cartItem.map(item => item.productId); 
-        const products = await ProductModel.find({ _id: { $in: productIds } }); 
-
-
-        const cartItems = products.map((product) => {
-            const item = req.user.cartItem.find((cart) => cart.productId === product._id.toString()); 
-            return { ...product.toJSON(), quantity: item ? item.quantity : 0 }; 
-        });
-
-        res.json(cartItems);
+        const cartItems = req.user.cartItem || []; 
+        res.json(cartItems); 
     } catch (error) {
         console.log("Error in getCartProducts controller", error.message); 
-        res.status(500).json({ message: "Server error", error: error.message }); 
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
@@ -24,8 +15,6 @@ const addToCart = async (req, res) => {
         const { productId, name, image, price } = req.body;
 
         const user = req.user;
-
-        console.log(productId, name, image, price);
 
      
         if (!user.cartItem) {
@@ -59,11 +48,24 @@ const addToCart = async (req, res) => {
 const removeAllFromCart = async (req, res) => {
     try {
         const { productId } = req.body;
-        if (!productId) user.cartItems = [];
-        else user.cartItems = user.cartItems.filter((item) => item.id !== productId);
+        const user = req.user
+
+
+        console.log(productId,"productId")
+
+        console.log("body",req.body,"body")
+
+        if (!user) 
+            return res.status(404).json({ message: "User not found" });
+
+
+        if (!productId) user.cartItem = [];
+        else 
+            user.cartItem = user.cartItem.filter((item) => item.productId !== productId);
+
 
         await user.save();
-        req.json(user.cartItems);
+        res.json(user.cartItem);
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }

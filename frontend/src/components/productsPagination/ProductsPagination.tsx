@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { useGetAllProductsQuery } from "../../redux/services/productsApi";
-import { Pagination, Stack } from "@mui/material";
+import { Box, Pagination } from "@mui/material";
 import ProductCard from "../card/ProductCard";
 import CardContainer from "../card/CardContainer";
 
@@ -15,27 +15,29 @@ const ProductsPagination: FC = () => {
     console.log(data?.products);
 
     return (
-        <Stack spacing={2}>
-            {isLoading && <p>Loading...</p>}
-            {error && <p>Error loading products</p>}
+        <Box className="my-10">
+            <CardContainer>
+                {data && (
+                    <>
+                        {isLoading && <p>Loading...</p>}
+                        {error && <p>Error loading products</p>}
 
-            {data && (
-                <CardContainer>
-                    {data.products.map((product) => (
-                        <ProductCard
-                            key={product._id}
-                            id={product._id}
-                            name={product.name}
-                            image={product.image[0]}
-                            price={product.price}
-                            rating={product.rating}
-                        />
-                    ))}
+                        {data.products.map((product) => (
+                            <ProductCard
+                                key={product._id}
+                                id={product._id}
+                                name={product.name}
+                                image={product.image[0]}
+                                price={product.price}
+                                rating={product.rating}
+                            />
+                        ))}
 
-                    <Pagination count={data.totalPages} page={page} onChange={handlePageChange} color="primary" />
-                </CardContainer>
-            )}
-        </Stack>
+                        <Pagination count={data.totalPages} page={page} onChange={handlePageChange} color="primary" />
+                    </>
+                )}
+            </CardContainer>
+        </Box>
     );
 };
 

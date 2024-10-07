@@ -51,10 +51,6 @@ const removeAllFromCart = async (req, res) => {
         const user = req.user
 
 
-        console.log(productId,"productId")
-
-        console.log("body",req.body,"body")
-
         if (!user) 
             return res.status(404).json({ message: "User not found" });
 
@@ -62,7 +58,6 @@ const removeAllFromCart = async (req, res) => {
         if (!productId) user.cartItem = [];
         else 
             user.cartItem = user.cartItem.filter((item) => item.productId !== productId);
-
 
         await user.save();
         res.json(user.cartItem);
@@ -74,20 +69,22 @@ const removeAllFromCart = async (req, res) => {
 
 const updateQuantity = async (req, res) => {
     try {
-        const { id: productId } = req.params;
+        const { id } = req.params;
         const { quantity } = req.body;
         const user = req.user;
-        const exsistingItem = user.cartItems.find((item) => item.id === productId);
+        
+        const exsistingItem = user.cartItem.find((item) => item.productId === id);
+
 
         if (exsistingItem) {
             if (quantity === 0) {
-                user.cartItems = user.cartItems.find((item) => item.id !== productId);
+                user.cartItems = user.cartItem.find((item) => item.productId !== id);
                 await user.save();
-                return res.json(user.cartItems);
+                return res.json(user.cartItem);
             }
             exsistingItem.quantity = quantity;
             await user.save();
-            res.json(user.cartItems);
+            res.json(user.cartItem);
         } else {
             res.status(404).json({ message: "Product not found" });
         }

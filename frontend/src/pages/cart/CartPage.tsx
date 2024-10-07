@@ -20,6 +20,7 @@ const CartPage: FC = () => {
                             <TableCell>Product</TableCell>
                             <TableCell align="center">Quantity</TableCell>
                             <TableCell align="center">Price</TableCell>
+                            <TableCell align="center">Total Price</TableCell>
                             <TableCell align="center">Action</TableCell>
                         </TableRow>
                     </TableHead>

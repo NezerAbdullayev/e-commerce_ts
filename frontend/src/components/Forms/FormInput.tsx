@@ -14,7 +14,7 @@ const FormInput = <T extends FieldValues>({ name, control, errors, defaultValue,
         <Form.Item
             label={name.charAt(0).toUpperCase() + name.slice(1)}
             validateStatus={errors[name] ? "error" : ""}
-            help={errors[name]?.message ? String(errors[name]?.message) : null}
+            help={errors[name]?.message ? (errors[name]?.message as string) : null}
         >
             <Controller
                 name={name}

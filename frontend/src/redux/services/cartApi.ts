@@ -25,8 +25,9 @@ const cartApi = createApi({
             invalidatesTags: ["Cart"],
         }),
         updateCartQuantity: builder.mutation({
-            query: ({ id }) => ({
+            query: ({ id, quantity }) => ({
                 url: `/${id}`,
+                body: { quantity },
                 method: "PUT",
                 credentials: "include",
             }),

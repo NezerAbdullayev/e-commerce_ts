@@ -1,11 +1,12 @@
 import { Box, IconButton, TableBody, TableCell, Typography } from "@mui/material";
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { Modal } from "antd";
-import { useRemoveAllCartMutation } from "../../redux/services/cartApi";
+import { useRemoveAllCartMutation, useUpdateCartQuantityMutation } from "../../redux/services/cartApi";
+import SaveIcon from "@mui/icons-material/Save";
 
 interface CartItemProp {
     productId: string;
@@ -16,8 +17,11 @@ interface CartItemProp {
 }
 
 const CartItem: FC<CartItemProp> = ({ productId, name, image, price, quantity }) => {
-    const [removeCart] = useRemoveAllCartMutation();
+    const [quantityEL, setQuantityEl] = useState<number>(quantity);
+    const [saveIsActive, setSaveIsActive] = useState<boolean>(false);
 
+    const [updateCartQuantity] = useUpdateCartQuantityMutation();
+    const [removeCart] = useRemoveAllCartMutation();
 
     const onDeleteCart = () => {
         Modal.confirm({
@@ -32,6 +36,27 @@ const CartItem: FC<CartItemProp> = ({ productId, name, image, price, quantity })
         });
     };
 
+    const incQuantity = () => {
+        setQuantityEl((quantityEL) => quantityEL + 1);
+        setSaveIsActive(true);
+    };
+
+    const decQuantity = () => {
+        setQuantityEl((quantityEL) => (quantityEL <= 1 ? quantity : quantityEL - 1));
+        setSaveIsActive(true);
+    };
+
+    const onUpdateQuantity = () => {
+        Modal.confirm({
+            title: "Do you want to change the product count?",
+            onOk: async () => {
+                const res = await updateCartQuantity({ quantity: quantityEL, id: productId });
+                setSaveIsActive(false);
+            },
+            okText: "Yes",
+        });
+    };
+
     return (
         <TableBody sx={{ alignItems: "center" }}>
             <TableCell>
@@ -43,11 +68,11 @@ const CartItem: FC<CartItemProp> = ({ productId, name, image, price, quantity })
 
             <TableCell align="center">
                 <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
-                    <IconButton>
+                    <IconButton onClick={decQuantity}>
                         <RemoveIcon />
                     </IconButton>
-                    <Typography>{quantity}</Typography>
-                    <IconButton>
+                    <Typography>{quantityEL}</Typography>
+                    <IconButton onClick={incQuantity}>
                         <AddIcon />
                     </IconButton>
                 </Box>
@@ -55,8 +80,14 @@ const CartItem: FC<CartItemProp> = ({ productId, name, image, price, quantity })
 
             <TableCell align="center">${price}</TableCell>
 
+            <TableCell align="center">${(price * quantityEL).toFixed(1)}</TableCell>
+
             <TableCell align="center">
-                <IconButton onClick={onDeleteCart}>
+                <IconButton aria-label="Save" color="primary" onClick={onUpdateQuantity} disabled={!saveIsActive}>
+                    <SaveIcon />
+                </IconButton>
+
+                <IconButton aria-label="Delete" color="error" onClick={onDeleteCart}>
                     <DeleteIcon />
                 </IconButton>
             </TableCell>

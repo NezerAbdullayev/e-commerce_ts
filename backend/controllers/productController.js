@@ -26,7 +26,7 @@ const getAllProducts = async (req, res) => {
     }
 };
 
-const getFeaturedProducts = async (req, res) => {
+const getFeaturedProducts = async (_, res) => {
     try {
         let featuredProducts = await redis.get("featured_products");
         if (featuredProducts) {
@@ -104,7 +104,6 @@ const deleteProduct = async (req, res) => {
             }
         }
 
-
         await ProductModel.findByIdAndDelete(req.params.id);
         res.json({ message: "Product deleted successfully" });
     } catch (error) {
@@ -114,7 +113,7 @@ const deleteProduct = async (req, res) => {
 };
 
 
-const getRecommendedProducts = async (req, res) => {
+const getRecommendedProducts = async (_, res) => {
     try {
         const products = await ProductModel.aggregate([
             {

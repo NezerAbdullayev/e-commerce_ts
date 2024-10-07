@@ -1,7 +1,7 @@
 import { FileObject } from "../types/globalTypes";
 
 export const convertImagesToBase64 = (files: FileObject[]): Promise<string[]> => {
-    console.log(files);
+
     const promises = files.map((file) => {
         return new Promise<string>((resolve, reject) => {
             const fileBlob = file.originFileObj;

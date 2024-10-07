@@ -13,8 +13,8 @@ import SignupPage from "./pages/signup/SignupPage";
 import ProductsPage from "./pages/products/ProductsPage";
 import DetailsPage from "./pages/details/DetailsPage";
 import FavoritesPage from "./pages/favorites/FavoritesPage";
-import { userRole } from "./redux/slice/userSlice";
-import { useSelector } from "react-redux";
+// import { userRole } from "./redux/slice/userSlice";
+// import { useSelector } from "react-redux";
 
 const App: React.FC = () => {
     // const role = useSelector(userRole);

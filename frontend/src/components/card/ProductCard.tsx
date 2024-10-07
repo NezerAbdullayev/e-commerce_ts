@@ -16,7 +16,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) => {
-    const [addToCart] = useAddToCartMutation();
+    const [addToCart, { isLoading: addCartLoading }] = useAddToCartMutation();
 
     const [value, setValue] = useState<number | null>(rating < 3 ? 3 : rating);
     const navigate = useNavigate();
@@ -31,7 +31,6 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) =
     };
 
     const onAddToBasket = async () => {
-        console.log(image, id, name, price, "count +1");
         const res = await addToCart({ name, productId: id, image, price });
         console.log(res, { productId: id });
     };
@@ -56,7 +55,7 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) =
                                 sx={{ fontSize: 30 }}
                             />
                         </IconButton>
-                        <IconButton aria-label="Add to basket" color="primary" onClick={onAddToBasket}>
+                        <IconButton aria-label="Add to basket" color="primary" onClick={onAddToBasket} disabled={!addCartLoading}>
                             <AddShoppingCartIcon className="hover:text-blue-400" />
                         </IconButton>
                     </Box>

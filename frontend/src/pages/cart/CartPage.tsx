@@ -26,7 +26,11 @@ const CartPage: FC = () => {
                     </TableHead>
 
                     {/* table body */}
-                    {userCartData?.length > 0 &&
+
+                    {isLoading && <div>loading...</div>}
+                    {error && <div>error </div>}
+                    {userCartData &&
+                        userCartData.length > 0 &&
                         userCartData.map((cart) => (
                             <CartItem
                                 key={cart._id}

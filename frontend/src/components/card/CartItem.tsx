@@ -51,6 +51,7 @@ const CartItem: FC<CartItemProp> = ({ productId, name, image, price, quantity })
             title: "Do you want to change the product count?",
             onOk: async () => {
                 const res = await updateCartQuantity({ quantity: quantityEL, id: productId });
+                console.log(res, "burana ona goredirki modal ciaracam ");
                 setSaveIsActive(false);
             },
             okText: "Yes",
@@ -61,7 +62,7 @@ const CartItem: FC<CartItemProp> = ({ productId, name, image, price, quantity })
         <TableBody sx={{ alignItems: "center" }}>
             <TableCell>
                 <Box display="flex" alignItems="center" gap={2}>
-                    <img src={image} className="h-24 w-24" />
+                    <img src={image} className="h-24 w-24 object-cover" />
                     <Typography>{name}</Typography>
                 </Box>
             </TableCell>

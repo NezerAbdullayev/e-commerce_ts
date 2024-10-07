@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { CartData, CartProps } from "../../types/globalTypes";
 
 const cartApi = createApi({
     reducerPath: "cart",
@@ -6,7 +7,7 @@ const cartApi = createApi({
 
     tagTypes: ["Cart"],
     endpoints: (builder) => ({
-        getAllCart: builder.query<any, void>({
+        getAllCart: builder.query<CartData[], void>({
             query: () => ({
                 url: "/",
                 method: "GET",
@@ -15,16 +16,16 @@ const cartApi = createApi({
             providesTags: ["Cart"],
         }),
 
-        addToCart: builder.mutation({
-            query: ({ name, productId: id, image, price }) => ({
+        addToCart: builder.mutation<void, CartProps>({
+            query: ({ name, productId, image, price }) => ({
                 url: "/addcart",
                 method: "POST",
-                body: { name, productId: id, image, price },
+                body: { name, productId, image, price },
                 credentials: "include",
             }),
             invalidatesTags: ["Cart"],
         }),
-        updateCartQuantity: builder.mutation({
+        updateCartQuantity: builder.mutation<void, { id: string; quantity: number }>({
             query: ({ id, quantity }) => ({
                 url: `/${id}`,
                 body: { quantity },
@@ -33,7 +34,7 @@ const cartApi = createApi({
             }),
             invalidatesTags: ["Cart"],
         }),
-        removeAllCart: builder.mutation({
+        removeAllCart: builder.mutation<void, { productId?: string }>({
             query: ({ productId }) => ({
                 url: `/`,
                 body: { productId },

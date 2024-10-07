@@ -37,18 +37,15 @@ export interface Products {
     stock: number;
     reviews: string[];
 }
+//cart
 
-// brand: "Zara"
-// category: ["T-shirt"]
-// createdAt: "2024-10-01T15:10:30.868Z"
-// description: "lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun lorem-imsun"
-// image: ["https://res.cloudinary.com/dyrqjvw6d/image/upload/v1727795428/products/ti1hiuy4ti7eux9kutzz.webp",…]
-// isFeatured: false
-// name: "T-shirt C1"
-// price: 43.9
-// rating: 0
-// reviews: []
-// stock: 10
-// updatedAt: "2024-10-01T15:10:30.868Z"
-// __v: 0
-// _id: "66fc10e60687e21c860102d0"
+export interface CartProps {
+    name: string;
+    productId: string;
+    image: string;
+    price: number;
+}
+export interface CartData extends CartProps {
+    _id: string;
+    quantity: number;
+}

@@ -14,7 +14,7 @@ const productsApi = createApi({
             query: ({ count }) => `random/${count}`,
         }),
 
-        getProductsByCategory: builder.query({
+        getProductsByCategory: builder.query<Products[], { categories: string; page?: number; limit?: number }>({
             query: ({ categories, page = 1, limit = 10 }) => ({
                 url: `category/${categories}`,
                 params: { page, limit },

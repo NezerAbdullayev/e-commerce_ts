@@ -1,17 +1,30 @@
 import { FC } from "react";
 
-import { Box, Paper, Table, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Alert, Box, CircularProgress, Paper, Table, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 import { useGetAllCartQuery } from "../../redux/services/cartApi";
 
 import CartItem from "../../components/card/CartItem";
 const CartPage: FC = () => {
-    const { data: userCartData, error, isLoading } = useGetAllCartQuery();
+    const { data: userCartData, error, isLoading: cartLoading } = useGetAllCartQuery();
 
-    console.log("datadir", userCartData);
+    if (error) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems={"center"} p={2} minHeight={"100vh"}>
+                <Alert severity="error">An error occurred while fetching the cart data.</Alert>
+            </Box>
+        );
+    }
+    console.log("burada cart pagedir ");
 
     return (
-        <Box className="mx-auto mt-10 w-[1280px] max-w-[90%]">
+        <Box className="relative mx-auto mt-10 w-[1280px] max-w-[90%]">
+            {cartLoading && (
+                <Box display="flex" justifyContent="center" p={2} position="absolute" className="left-[50%] top-[50%]">
+                    <CircularProgress />
+                </Box>
+            )}
+
             <TableContainer component={Paper}>
                 <Table>
                     {/* table header */}
@@ -26,11 +39,7 @@ const CartPage: FC = () => {
                     </TableHead>
 
                     {/* table body */}
-
-                    {isLoading && <div>loading...</div>}
-                    {error && <div>error </div>}
-                    {userCartData &&
-                        userCartData.length > 0 &&
+                    {userCartData && userCartData.length > 0 ? (
                         userCartData.map((cart) => (
                             <CartItem
                                 key={cart._id}
@@ -40,7 +49,12 @@ const CartPage: FC = () => {
                                 price={cart.price}
                                 quantity={cart.quantity}
                             />
-                        ))}
+                        ))
+                    ) : (
+                        <Box display="flex" justifyContent="center" p={2}>
+                            <Alert severity="warning">Your cart is empty.</Alert>
+                        </Box>
+                    )}
                 </Table>
             </TableContainer>
         </Box>

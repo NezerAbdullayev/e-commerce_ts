@@ -55,7 +55,7 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) =
                                 sx={{ fontSize: 30 }}
                             />
                         </IconButton>
-                        <IconButton aria-label="Add to basket" color="primary" onClick={onAddToBasket} disabled={!addCartLoading}>
+                        <IconButton aria-label="Add to basket" color="primary" onClick={onAddToBasket} disabled={addCartLoading}>
                             <AddShoppingCartIcon className="hover:text-blue-400" />
                         </IconButton>
                     </Box>

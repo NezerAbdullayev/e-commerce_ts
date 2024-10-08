@@ -1,12 +1,10 @@
 import { Box, IconButton, TableBody, TableCell, Typography } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, memo, useCallback, useEffect, useState } from "react";
 
-import DeleteIcon from "@mui/icons-material/Delete";
+
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { Modal } from "antd";
-import { useRemoveAllCartMutation, useUpdateCartQuantityMutation } from "../../redux/services/cartApi";
-import SaveIcon from "@mui/icons-material/Save";
+import CartControls from "./CartControls";
 
 interface CartItemProp {
     productId: string;
@@ -20,43 +18,24 @@ const CartItem: FC<CartItemProp> = ({ productId, name, image, price, quantity })
     const [quantityEL, setQuantityEl] = useState<number>(quantity);
     const [saveIsActive, setSaveIsActive] = useState<boolean>(false);
 
-    const [updateCartQuantity] = useUpdateCartQuantityMutation();
-    const [removeCart] = useRemoveAllCartMutation();
 
-    const onDeleteCart = () => {
-        Modal.confirm({
-            title: "Do you want to delete this Cart?",
-            onOk: async () => {
-                console.log(productId);
-                const res = await removeCart({ productId });
-                console.log(res);
-            },
-            okText: "Yes",
-            okType: "danger",
-        });
-    };
+    console.log("re-renderings")
 
-    const incQuantity = () => {
+    useEffect(() => {
+        if (quantityEL !== quantity && !saveIsActive) {
+            setSaveIsActive(true);
+        } else if (quantityEL == quantity) {
+            setSaveIsActive(false);
+        }
+    }, [quantityEL, quantity, saveIsActive]);
+
+    const incQuantity = useCallback(() => {
         setQuantityEl((quantityEL) => quantityEL + 1);
-        setSaveIsActive(true);
-    };
+    }, []);
 
-    const decQuantity = () => {
+    const decQuantity = useCallback(() => {
         setQuantityEl((quantityEL) => (quantityEL <= 1 ? quantity : quantityEL - 1));
-        setSaveIsActive(true);
-    };
-
-    const onUpdateQuantity = () => {
-        Modal.confirm({
-            title: "Do you want to change the product count?",
-            onOk: async () => {
-                const res = await updateCartQuantity({ quantity: quantityEL, id: productId });
-                console.log(res, "burana ona goredirki modal ciaracam ");
-                setSaveIsActive(false);
-            },
-            okText: "Yes",
-        });
-    };
+    }, [quantity]);
 
     return (
         <TableBody sx={{ alignItems: "center" }}>
@@ -84,16 +63,10 @@ const CartItem: FC<CartItemProp> = ({ productId, name, image, price, quantity })
             <TableCell align="center">${(price * quantityEL).toFixed(1)}</TableCell>
 
             <TableCell align="center">
-                <IconButton aria-label="Save" color="primary" onClick={onUpdateQuantity} disabled={!saveIsActive}>
-                    <SaveIcon />
-                </IconButton>
-
-                <IconButton aria-label="Delete" color="error" onClick={onDeleteCart}>
-                    <DeleteIcon />
-                </IconButton>
+                <CartControls saveIsActive={saveIsActive} quantityEL={quantityEL} productId={productId} />
             </TableCell>
         </TableBody>
     );
 };
 
-export default CartItem;
+export default memo(CartItem);

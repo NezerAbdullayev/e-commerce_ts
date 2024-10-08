@@ -69,7 +69,7 @@ export const removeFavoritesItem=async(req,res)=>{
             return res.status(400).json({ message: "No favorites to remove." });
 
         const favoriteIndex = user.favorites.findIndex(
-            (favorite) => favorite._id === id
+            (favorite) => favorite._id.toString() === id
         );
 
         if (favoriteIndex === -1) {
@@ -80,7 +80,7 @@ export const removeFavoritesItem=async(req,res)=>{
 
         await user.save();
 
-        res.json({ message: "Favorite item removed.", favorites: user.favorites });
+        res.status(200).json({ message: "Favorite item removed.", favorites: user.favorites });
 
     } catch (error) {
         console.log("Error in removeFavoritesItem controller", error.message);

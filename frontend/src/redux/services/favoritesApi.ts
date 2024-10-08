@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { FavoritesResponse } from "../../types/globalTypes";
 
 const favoritesApi = createApi({
     reducerPath: "favorites",
@@ -6,7 +7,7 @@ const favoritesApi = createApi({
 
     tagTypes: ["Favorites"],
     endpoints: (builder) => ({
-        getAllFavorites: builder.query({
+        getAllFavorites: builder.query<FavoritesResponse[], void>({
             query: () => ({
                 url: "/",
                 method: "GET",
@@ -14,6 +15,7 @@ const favoritesApi = createApi({
             }),
             providesTags: ["Favorites"],
         }),
+
         addtoFavorites: builder.mutation({
             query: ({ productId, name, image, price }) => ({
                 url: "/",
@@ -21,29 +23,20 @@ const favoritesApi = createApi({
                 body: { productId, name, image, price },
                 credentials: "include",
             }),
+            invalidatesTags: ["Favorites"],
         }),
 
-        // getAllCart: builder.query<CartData[], void>({
-        //     query: () => ({
-        //         url: "/",
-        //         method: "GET",
-        //         credentials: "include",
-        //     }),
-        //     providesTags: ["Cart"],
-        // }),
-
-        // updateCartQuantity: builder.mutation<void, { id: string; quantity: number }>({
-        //     query: ({ id, quantity }) => ({
-        //         url: `/${id}`,
-        //         body: { quantity },
-        //         method: "PUT",
-        //         credentials: "include",
-        //     }),
-        //     invalidatesTags: ["Cart"],
-        // }),
+        removeFavoritesItem: builder.mutation<void, { id: string }>({
+            query: ({ id }) => ({
+                url: `/${id}`,
+                method: "DELETE",
+                credentials: "include",
+            }),
+            invalidatesTags: ["Favorites"],
+        }),
     }),
 });
 
-export const { useGetAllFavoritesQuery, useAddtoFavoritesMutation } = favoritesApi;
+export const { useGetAllFavoritesQuery, useAddtoFavoritesMutation, useRemoveFavoritesItemMutation } = favoritesApi;
 
 export default favoritesApi;

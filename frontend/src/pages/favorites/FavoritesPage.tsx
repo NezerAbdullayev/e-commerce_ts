@@ -1,24 +1,30 @@
 import { FC } from "react";
 
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { Alert, Box, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 import { useGetAllFavoritesQuery } from "../../redux/services/favoritesApi";
 import FavoritesItem from "./FavoritesItem";
 
 const FavoritesPage: FC = () => {
     // const favoriteProducts = [];
 
-    const { data: favoriteProducts, isLoading, error } = useGetAllFavoritesQuery();
+    const { data: favoriteProducts, isLoading: favoritesLoading, error: favoritesError } = useGetAllFavoritesQuery();
 
-    console.log(favoriteProducts);
-
-    // image: "https://res.cloudinary.com/dyrqjvw6d/image/upload/v1727795428/products/ti1hiuy4ti7eux9kutzz.webp";
-    // name: "T-shirt C1";
-    // price: 43.9;
-    // productId: "66fc10e60687e21c860102d0";
-    // _id: "670544cb00099894893a44fa";
+    if (favoritesError) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems={"center"} p={2} minHeight={"100vh"}>
+                <Alert severity="error">An error occurred while fetching the favorites data.</Alert>
+            </Box>
+        );
+    }
 
     return (
         <Box className="relative mx-auto mt-10 w-[1280px] max-w-[90%]">
+            {favoritesLoading && (
+                <Box display="flex" justifyContent="center" p={2} position="absolute" className="left-[50%] top-[50%]">
+                    <CircularProgress />
+                </Box>
+            )}
+
             <Typography variant="h4" gutterBottom className="bg-white">
                 Favorites
             </Typography>
@@ -27,8 +33,8 @@ const FavoritesPage: FC = () => {
                 <Table>
                     {/* tabel headers */}
                     <TableRow>
-                        <TableCell align="center">Image</TableCell>
-                        <TableCell>Product</TableCell>
+                        <TableCell >Image</TableCell>
+                        <TableCell align="center">Name</TableCell>
                         <TableCell align="center">Price</TableCell>
                         <TableCell align="center">Action</TableCell>
                     </TableRow>
@@ -43,7 +49,7 @@ const FavoritesPage: FC = () => {
                                     name={item.name}
                                     price={item.price}
                                     image={item.image}
-                                    productId={item._productId}
+                                    productId={item.productId}
                                 />
                             ))
                         ) : (

@@ -59,3 +59,31 @@ export const removeAllFavorites = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
+export const removeFavoritesItem=async(req,res)=>{
+    try {
+        const user = req.user;
+        const { id } = req.params;
+
+        if ( !user|| !user.favorites || user.favorites.length === 0) 
+            return res.status(400).json({ message: "No favorites to remove." });
+
+        const favoriteIndex = user.favorites.findIndex(
+            (favorite) => favorite._id === id
+        );
+
+        if (favoriteIndex === -1) {
+            return res.status(404).json({ message: "Favorite item not found." });
+        }
+
+        user.favorites.splice(favoriteIndex, 1);
+
+        await user.save();
+
+        res.json({ message: "Favorite item removed.", favorites: user.favorites });
+
+    } catch (error) {
+        console.log("Error in removeFavoritesItem controller", error.message);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+}

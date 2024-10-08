@@ -9,6 +9,7 @@ import authApi from "./services/userApi";
 import adminApi from "./services/adminApi";
 import productsApi from "./services/productsApi";
 import cartApi from "./services/cartApi";
+import favoritesApi from "./services/favoritesApi";
 
 const store = configureStore({
     reducer: {
@@ -17,13 +18,15 @@ const store = configureStore({
         [adminApi.reducerPath]: adminApi.reducer,
         [productsApi.reducerPath]: productsApi.reducer,
         [cartApi.reducerPath]: cartApi.reducer,
+        [favoritesApi.reducerPath]: favoritesApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
             .concat(authApi.middleware)
             .concat(adminApi.middleware)
             .concat(productsApi.middleware)
-            .concat(cartApi.middleware),
+            .concat(cartApi.middleware)
+            .concat(favoritesApi.middleware),
 });
 
 setupListeners(store.dispatch);

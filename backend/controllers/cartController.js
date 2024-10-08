@@ -1,5 +1,3 @@
-import ProductModel from "../models/productModel.js";
-
 const getCartProducts = async (req, res) => {
     try {
         const cartItems = req.user.cartItem || []; 

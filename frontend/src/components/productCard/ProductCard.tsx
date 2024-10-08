@@ -6,6 +6,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useAddToCartMutation } from "../../redux/services/cartApi";
+import { useAddtoFavoritesMutation } from "../../redux/services/favoritesApi";
 
 interface ProductCardProps {
     id: string;
@@ -18,6 +19,8 @@ interface ProductCardProps {
 const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) => {
     const [addToCart, { isLoading: addCartLoading }] = useAddToCartMutation();
 
+    const [addToFavorite] = useAddtoFavoritesMutation();
+
     const [value, setValue] = useState<number | null>(rating < 3 ? 3 : rating);
     const navigate = useNavigate();
 
@@ -25,9 +28,9 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) =
         navigate(`/product/${id}`);
     };
 
-    const onFavoritesClick = () => {
-        console.log(image, id, name, price);
-        // add to favorites
+    const onAddToFavorites = async () => {
+        const res = await addToFavorite({ name, productId: id, image, price });
+        console.log(res);
     };
 
     const onAddToBasket = async () => {
@@ -49,7 +52,7 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) =
                     />
 
                     <Box className="absolute bottom-3 right-3 z-40 rounded-md bg-stone-50/40">
-                        <IconButton aria-label="Add to favorites" color="error" onClick={onFavoritesClick}>
+                        <IconButton aria-label="Add to favorites" color="error" onClick={onAddToFavorites}>
                             <FavoriteIcon
                                 className="w-5 text-stone-50 transition-all duration-300 hover:text-red-700"
                                 sx={{ fontSize: 30 }}

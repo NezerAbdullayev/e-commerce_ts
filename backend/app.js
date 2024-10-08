@@ -12,6 +12,7 @@ import cartRouter from "./routes/cartRoute.js";
 import couponRouter from "./routes/couponRoute.js";
 import paymentRouter from "./routes/paymentRoute.js";
 import analyticsRouter from "./routes/analyticsRoute.js";
+import favoritesRouter from "./routes/favoritesRouter.js";
 
 dotenv.config();
 
@@ -39,6 +40,7 @@ app.use("/api/cart", cartRouter);
 app.use("/api/coupons", couponRouter);
 app.use("/api/payments", paymentRouter);
 app.use("/api/analytics", analyticsRouter);
+app.use("/api/favorites",favoritesRouter)
 
 app.subscribe;
 

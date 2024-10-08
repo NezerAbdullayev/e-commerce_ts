@@ -49,9 +49,15 @@ const userSchema = new mongoose.Schema(
                 },
                 name: {
                     type: String,
+                    required: true,
+                },
+                price:{
+                    type:Number,
+                    requeried:true
                 },
                 image: {
                     type: String,
+                    required: true,
                 },
             },
         ],

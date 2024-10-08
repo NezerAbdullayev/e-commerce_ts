@@ -1,9 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { CartData, CartProps } from "../../types/globalTypes";
 
 const favoritesApi = createApi({
     reducerPath: "favorites",
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/cart" }),
+    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/favorites" }),
 
     tagTypes: ["Favorites"],
     endpoints: (builder) => ({
@@ -14,6 +13,14 @@ const favoritesApi = createApi({
                 credentials: "include",
             }),
             providesTags: ["Favorites"],
+        }),
+        addtoFavorites: builder.mutation({
+            query: ({ productId, name, image, price }) => ({
+                url: "/",
+                method: "POST",
+                body: { productId, name, image, price },
+                credentials: "include",
+            }),
         }),
 
         // getAllCart: builder.query<CartData[], void>({
@@ -37,6 +44,6 @@ const favoritesApi = createApi({
     }),
 });
 
-export const {} = favoritesApi;
+export const { useAddtoFavoritesMutation } = favoritesApi;
 
 export default favoritesApi;

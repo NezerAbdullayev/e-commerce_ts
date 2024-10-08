@@ -13,6 +13,7 @@ import SignupPage from "./pages/signup/SignupPage";
 import ProductsPage from "./pages/products/ProductsPage";
 import DetailsPage from "./pages/details/DetailsPage";
 import FavoritesPage from "./pages/favorites/FavoritesPage";
+import PageNotFound from "./pages/error/PageNotFound";
 // import { userRole } from "./redux/slice/userSlice";
 // import { useSelector } from "react-redux";
 
@@ -20,7 +21,6 @@ const App: React.FC = () => {
     // const role = useSelector(userRole);
     const role = "admin";
 
-    console.log("re-render");
     return (
         <BrowserRouter>
             <Routes>
@@ -35,11 +35,13 @@ const App: React.FC = () => {
                     <Route path="cart" element={<CartPage />} />
 
                     <Route path="products" element={<ProductsPage />} />
-                    <Route path="favorites" element={<FavoritesPage />} />
                     <Route path="product/:id" element={<DetailsPage />} />
+                    <Route path="favorites" element={<FavoritesPage />} />
                     <Route path="cart" element={<CartPage />} />
                     <Route path="about" element={<>div</>} />
                 </Route>
+
+                <Route path="*" element={<PageNotFound />} />
             </Routes>
         </BrowserRouter>
     );

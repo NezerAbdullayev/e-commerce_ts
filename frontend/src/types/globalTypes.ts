@@ -50,17 +50,8 @@ export interface CartData extends CartProps {
     quantity: number;
 }
 
-// favorites
-
-// image: "https://res.cloudinary.com/dyrqjvw6d/image/upload/v1727795428/products/ti1hiuy4ti7eux9kutzz.webp";
-// name: "T-shirt C1";
-// price: 43.9;
-// productId: "66fc10e60687e21c860102d0";
-// _id: "670544cb00099894893a44fa";
-
 export interface Favorites {
     name: string;
-    productId: string;
     image: string;
     price: number;
 }
@@ -70,4 +61,5 @@ export interface FavoritesProps extends Favorites {
 
 export interface FavoritesResponse extends Favorites {
     _id: string;
+    productId: string;
 }

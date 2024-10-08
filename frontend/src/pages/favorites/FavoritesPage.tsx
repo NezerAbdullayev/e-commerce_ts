@@ -4,9 +4,8 @@ import { Alert, Box, CircularProgress, Paper, Table, TableBody, TableCell, Table
 import { useGetAllFavoritesQuery } from "../../redux/services/favoritesApi";
 import FavoritesItem from "./FavoritesItem";
 
-const FavoritesPage: FC = () => {
-    // const favoriteProducts = [];
 
+const FavoritesPage: FC = () => {
     const { data: favoriteProducts, isLoading: favoritesLoading, error: favoritesError } = useGetAllFavoritesQuery();
 
     if (favoritesError) {
@@ -18,22 +17,22 @@ const FavoritesPage: FC = () => {
     }
 
     return (
-        <Box className="relative mx-auto mt-10 w-[1280px] max-w-[90%]">
+        <Box className="relative mx-auto mt-10  w-[1280px] max-w-[90%] ">
             {favoritesLoading && (
                 <Box display="flex" justifyContent="center" p={2} position="absolute" className="left-[50%] top-[50%]">
                     <CircularProgress />
                 </Box>
             )}
 
-            <Typography variant="h4" gutterBottom className="bg-white">
+            <Typography variant="h4" gutterBottom className="font-bold text-white" align="center">
                 Favorites
             </Typography>
 
             <TableContainer component={Paper}>
-                <Table>
+                <Table stickyHeader aria-label="sticky table">
                     {/* tabel headers */}
                     <TableRow>
-                        <TableCell >Image</TableCell>
+                        <TableCell>Image</TableCell>
                         <TableCell align="center">Name</TableCell>
                         <TableCell align="center">Price</TableCell>
                         <TableCell align="center">Action</TableCell>
@@ -43,14 +42,7 @@ const FavoritesPage: FC = () => {
                     <TableBody>
                         {favoriteProducts && favoriteProducts.length > 0 ? (
                             favoriteProducts.map((item) => (
-                                <FavoritesItem
-                                    key={item._id}
-                                    id={item._id}
-                                    name={item.name}
-                                    price={item.price}
-                                    image={item.image}
-                                    productId={item.productId}
-                                />
+                                <FavoritesItem key={item._id} id={item._id} name={item.name} price={item.price} image={item.image} />
                             ))
                         ) : (
                             <Typography variant="body1">Product not found</Typography>

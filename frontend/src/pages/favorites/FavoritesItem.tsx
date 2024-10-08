@@ -1,11 +1,9 @@
 import { TableCell, TableRow } from "@mui/material";
-import { FC } from "react";
+import { FC, memo } from "react";
 import { FavoritesProps } from "../../types/globalTypes";
 import FavoritesControl from "./FavoritesControl";
 
 const FavoritesItem: FC<FavoritesProps> = ({ id, name, price, image }) => {
-    // const {}=
-
     return (
         <TableRow>
             <TableCell align="center">
@@ -21,4 +19,4 @@ const FavoritesItem: FC<FavoritesProps> = ({ id, name, price, image }) => {
     );
 };
 
-export default FavoritesItem;
+export default memo(FavoritesItem);

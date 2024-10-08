@@ -44,6 +44,6 @@ const favoritesApi = createApi({
     }),
 });
 
-export const { useAddtoFavoritesMutation } = favoritesApi;
+export const { useGetAllFavoritesQuery, useAddtoFavoritesMutation } = favoritesApi;
 
 export default favoritesApi;

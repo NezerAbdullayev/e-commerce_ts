@@ -1,5 +1,5 @@
 import { IconButton } from "@mui/material";
-import { FC, memo, useCallback } from "react";
+import { FC, useCallback } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Modal } from "antd";
@@ -15,13 +15,13 @@ const CartControls: FC<CartControlsProps> = ({ saveIsActive, quantityEL, product
     const [updateCartQuantity] = useUpdateCartQuantityMutation();
     const [removeCart] = useRemoveAllCartMutation();
 
-    console.log("mutation")
+    console.log("mutation");
 
     const onUpdateQuantity = useCallback(() => {
         Modal.confirm({
             title: "Do you want to change the product count?",
             onOk: async () => {
-                const res = await updateCartQuantity({ quantity: quantityEL, id: productId });
+                const res = await updateCartQuantity({ quantity: quantityEL, id: productId }).unwrap();
                 console.log(res, "burana ona goredirki modal ciaracam ");
             },
             okText: "Yes",
@@ -32,7 +32,7 @@ const CartControls: FC<CartControlsProps> = ({ saveIsActive, quantityEL, product
         Modal.confirm({
             title: "Do you want to delete this Cart?",
             onOk: async () => {
-                const res = await removeCart({ productId });
+                const res = await removeCart({ productId }).unwrap();
                 console.log(res);
             },
             okText: "Yes",

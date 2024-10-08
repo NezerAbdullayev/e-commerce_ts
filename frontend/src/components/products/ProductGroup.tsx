@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { FC, memo } from "react";
-import CardContainer from "../card/CardContainer";
-import ProductCard from "../card/ProductCard";
+import CardContainer from "../productCard/CardContainer";
+import ProductCard from "../productCard/ProductCard";
 import { Products } from "../../types/globalTypes";
 
 interface ProductsGroupProps {

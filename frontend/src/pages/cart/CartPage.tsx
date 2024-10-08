@@ -4,7 +4,7 @@ import { Alert, Box, CircularProgress, Paper, Table, TableCell, TableContainer, 
 
 import { useGetAllCartQuery } from "../../redux/services/cartApi";
 
-import CartItem from "../../components/card/CartItem";
+import CartItem from "../../components/cart/CartItem";
 const CartPage: FC = () => {
     const { data: userCartData, error, isLoading: cartLoading } = useGetAllCartQuery();
 
@@ -15,6 +15,7 @@ const CartPage: FC = () => {
             </Box>
         );
     }
+
     console.log("burada cart pagedir ");
 
     return (

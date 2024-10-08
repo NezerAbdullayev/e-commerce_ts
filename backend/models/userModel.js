@@ -41,6 +41,20 @@ const userSchema = new mongoose.Schema(
                 },
             },
         ],
+        favorites: [ 
+            {
+                productId: {
+                    type: String,
+                    required: true,
+                },
+                name: {
+                    type: String,
+                },
+                image: {
+                    type: String,
+                },
+            },
+        ],
         role: {
             type: String,
             enum: ["customer", "admin"],

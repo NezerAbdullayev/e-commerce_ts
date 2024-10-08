@@ -1,7 +1,6 @@
 import { Box, IconButton, TableBody, TableCell, Typography } from "@mui/material";
 import { FC, memo, useCallback, useEffect, useState } from "react";
 
-
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import CartControls from "./CartControls";
@@ -18,8 +17,7 @@ const CartItem: FC<CartItemProp> = ({ productId, name, image, price, quantity })
     const [quantityEL, setQuantityEl] = useState<number>(quantity);
     const [saveIsActive, setSaveIsActive] = useState<boolean>(false);
 
-
-    console.log("re-renderings")
+    console.log("re-renderings");
 
     useEffect(() => {
         if (quantityEL !== quantity && !saveIsActive) {

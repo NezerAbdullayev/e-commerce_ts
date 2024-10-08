@@ -1,8 +1,8 @@
 import { FC, useState } from "react";
 import { useGetAllProductsQuery } from "../../redux/services/productsApi";
 import { Box, Pagination } from "@mui/material";
-import ProductCard from "../card/ProductCard";
-import CardContainer from "../card/CardContainer";
+import ProductCard from "../productCard/ProductCard";
+import CardContainer from "../productCard/CardContainer";
 
 const ProductsPagination: FC = () => {
     const [page, setPage] = useState<number>(1);

@@ -18,8 +18,11 @@ const addToCart = async (req, res) => {
         if (!user.cartItem) {
             user.cartItem = [];
         }
-
-        const existingItem = user.cartItem.find((item) => item.productId === productId);
+        
+        const existingItem = user.cartItem.find((item) => 
+            item.productId === productId && item.image === image
+        );
+        
 
         if (existingItem) {
             existingItem.quantity += 1;
@@ -45,24 +48,27 @@ const addToCart = async (req, res) => {
 
 const removeAllFromCart = async (req, res) => {
     try {
-        const { productId } = req.body;
-        const user = req.user
+        const { id } = req.body;
+        const user = req.user; 
 
-
-        if (!user) 
+        if (!user) {
             return res.status(404).json({ message: "User not found" });
+        }
 
-
-        if (!productId) user.cartItem = [];
-        else 
-            user.cartItem = user.cartItem.filter((item) => item.productId !== productId);
-
+        if (!id) {
+            user.cartItem = [];
+        } else {
+            user.cartItem = user.cartItem.filter((item) => item._id.toString() !== id);
+        }
         await user.save();
+
         res.json(user.cartItem);
     } catch (error) {
+
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
 
 
 const updateQuantity = async (req, res) => {
@@ -71,12 +77,11 @@ const updateQuantity = async (req, res) => {
         const { quantity } = req.body;
         const user = req.user;
         
-        const exsistingItem = user.cartItem.find((item) => item.productId === id);
-
+        const exsistingItem = user.cartItem.find((item) => item._id.toString() === id);
 
         if (exsistingItem) {
             if (quantity === 0) {
-                user.cartItems = user.cartItem.find((item) => item.productId !== id);
+                user.cartItem = user.cartItem.find((item) => item._id.toString() !== id);
                 await user.save();
                 return res.json(user.cartItem);
             }

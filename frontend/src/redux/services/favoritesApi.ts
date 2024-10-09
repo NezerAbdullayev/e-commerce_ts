@@ -26,6 +26,14 @@ const favoritesApi = createApi({
             invalidatesTags: ["Favorites"],
         }),
 
+        removeAllFavorites: builder.mutation<void, void>({
+            query: () => ({
+                url: "/",
+                method: "DELETE",
+                credentials: "include",
+            }),
+            invalidatesTags: ["Favorites"],
+        }),
         removeFavoritesItem: builder.mutation<void, { id: string }>({
             query: ({ id }) => ({
                 url: `/${id}`,
@@ -37,6 +45,7 @@ const favoritesApi = createApi({
     }),
 });
 
-export const { useGetAllFavoritesQuery, useAddtoFavoritesMutation, useRemoveFavoritesItemMutation } = favoritesApi;
+export const { useGetAllFavoritesQuery, useAddtoFavoritesMutation, useRemoveFavoritesItemMutation, useRemoveAllFavoritesMutation } =
+    favoritesApi;
 
 export default favoritesApi;

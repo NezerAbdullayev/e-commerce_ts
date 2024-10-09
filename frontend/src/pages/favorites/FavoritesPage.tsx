@@ -1,11 +1,33 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 
-import { Alert, Box, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
-import { useGetAllFavoritesQuery } from "../../redux/services/favoritesApi";
+import {
+    Alert,
+    Box,
+    Button,
+    CircularProgress,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow,
+    Typography,
+} from "@mui/material";
+import { useGetAllFavoritesQuery, useRemoveAllFavoritesMutation } from "../../redux/services/favoritesApi";
 import FavoritesItem from "./FavoritesItem";
 
 const FavoritesPage: FC = () => {
     const { data: favoriteProducts, isLoading: favoritesLoading, error: favoritesError } = useGetAllFavoritesQuery();
+
+    const [removeAllFavoritesItems] = useRemoveAllFavoritesMutation();
+
+    const removeAllFavorites = useCallback(async () => {
+        try {
+            await removeAllFavoritesItems().unwrap();
+        } catch (error) {
+            console.log(error);
+        }
+    }, [removeAllFavoritesItems]);
 
     if (favoritesError) {
         return (
@@ -56,6 +78,18 @@ const FavoritesPage: FC = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            {/* Remove All Favorites Button */}
+            <Box display="flex" justifyContent="end" mt={2}>
+                <Button
+                    variant="contained"
+                    color="error"
+                    onClick={removeAllFavorites}
+                    disabled={favoritesLoading || !favoriteProducts || favoriteProducts.length === 0}
+                >
+                    Remove All Favorites
+                </Button>
+            </Box>
         </Box>
     );
 };

@@ -42,7 +42,7 @@ const FavoritesControl: FC<FavoritesProps> = ({ id, productId, image, name, pric
                 }
             },
         });
-    }, []);
+    }, [addToCart, image, name, price, productId]);
 
     return (
         <>

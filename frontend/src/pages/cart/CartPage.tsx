@@ -44,7 +44,7 @@ const CartPage: FC = () => {
                         userCartData.map((cart) => (
                             <CartItem
                                 key={cart._id}
-                                productId={cart.productId}
+                                id={cart._id}
                                 name={cart.name}
                                 image={cart.image}
                                 price={cart.price}

@@ -34,10 +34,10 @@ const cartApi = createApi({
             }),
             invalidatesTags: ["Cart"],
         }),
-        removeAllCart: builder.mutation<void, { productId?: string }>({
-            query: ({ productId }) => ({
+        removeAllCart: builder.mutation<void, { id?: string }>({
+            query: ({ id }) => ({
                 url: `/`,
-                body: { productId },
+                body: { id },
                 method: "DELETE",
                 credentials: "include",
             }),

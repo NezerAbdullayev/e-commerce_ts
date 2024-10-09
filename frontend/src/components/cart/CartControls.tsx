@@ -8,10 +8,10 @@ import { useRemoveAllCartMutation, useUpdateCartQuantityMutation } from "../../r
 interface CartControlsProps {
     saveIsActive: boolean;
     quantityEL: number;
-    productId: string;
+    id: string;
 }
 
-const CartControls: FC<CartControlsProps> = ({ saveIsActive, quantityEL, productId }) => {
+const CartControls: FC<CartControlsProps> = ({ saveIsActive, quantityEL, id }) => {
     const [updateCartQuantity] = useUpdateCartQuantityMutation();
     const [removeCart] = useRemoveAllCartMutation();
 
@@ -21,24 +21,24 @@ const CartControls: FC<CartControlsProps> = ({ saveIsActive, quantityEL, product
         Modal.confirm({
             title: "Do you want to change the product count?",
             onOk: async () => {
-                const res = await updateCartQuantity({ quantity: quantityEL, id: productId }).unwrap();
+                const res = await updateCartQuantity({ quantity: quantityEL, id: id }).unwrap();
                 console.log(res, "burana ona goredirki modal ciaracam ");
             },
             okText: "Yes",
         });
-    }, [productId, updateCartQuantity, quantityEL]);
+    }, [id, updateCartQuantity, quantityEL]);
 
     const onDeleteCart = useCallback(() => {
         Modal.confirm({
             title: "Do you want to delete this Cart?",
             onOk: async () => {
-                const res = await removeCart({ productId }).unwrap();
+                const res = await removeCart({ id }).unwrap();
                 console.log(res);
             },
             okText: "Yes",
             okType: "danger",
         });
-    }, [productId, removeCart]);
+    }, [id, removeCart]);
 
     return (
         <>

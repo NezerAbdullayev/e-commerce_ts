@@ -6,14 +6,14 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import CartControls from "./CartControls";
 
 interface CartItemProp {
-    productId: string;
+    id: string;
     name: string;
     image: string;
     price: number;
     quantity: number;
 }
 
-const CartItem: FC<CartItemProp> = ({ productId, name, image, price, quantity }) => {
+const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity }) => {
     const [quantityEL, setQuantityEl] = useState<number>(quantity);
     const [saveIsActive, setSaveIsActive] = useState<boolean>(false);
 
@@ -61,7 +61,7 @@ const CartItem: FC<CartItemProp> = ({ productId, name, image, price, quantity })
             <TableCell align="center">${(price * quantityEL).toFixed(1)}</TableCell>
 
             <TableCell align="center">
-                <CartControls saveIsActive={saveIsActive} quantityEL={quantityEL} productId={productId} />
+                <CartControls saveIsActive={saveIsActive} quantityEL={quantityEL} id={id} />
             </TableCell>
         </TableBody>
     );

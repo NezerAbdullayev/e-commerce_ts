@@ -5,13 +5,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useRemoveFavoritesItemMutation } from "../../redux/services/favoritesApi";
 import { Modal } from "antd";
+import { FavoritesProps } from "../../types/globalTypes";
+import { useAddToCartMutation } from "../../redux/services/cartApi";
 
-interface FavoritesControlProps {
-    id: string;
-}
-
-const FavoritesControl: FC<FavoritesControlProps> = ({ id }) => {
+const FavoritesControl: FC<FavoritesProps> = ({ id, productId, image, name, price }) => {
     const [removeFavoritesItem, { isLoading: favoritesLoading }] = useRemoveFavoritesItemMutation();
+
+    const [addToCart, { isLoading: cartCoading }] = useAddToCartMutation();
 
     const onRemoveFavoritesIem = useCallback(async () => {
         Modal.confirm({
@@ -29,9 +29,24 @@ const FavoritesControl: FC<FavoritesControlProps> = ({ id }) => {
         });
     }, [id, removeFavoritesItem]);
 
+    const onAddToCart = useCallback(async () => {
+        Modal.confirm({
+            title: "Do you want to add this product to the cart?",
+            onOk: async () => {
+                try {
+                    const res = await addToCart({ productId, image, name, price }).unwrap();
+                    console.log(res);
+                    console.log(productId, image, name, price);
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+        });
+    }, []);
+
     return (
         <>
-            <IconButton aria-label="Save" color="primary">
+            <IconButton aria-label="Save" color="primary" onClick={onAddToCart} disabled={cartCoading}>
                 <AddShoppingCartIcon />
             </IconButton>
 

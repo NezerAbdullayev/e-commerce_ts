@@ -57,6 +57,7 @@ export interface Favorites {
 }
 export interface FavoritesProps extends Favorites {
     id: string;
+    productId: string;
 }
 
 export interface FavoritesResponse extends Favorites {

@@ -3,7 +3,7 @@ import { FC, memo } from "react";
 import { FavoritesProps } from "../../types/globalTypes";
 import FavoritesControl from "./FavoritesControl";
 
-const FavoritesItem: FC<FavoritesProps> = ({ id, name, price, image }) => {
+const FavoritesItem: FC<FavoritesProps> = ({ id, name, productId, price, image }) => {
     return (
         <TableRow>
             <TableCell align="center">
@@ -13,7 +13,7 @@ const FavoritesItem: FC<FavoritesProps> = ({ id, name, price, image }) => {
             <TableCell align="center">{name}</TableCell>
             <TableCell align="center">{price}</TableCell>
             <TableCell align="center">
-                <FavoritesControl id={id} />
+                <FavoritesControl id={id} productId={productId} image={image} name={name} price={price} />
             </TableCell>
         </TableRow>
     );

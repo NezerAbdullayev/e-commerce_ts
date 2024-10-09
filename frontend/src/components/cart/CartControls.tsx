@@ -1,7 +1,8 @@
 import { IconButton } from "@mui/material";
 import { FC, useCallback } from "react";
-import SaveIcon from "@mui/icons-material/Save";
+
 import DeleteIcon from "@mui/icons-material/Delete";
+import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 import { Modal } from "antd";
 import { useRemoveAllCartMutation, useUpdateCartQuantityMutation } from "../../redux/services/cartApi";
 
@@ -43,7 +44,7 @@ const CartControls: FC<CartControlsProps> = ({ saveIsActive, quantityEL, id }) =
     return (
         <>
             <IconButton aria-label="Save" color="primary" onClick={onUpdateQuantity} disabled={!saveIsActive}>
-                <SaveIcon />
+                <DownloadDoneIcon />
             </IconButton>
 
             <IconButton aria-label="Delete" color="error" onClick={onDeleteCart}>

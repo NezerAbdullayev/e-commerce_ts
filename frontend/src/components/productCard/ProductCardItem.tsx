@@ -6,7 +6,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useAddToCartMutation } from "../../redux/services/cartApi";
-import { useAddtoFavoritesMutation } from "../../redux/services/favoritesApi";
+import { useAddtoFavoritesMutation, useGetAllFavoritesQuery } from "../../redux/services/favoritesApi";
+import { CartProps } from "../../types/globalTypes";
 
 interface ProductCardProps {
     id: string;
@@ -14,29 +15,43 @@ interface ProductCardProps {
     image: string;
     price: number;
     rating: number;
+    onAddToFavorites: (params: CartProps) => void;
+    onAddToBasket: (params: CartProps) => void;
 }
 
-const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) => {
-    const [addToCart, { isLoading: addCartLoading }] = useAddToCartMutation();
+const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, onAddToFavorites, onAddToBasket }) => {
+    // const [addToCart, { isLoading: addCartLoading }] = useAddToCartMutation();
+    // const { data: FavoritesData } = useGetAllFavoritesQuery();
 
-    const [addToFavorite] = useAddtoFavoritesMutation();
+    // const [addToFavorite] = useAddtoFavoritesMutation();
 
     const [value, setValue] = useState<number | null>(rating < 3 ? 3 : rating);
+    // const [isFavorite, setIsFavorite] = useState<boolean>(false);
     const navigate = useNavigate();
+
+    // Check if the product is already in favorites
+    // useEffect(() => {
+    //     if (FavoritesData) {
+    //         const found = FavoritesData.some((item) => item.productId === id);
+    //         setIsFavorite(found);
+    //     }
+    // }, [FavoritesData, id]);
 
     const onDetailsClick = () => {
         navigate(`/product/${id}`);
     };
 
-    const onAddToFavorites = async () => {
-        const res = await addToFavorite({ name, productId: id, image, price });
-        console.log(res);
-    };
+    // const onAddToFavorites = async () => {
+    //     const res = await addToFavorite({ name, productId: id, image, price });
+    //     console.log(res);
+    // };
 
-    const onAddToBasket = async () => {
-        const res = await addToCart({ name, productId: id, image, price });
-        console.log(res, { productId: id });
-    };
+    // const onAddToBasket = async () => {
+    //     const res = await addToCart({ name, productId: id, image, price });
+    //     console.log(res, { productId: id });
+    // };
+
+    console.log("re-render product");
 
     return (
         <Grid size={{ xs: 2, sm: 4, md: 3 }}>
@@ -54,7 +69,7 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) =
                     <Box className="absolute bottom-3 right-3 z-40 rounded-md bg-stone-50/40">
                         <IconButton aria-label="Add to favorites" color="error" onClick={onAddToFavorites}>
                             <FavoriteIcon
-                                className="w-5 text-stone-50 transition-all duration-300 hover:text-red-700"
+                                className={`w-5 text-stone-50 transition-all duration-300 hover:text-red-700`}
                                 sx={{ fontSize: 30 }}
                             />
                         </IconButton>
@@ -76,7 +91,7 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating }) =
                 {/* content */}
                 <CardContent>
                     <Box className="flex items-center justify-between gap-5">
-                        <Typography component="h4" variant="h6" fontWeight="bold" className="truncate">
+                        <Typography component="h4" variant="h6" fontWeight="bold" noWrap className="truncate">
                             {name}
                         </Typography>
 

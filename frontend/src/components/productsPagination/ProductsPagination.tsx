@@ -12,7 +12,7 @@ const ProductsPagination: FC = () => {
     const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
-    console.log(data?.products);
+    console.log(data);
 
     return (
         <Box className="my-10">

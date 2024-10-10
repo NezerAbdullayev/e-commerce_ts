@@ -73,7 +73,13 @@ const FavoritesPage: FC = () => {
                                 />
                             ))
                         ) : (
-                            <Typography variant="body1">Product not found</Typography>
+                            <TableRow>
+                                <TableCell colSpan={4} align="center">
+                                    <Typography variant="body1" color="red">
+                                        Product not found
+                                    </Typography>
+                                </TableCell>
+                            </TableRow>
                         )}
                     </TableBody>
                 </Table>

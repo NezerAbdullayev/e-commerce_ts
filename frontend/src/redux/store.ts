@@ -4,8 +4,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 // slices
 import userReducer from "./slice/userSlice";
 
-// apis
-
+// api
 import productsApi from "./services/productsApi";
 import { rootApi } from "./services/api";
 

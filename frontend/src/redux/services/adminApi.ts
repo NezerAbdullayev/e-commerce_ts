@@ -7,6 +7,7 @@ const productsApi = rootApi.injectEndpoints({
         getAllProducts: builder.query<ProductsResponse, { page: number; limit: number }>({
             query: ({ page, limit }) => `${ADMIN_PRODUCTS_URL}?page=${page}&limit=${limit}`,
             providesTags: ["Products"],
+            keepUnusedDataFor: 5,
         }),
         createNewProduct: builder.mutation({
             query: (newProduct) => ({

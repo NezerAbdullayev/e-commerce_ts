@@ -42,7 +42,7 @@ app.use("/api/coupons", couponRouter);
 app.use("/api/payments", paymentRouter);
 app.use("/api/analytics", analyticsRouter);
 app.use("/api/favorites",favoritesRouter)
-// apu.use("/api/category",categoryRouter)
+app.use("/api/category",categoryRouter)
 
 app.subscribe;
 

@@ -12,6 +12,7 @@ export const cartApi = rootApi.injectEndpoints({
                 credentials: "include",
             }),
             providesTags: ["Cart"],
+            keepUnusedDataFor: 5,
         }),
 
         addToCart: builder.mutation<void, CartProps>({

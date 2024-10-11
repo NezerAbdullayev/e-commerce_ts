@@ -1,36 +1,33 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {  ProductsResponse } from "../../types/globalTypes";
+import { ProductsResponse } from "../../types/globalTypes";
+import { ADMIN_PRODUCTS_URL } from "../constants";
+import { rootApi } from "./api";
 
-const adminApi = createApi({
-    reducerPath: "admin",
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/products" }),
-
-    tagTypes: ["Admin"],
+const productsApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllProducts: builder.query<ProductsResponse, { page: number; limit: number }>({
-            query: ({ page, limit }) => `?page=${page}&limit=${limit}`,
-            providesTags: ["Admin"],
+            query: ({ page, limit }) => `${ADMIN_PRODUCTS_URL}?page=${page}&limit=${limit}`,
+            providesTags: ["Products"],
         }),
         createNewProduct: builder.mutation({
             query: (newProduct) => ({
-                url: "/new",
+                url: `${ADMIN_PRODUCTS_URL}/new`,
                 method: "POST",
                 body: newProduct,
                 credentials: "include",
             }),
-            invalidatesTags: ["Admin"],
+            invalidatesTags: ["Products"],
         }),
         deleteProduct: builder.mutation({
             query: ({ id }) => ({
-                url: `/${id}`,
+                url: `${ADMIN_PRODUCTS_URL}/${id}`,
                 method: "DELETE",
                 credentials: "include",
             }),
-            invalidatesTags: ["Admin"],
+            invalidatesTags: ["Products"],
         }),
     }),
 });
 
-export const { useGetAllProductsQuery, useCreateNewProductMutation, useDeleteProductMutation } = adminApi;
+export const { useGetAllProductsQuery, useCreateNewProductMutation, useDeleteProductMutation } = productsApi;
 
-export default adminApi;
+export default productsApi;

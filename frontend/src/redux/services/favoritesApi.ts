@@ -1,15 +1,12 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { FavoritesResponse } from "../../types/globalTypes";
+import { rootApi } from "./api";
+import { FAVORITES_URL } from "../constants";
 
-const favoritesApi = createApi({
-    reducerPath: "favorites",
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/favorites" }),
-
-    tagTypes: ["Favorites"],
+const favoritesApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllFavorites: builder.query<FavoritesResponse[], void>({
             query: () => ({
-                url: "/",
+                url: `${FAVORITES_URL}/`,
                 method: "GET",
                 credentials: "include",
             }),
@@ -18,7 +15,7 @@ const favoritesApi = createApi({
 
         addtoFavorites: builder.mutation({
             query: ({ productId, name, image, price }) => ({
-                url: "/",
+                url: `${FAVORITES_URL}/`,
                 method: "POST",
                 body: { productId, name, image, price },
                 credentials: "include",
@@ -28,7 +25,7 @@ const favoritesApi = createApi({
 
         removeAllFavorites: builder.mutation<void, void>({
             query: () => ({
-                url: "/",
+                url: `${FAVORITES_URL}/`,
                 method: "DELETE",
                 credentials: "include",
             }),
@@ -36,7 +33,7 @@ const favoritesApi = createApi({
         }),
         removeFavoritesItem: builder.mutation<void, { id: string }>({
             query: ({ id }) => ({
-                url: `/${id}`,
+                url: `${FAVORITES_URL}/${id}`,
                 method: "DELETE",
                 credentials: "include",
             }),

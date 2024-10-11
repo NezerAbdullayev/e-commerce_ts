@@ -1,14 +1,12 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setUser } from "../slice/userSlice";
+import { USERS_URL } from "../constants";
+import { rootApi } from "./api";
 
-const authApi = createApi({
-    reducerPath: "auth",
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/auth/" }),
-    tagTypes: ["Auth"],
+const authApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
         login: builder.mutation({
             query: (user) => ({
-                url: "login",
+                url: `${USERS_URL}/login`,
                 method: "POST",
                 body: user,
                 credentials: "include",
@@ -23,6 +21,7 @@ const authApi = createApi({
             },
             invalidatesTags: ["Auth"],
         }),
+
         signup: builder.mutation({
             query: (newUser) => ({
                 url: "signup",

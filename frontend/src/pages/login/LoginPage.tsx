@@ -35,7 +35,6 @@ const LoginPage: FC = () => {
     const onSubmit: SubmitHandler<Login> = useCallback(
         async (data) => {
             const res = await login(data);
-            console.log(res?.data);
             if (res?.data?.role === "admin") {
                 navigate("/admin");
             } else if (res?.data?.role === "customer") {
@@ -44,7 +43,7 @@ const LoginPage: FC = () => {
             }
             reset();
         },
-        [login, reset, navigate]
+        [login, reset, navigate],
     );
 
     return (

@@ -14,12 +14,12 @@ import ProductsPage from "./pages/products/ProductsPage";
 import DetailsPage from "./pages/details/DetailsPage";
 import FavoritesPage from "./pages/favorites/FavoritesPage";
 import PageNotFound from "./pages/error/PageNotFound";
-// import { userRole } from "./redux/slice/userSlice";
-// import { useSelector } from "react-redux";
+import PirvateRoute from "./components/PirvateRoute";
+import { userRole } from "./redux/slice/userSlice";
+import { useSelector } from "react-redux";
 
 const App: React.FC = () => {
-    // const role = useSelector(userRole);
-    const role = "admin";
+    const role = useSelector(userRole);
 
     return (
         <BrowserRouter>
@@ -29,15 +29,37 @@ const App: React.FC = () => {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
 
+                {/* <Route path="/admin" element={role === "admin" ? <AdminPage /> : <Navigate to="/" />}>
+
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="createproduct" element={<CreateProduct />} />
+                    <Route path="users" element={<Users />} />
+                    
+                </Route> */}
+
                 {/* App layout routes */}
                 <Route path="/" element={<AppLayout />}>
                     <Route index element={<HomePage />} />
-                    <Route path="cart" element={<CartPage />} />
-
                     <Route path="products" element={<ProductsPage />} />
                     <Route path="product/:id" element={<DetailsPage />} />
-                    <Route path="favorites" element={<FavoritesPage />} />
-                    <Route path="cart" element={<CartPage />} />
+
+                    <Route
+                        path="favorites"
+                        element={
+                            <PirvateRoute>
+                                <FavoritesPage />
+                            </PirvateRoute>
+                        }
+                    />
+
+                    <Route
+                        path="cart"
+                        element={
+                            <PirvateRoute>
+                                <CartPage />
+                            </PirvateRoute>
+                        }
+                    />
                     <Route path="about" element={<>div</>} />
                 </Route>
 

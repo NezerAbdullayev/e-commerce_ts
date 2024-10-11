@@ -1,15 +1,13 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { CartData, CartProps } from "../../types/globalTypes";
+import { CART_URL } from "../constants";
 
-const cartApi = createApi({
-    reducerPath: "cart",
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/cart" }),
+import { rootApi } from "./api";
 
-    tagTypes: ["Cart"],
+export const cartApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllCart: builder.query<CartData[], void>({
             query: () => ({
-                url: "/",
+                url: `${CART_URL}/`,
                 method: "GET",
                 credentials: "include",
             }),
@@ -18,7 +16,7 @@ const cartApi = createApi({
 
         addToCart: builder.mutation<void, CartProps>({
             query: ({ name, productId, image, price }) => ({
-                url: "/addcart",
+                url: `${CART_URL}/addcart`,
                 method: "POST",
                 body: { name, productId, image, price },
                 credentials: "include",
@@ -27,7 +25,7 @@ const cartApi = createApi({
         }),
         updateCartQuantity: builder.mutation<void, { id: string; quantity: number }>({
             query: ({ id, quantity }) => ({
-                url: `/${id}`,
+                url: `${CART_URL}/${id}`,
                 body: { quantity },
                 method: "PUT",
                 credentials: "include",
@@ -36,7 +34,7 @@ const cartApi = createApi({
         }),
         removeAllCart: builder.mutation<void, { id?: string }>({
             query: ({ id }) => ({
-                url: `/`,
+                url: `${CART_URL}/`,
                 body: { id },
                 method: "DELETE",
                 credentials: "include",
@@ -47,5 +45,3 @@ const cartApi = createApi({
 });
 
 export const { useGetAllCartQuery, useAddToCartMutation, useRemoveAllCartMutation, useUpdateCartQuantityMutation } = cartApi;
-
-export default cartApi;

@@ -5,29 +5,18 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import userReducer from "./slice/userSlice";
 
 // apis
-import authApi from "./services/userApi";
-import adminApi from "./services/adminApi";
+
 import productsApi from "./services/productsApi";
-import cartApi from "./services/cartApi";
-import favoritesApi from "./services/favoritesApi";
+import { rootApi } from "./services/api";
 
 const store = configureStore({
     reducer: {
         user: userReducer,
-        [authApi.reducerPath]: authApi.reducer,
-        [adminApi.reducerPath]: adminApi.reducer,
-        [productsApi.reducerPath]: productsApi.reducer,
-        [cartApi.reducerPath]: cartApi.reducer,
-        [favoritesApi.reducerPath]: favoritesApi.reducer,
-    },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware()
-            .concat(authApi.middleware)
-            .concat(adminApi.middleware)
-            .concat(productsApi.middleware)
-            .concat(cartApi.middleware)
-            .concat(favoritesApi.middleware),
+        [rootApi.reducerPath]: rootApi.reducer,
 
+        [productsApi.reducerPath]: productsApi.reducer,
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(rootApi.middleware).concat(productsApi.middleware),
     devTools: true,
 });
 

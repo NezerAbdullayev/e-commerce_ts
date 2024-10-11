@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {  ProductsResponse } from "../../types/globalTypes";
 
 const adminApi = createApi({
     reducerPath: "admin",
@@ -6,7 +7,7 @@ const adminApi = createApi({
 
     tagTypes: ["Admin"],
     endpoints: (builder) => ({
-        getAllProducts: builder.query({
+        getAllProducts: builder.query<ProductsResponse, { page: number; limit: number }>({
             query: ({ page, limit }) => `?page=${page}&limit=${limit}`,
             providesTags: ["Admin"],
         }),

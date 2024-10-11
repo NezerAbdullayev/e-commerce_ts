@@ -1,10 +1,11 @@
 import { FC } from "react";
 
-import { Alert, Box, CircularProgress, Paper, Table, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Alert, Box, Paper, Table, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 import { useGetAllCartQuery } from "../../redux/services/cartApi";
 
 import CartItem from "../../components/cart/CartItem";
+import Loading from "../../components/Loading";
 const CartPage: FC = () => {
     const { data: userCartData, error, isLoading: cartLoading } = useGetAllCartQuery();
 
@@ -20,11 +21,7 @@ const CartPage: FC = () => {
 
     return (
         <Box className="relative mx-auto mt-10 w-[1280px] max-w-[90%]">
-            {cartLoading && (
-                <Box display="flex" justifyContent="center" p={2} position="absolute" className="left-[50%] top-[50%]">
-                    <CircularProgress />
-                </Box>
-            )}
+            {cartLoading && <Loading />}
 
             <TableContainer component={Paper}>
                 <Table>

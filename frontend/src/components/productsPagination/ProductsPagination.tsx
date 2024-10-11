@@ -1,28 +1,29 @@
-import { FC, useState } from "react";
-import { useGetAllProductsQuery } from "../../redux/services/productsApi";
-import { Box, Pagination } from "@mui/material";
+import { FC, useMemo } from "react";
+import { Alert, Box, Pagination } from "@mui/material";
 import ProductCard from "../productCard/ProductCard";
 import CardContainer from "../productCard/CardContainer";
+import usePagination from "../../hooks/use-Pagination";
+import Loading from "../Loading";
+import { useGetAllFavoritesQuery } from "../../redux/services/favoritesApi";
 
 const ProductsPagination: FC = () => {
-    const [page, setPage] = useState<number>(1);
+    const { products, totalPages, currentPage, isLoading, error, handlePageChange } = usePagination({ initialPage: 1, limit: 12 });
+    const { data: favoritesData } = useGetAllFavoritesQuery(); 
 
-    const { data, isLoading, error } = useGetAllProductsQuery({ page, limit: 15 });
-
-    const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-        setPage(value);
-    };
-    console.log(data);
+    const favoriteIds = useMemo(() => (favoritesData && favoritesData?.map((fav) => fav.productId)) || [], [favoritesData]);
 
     return (
         <Box className="my-10">
             <CardContainer>
-                {data && (
+                {isLoading ? (
+                    <Loading />
+                ) : error ? (
+                    <Box display="flex" justifyContent="center" alignItems={"center"} p={2} minHeight={"100vh"}>
+                        <Alert severity="error">An error occurred while fetching the products data.</Alert>
+                    </Box>
+                ) : products?.length > 0 ? (
                     <>
-                        {isLoading && <p>Loading...</p>}
-                        {error && <p>Error loading products</p>}
-
-                        {data.products.map((product) => (
+                        {products.map((product) => (
                             <ProductCard
                                 key={product._id}
                                 id={product._id}
@@ -30,11 +31,17 @@ const ProductsPagination: FC = () => {
                                 image={product.image[0]}
                                 price={product.price}
                                 rating={product.rating}
+                                isFavorited={favoriteIds ? favoriteIds.includes(product._id) : false}
                             />
                         ))}
-
-                        <Pagination count={data.totalPages} page={page} onChange={handlePageChange} color="primary" />
+                        <Box display="flex" justifyContent="center" mt={3} width={"100%"}>
+                            <Pagination count={totalPages} page={currentPage} onChange={handlePageChange} color="primary" />
+                        </Box>
                     </>
+                ) : (
+                    <Box display="flex" justifyContent="center" alignItems={"center"} p={2}>
+                        <Alert severity="info">No products found.</Alert>
+                    </Box>
                 )}
             </CardContainer>
         </Box>

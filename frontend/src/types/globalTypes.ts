@@ -23,7 +23,7 @@ export interface FileObject {
     size: number;
     originFileObj: File;
 }
-
+// products
 export interface Products {
     _id: string;
     name: string;
@@ -37,6 +37,13 @@ export interface Products {
     stock: number;
     reviews: string[];
 }
+
+export interface ProductsResponse {
+    currentPage: number;
+    products: Products[];
+    totalPages: number;
+    totalProducts: number;
+}
 //cart
 
 export interface CartProps {
@@ -49,7 +56,7 @@ export interface CartData extends CartProps {
     _id: string;
     quantity: number;
 }
-
+// favorites
 export interface Favorites {
     name: string;
     image: string;

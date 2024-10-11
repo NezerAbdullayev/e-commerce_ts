@@ -13,6 +13,7 @@ import couponRouter from "./routes/couponRoute.js";
 import paymentRouter from "./routes/paymentRoute.js";
 import analyticsRouter from "./routes/analyticsRoute.js";
 import favoritesRouter from "./routes/favoritesRouter.js";
+import categoryRouter from "./routes/categoryRouter.js";
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.use("/api/coupons", couponRouter);
 app.use("/api/payments", paymentRouter);
 app.use("/api/analytics", analyticsRouter);
 app.use("/api/favorites",favoritesRouter)
+// apu.use("/api/category",categoryRouter)
 
 app.subscribe;
 

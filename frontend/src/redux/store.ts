@@ -27,6 +27,8 @@ const store = configureStore({
             .concat(productsApi.middleware)
             .concat(cartApi.middleware)
             .concat(favoritesApi.middleware),
+
+    devTools: true,
 });
 
 setupListeners(store.dispatch);

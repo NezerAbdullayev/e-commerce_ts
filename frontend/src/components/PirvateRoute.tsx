@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import { useSelector } from "react-redux";
-import { isAuthenticated } from "../redux/slice/userSlice";
+import { isAuthenticated } from "../redux/slice/authSlice";
 import { Navigate } from "react-router";
 
 interface PirvateRouteProps {

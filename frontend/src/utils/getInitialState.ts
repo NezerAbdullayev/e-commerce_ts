@@ -1,4 +1,4 @@
-import { UserState } from "../redux/slice/userSlice";
+import { UserState } from "../redux/slice/authSlice";
 
 export const getInitialState = (): UserState => {
     const savedAuth = localStorage.getItem("auth");

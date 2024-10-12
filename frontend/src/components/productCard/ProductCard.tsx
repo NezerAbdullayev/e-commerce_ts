@@ -8,7 +8,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useAddToCartMutation } from "../../redux/services/cartApi";
 import { useAddtoFavoritesMutation } from "../../redux/services/favoritesApi";
 import { shallowEqual, useSelector } from "react-redux";
-import { isAuthenticated } from "../../redux/slice/userSlice";
+import { isAuthenticated } from "../../redux/slice/authSlice";
 
 interface ProductCardProps {
     id: string;

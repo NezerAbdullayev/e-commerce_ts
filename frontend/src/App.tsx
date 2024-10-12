@@ -15,7 +15,7 @@ import DetailsPage from "./pages/details/DetailsPage";
 import FavoritesPage from "./pages/favorites/FavoritesPage";
 import PageNotFound from "./pages/error/PageNotFound";
 import PirvateRoute from "./components/PirvateRoute";
-import { userRole } from "./redux/slice/userSlice";
+import { userRole } from "./redux/slice/authSlice";
 import { useSelector } from "react-redux";
 import Dashboard from "./pages/admin/components/dashboard/Dashboard";
 import UsersTable from "./pages/admin/components/usersTable/UsersTable";

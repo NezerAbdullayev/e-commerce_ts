@@ -8,8 +8,8 @@ export interface UserState {
     isAuthenticated: boolean;
 }
 
-const userSlice = createSlice({
-    name: "user",
+const authSlice = createSlice({
+    name: "auth",
     initialState: getInitialState(),
     reducers: {
         setUser: (state, action: PayloadAction<{ role: string; name: string }>) => {
@@ -29,12 +29,12 @@ const userSlice = createSlice({
     },
 });
 
-export const userName = (state: RootState) => state.user.name;
+export const userName = (state: RootState) => state.auth.name;
 console.log(userName);
 
-export const userRole = (state: RootState) => state.user.role;
-export const isAuthenticated = (state: RootState) => state.user.isAuthenticated;
+export const userRole = (state: RootState) => state.auth.role;
+export const isAuthenticated = (state: RootState) => state.auth.isAuthenticated;
 
-export const { setUser, logout } = userSlice.actions;
+export const { setUser, logout } = authSlice.actions;
 
-export default userSlice.reducer;
+export default authSlice.reducer;

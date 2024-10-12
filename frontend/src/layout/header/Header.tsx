@@ -9,10 +9,10 @@ import StoreIcon from "@mui/icons-material/Store";
 
 import { NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { isAuthenticated } from "../../redux/slice/userSlice";
+import { isAuthenticated } from "../../redux/slice/authSlice";
 import { Avatar, Menu, MenuItem } from "@mui/material";
 import UserActions from "./UserActions";
-import { useUserLogoutMutation } from "../../redux/services/userApi";
+import { useUserLogoutMutation } from "../../redux/services/authApi";
 
 function Header() {
     const isAuth = useSelector(isAuthenticated);

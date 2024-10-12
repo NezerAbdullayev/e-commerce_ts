@@ -6,7 +6,7 @@ import { FormItem, Signup } from "../../types/globalTypes";
 import AntFormItem from "../../components/AntFormItem";
 import AuthContainer from "../../components/AuthContainer";
 // api
-import { useSignupMutation } from "../../redux/services/userApi";
+import { useSignupMutation } from "../../redux/services/authApi";
 import { formItemLayout } from "../../utils/formLayoutsize";
 import { signupSchema } from "../../validations/authform.validation";
 import { useNavigate } from "react-router";
@@ -39,7 +39,7 @@ const SignupPage: FC = () => {
             try {
                 await signup(data);
                 navigate("/login");
-                console.log("basarili signup")
+                console.log("basarili signup");
             } catch (error) {
                 console.log(error);
             }

@@ -8,7 +8,7 @@ import AntFormItem from "../../components/AntFormItem";
 import AuthContainer from "../../components/AuthContainer";
 import { formItemLayout } from "../../utils/formLayoutsize";
 // api
-import { useLoginMutation } from "../../redux/services/userApi";
+import { useLoginMutation } from "../../redux/services/authApi";
 // type
 import { FormItem, Login } from "../../types/globalTypes";
 import { loginSchema } from "../../validations/authform.validation";

@@ -1,4 +1,4 @@
-import { logout, setUser } from "../slice/userSlice";
+import { logout, setUser } from "../slice/authSlice";
 import { USERS_URL } from "../constants";
 import { rootApi } from "../rootApi";
 

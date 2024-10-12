@@ -14,6 +14,7 @@ import paymentRouter from "./routes/paymentRoute.js";
 import analyticsRouter from "./routes/analyticsRoute.js";
 import favoritesRouter from "./routes/favoritesRouter.js";
 import categoryRouter from "./routes/categoryRouter.js";
+import usersRouter from "./routes/usersRouter.js";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use(
 // api entpoints
 
 app.use("/api/auth", authRouter);
+app.use("api/users", usersRouter)
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/coupons", couponRouter);

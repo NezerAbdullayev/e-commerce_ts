@@ -1,9 +1,10 @@
+import { CategoryResponse } from "../../types/globalTypes";
 import { CATEGORY_URL } from "../constants";
 import { rootApi } from "../rootApi";
 
 const categoryApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
-        getAllCategory: builder.query({
+        getAllCategory: builder.query<CategoryResponse[], void>({
             query: () => `${CATEGORY_URL}/`,
             providesTags: ["Category"],
             keepUnusedDataFor: 5,

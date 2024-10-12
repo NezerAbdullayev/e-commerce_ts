@@ -71,6 +71,12 @@ export interface FavoritesResponse extends Favorites {
     _id: string;
     productId: string;
 }
+// category
+export interface CategoryResponse {
+    name: string;
+    _id: string;
+}
+
 // users
 
 export interface User {
@@ -84,4 +90,8 @@ export interface UserResponse {
     currentPage: number;
     totalPages: number;
     totalUsers: number;
+}
+
+export interface SearchParams {
+    searchTerm: string;
 }

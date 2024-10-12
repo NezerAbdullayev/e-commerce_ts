@@ -31,10 +31,12 @@ export const getAllUsers = async (req, res) => {
 export const  getSearchUsers =async(req,res)=>{
     const search = req.query.search ? req.query.search.trim() : "";
 
+
     try {
         const filter = {
             name: { $ne: 'admin' } 
         };
+
 
         if (search) {
             filter.$or = [
@@ -46,7 +48,7 @@ export const  getSearchUsers =async(req,res)=>{
 
         res.json({
             users,
-            totalUsers: users.length,s
+            totalUsers: users.length,
         });
 
     } catch (error) {

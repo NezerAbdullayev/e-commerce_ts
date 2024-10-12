@@ -40,6 +40,6 @@ const usersApi = rootApi.injectEndpoints({
     }),
 });
 
-export const { useAllUsersQuery, useDeleteUserMutation } = usersApi;
+export const { useAllUsersQuery, useDeleteUserMutation, useLazyGetSearchUsersQuery } = usersApi;
 
 export default usersApi;

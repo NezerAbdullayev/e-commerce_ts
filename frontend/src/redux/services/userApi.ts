@@ -15,7 +15,7 @@ const authApi = rootApi.injectEndpoints({
                 try {
                     const { data } = await queryFulfilled;
                     console.log(data);
-                    dispatch(setUser({ role: data.role }));
+                    dispatch(setUser({ role: data.role, name: data.name }));
                 } catch (error) {
                     console.error("Login error:", error);
                 }
@@ -29,16 +29,6 @@ const authApi = rootApi.injectEndpoints({
                 method: "POST",
                 body: newUser,
             }),
-            async onQueryStarted(_, { dispatch, queryFulfilled }) {
-                try {
-                    const { data } = await queryFulfilled;
-
-                    dispatch(setUser({ role: data.role }));
-                } catch (error) {
-                    console.error("Login error:", error);
-                }
-            },
-            invalidatesTags: ["Auth"],
         }),
 
         userLogout: builder.mutation<void, void>({

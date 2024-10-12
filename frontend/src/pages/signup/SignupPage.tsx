@@ -36,14 +36,16 @@ const SignupPage: FC = () => {
     // Submit handler
     const onSubmit = useCallback(
         async (data: Signup) => {
-            const res = await signup(data);
-            if (res?.data?.role) {
-                console.log("role", res?.data?.role);
-                navigate("/");
+            try {
+                await signup(data);
+                navigate("/login");
+                console.log("basarili signup")
+            } catch (error) {
+                console.log(error);
             }
             reset();
         },
-        [signup, reset, navigate]
+        [signup, reset, navigate],
     );
 
     return (

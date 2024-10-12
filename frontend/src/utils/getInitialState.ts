@@ -1,6 +1,5 @@
 import { UserState } from "../redux/slice/userSlice";
 
-
 export const getInitialState = (): UserState => {
     const savedAuth = localStorage.getItem("auth");
 
@@ -11,6 +10,7 @@ export const getInitialState = (): UserState => {
 
         if (!isExpired) {
             return {
+                name: parsedAuth.name,
                 role: parsedAuth.role,
                 isAuthenticated: parsedAuth.isAuthenticated,
             };
@@ -18,6 +18,7 @@ export const getInitialState = (): UserState => {
     }
 
     return {
+        name: "",
         role: "",
         isAuthenticated: false,
     };

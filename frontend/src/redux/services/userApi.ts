@@ -1,4 +1,4 @@
-import { setUser } from "../slice/userSlice";
+import { logout, setUser } from "../slice/userSlice";
 import { USERS_URL } from "../constants";
 import { rootApi } from "../rootApi";
 
@@ -14,6 +14,7 @@ const authApi = rootApi.injectEndpoints({
             async onQueryStarted(_, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
+                    console.log(data);
                     dispatch(setUser({ role: data.role }));
                 } catch (error) {
                     console.error("Login error:", error);
@@ -24,7 +25,7 @@ const authApi = rootApi.injectEndpoints({
 
         signup: builder.mutation({
             query: (newUser) => ({
-                url: "signup",
+                url: `${USERS_URL}/signup`,
                 method: "POST",
                 body: newUser,
             }),
@@ -39,9 +40,26 @@ const authApi = rootApi.injectEndpoints({
             },
             invalidatesTags: ["Auth"],
         }),
+
+        userLogout: builder.mutation<void, void>({
+            query: () => ({
+                url: `${USERS_URL}/logout`,
+                method: "POST",
+                credentials: "include",
+            }),
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                    dispatch(logout());
+                } catch (error) {
+                    console.error("Login error:", error);
+                }
+            },
+            invalidatesTags: ["Auth"],
+        }),
     }),
 });
 
-export const { useLoginMutation, useSignupMutation } = authApi;
+export const { useLoginMutation, useSignupMutation, useUserLogoutMutation } = authApi;
 
 export default authApi;

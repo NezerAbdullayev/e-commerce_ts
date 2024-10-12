@@ -60,7 +60,6 @@ const App: React.FC = () => {
                             </PirvateRoute>
                         }
                     />
-                    <Route path="about" element={<>div</>} />
                 </Route>
 
                 <Route path="*" element={<PageNotFound />} />

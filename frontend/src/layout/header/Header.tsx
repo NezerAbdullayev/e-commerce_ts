@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -6,30 +6,43 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import StoreIcon from "@mui/icons-material/Store";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Tab, Tabs } from "@mui/material";
+
 import { NavLink, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { isAuthenticated } from "../../redux/slice/userSlice";
+import { Avatar, Menu, MenuItem } from "@mui/material";
+import UserActions from "./UserActions";
+import { useUserLogoutMutation } from "../../redux/services/userApi";
 
 function Header() {
+    const isAuth = useSelector(isAuthenticated);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const [userLogout] = useUserLogoutMutation();
+
     const location = useLocation();
-    const [navBar, setNavBar] = useState<number | null>(0);
+    const [navBar, setNavBar] = useState<string>("");
 
     useEffect(() => {
-        switch (location.pathname) {
-            case "/":
-                setNavBar(0);
-                break;
-            case "/products":
-                setNavBar(1);
-                break;
-            case "/about":
-                setNavBar(2);
-                break;
-            default:
-                setNavBar(null);
-        }
+        setNavBar(location.pathname);
     }, [location.pathname]);
+
+    const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleLogout = useCallback(async () => {
+        try {
+            await userLogout().unwrap();
+        } catch (error) {
+            console.error("Logout error:", error);
+        }
+    }, [userLogout]);
+
+    console.log("re-ernder");
 
     return (
         <AppBar position="sticky" sx={{ background: "#102e42" }}>
@@ -39,41 +52,47 @@ function Header() {
                     TrendTee
                 </Typography>
 
-                <Tabs
-                    textColor="inherit"
-                    value={navBar}
-                    onChange={(_, value) => setNavBar(value)}
-                    indicatorColor="primary"
-                    sx={{ flexGrow: 1, display: "flex" }}
-                >
-                    <Tab label="Home" component={NavLink} to="/" />
-                    <Tab label="Products" component={NavLink} to="/products" />
-                    <Tab label="About" component={NavLink} to="/about" />
-                </Tabs>
+                <Box sx={{ flexGrow: 1, display: "flex" }}>
+                    <Button component={NavLink} to="/" color={navBar === "/" ? "primary" : "inherit"} sx={{ mx: 2 }}>
+                        Home
+                    </Button>
+                    <Button component={NavLink} to="/products" color={navBar === "/products" ? "primary" : "inherit"} sx={{ mx: 2 }}>
+                        Products
+                    </Button>
+                </Box>
 
                 <Box sx={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
-                    <IconButton
-                        size="large"
-                        edge="end"
-                        color="inherit"
-                        aria-label="Favorites"
-                        sx={{ mr: 2 }}
-                        component={NavLink}
-                        to="/favorites"
-                    >
-                        <FavoriteIcon />
-                    </IconButton>
+                    {/* favorites and cart */}
+                    {isAuth && <UserActions />}
 
-                    <IconButton component={NavLink} to="/cart" size="large" edge="end" color="inherit" aria-label="Cart" sx={{ mr: 2 }}>
-                        <ShoppingCartIcon />
-                    </IconButton>
+                    {/* login and register */}
+                    {!isAuth && (
+                        <Box>
+                            <Button component={NavLink} to="/login" variant="contained" sx={{ mr: 2, backgroundColor: "#159792" }}>
+                                Login
+                            </Button>
+                            <Button component={NavLink} to="/signup" variant="contained" sx={{ backgroundColor: "#406e84" }}>
+                                Sign Up
+                            </Button>
+                        </Box>
+                    )}
 
-                    <Button component={NavLink} to="/login" variant="contained" sx={{ mr: 2, backgroundColor: "#159792" }}>
-                        Login
-                    </Button>
-                    <Button component={NavLink} to="/signup" variant="contained" sx={{ backgroundColor: "#406e84" }}>
-                        Sign Up
-                    </Button>
+                    {/* profile */}
+                    {isAuth && (
+                        <>
+                            <IconButton onClick={handleMenuClick} size="large" color="inherit">
+                                <Avatar alt="User Profile" src="/path-to-profile-picture.jpg" />
+                            </IconButton>
+
+                            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+                                <MenuItem onClick={handleMenuClose} component={NavLink} to="/profile">
+                                    Profile
+                                </MenuItem>
+                                <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
+                                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                            </Menu>
+                        </>
+                    )}
                 </Box>
             </Toolbar>
         </AppBar>

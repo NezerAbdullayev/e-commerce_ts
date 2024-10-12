@@ -19,6 +19,16 @@ const usersApi = rootApi.injectEndpoints({
             keepUnusedDataFor: 5,
         }),
 
+        getSearchUsers: builder.query<UserResponse, { search: string }>({
+            query: ({ search }) => ({
+                url: `${USERS_URL}/search?search=${search}`,
+                method: "GET",
+                credentials: "include",
+            }),
+            providesTags: ["Users"],
+            keepUnusedDataFor: 5,
+        }),
+
         deleteUser: builder.mutation<void, { id: string }>({
             query: ({ id }) => ({
                 url: `${USERS_URL}/${id}`,

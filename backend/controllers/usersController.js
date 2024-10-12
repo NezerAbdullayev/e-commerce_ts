@@ -28,7 +28,32 @@ export const getAllUsers = async (req, res) => {
 };
 
 
+export const  getSearchUsers =async(req,res)=>{
+    const search = req.query.search ? req.query.search.trim() : "";
 
+    try {
+        const filter = {
+            name: { $ne: 'admin' } 
+        };
+
+        if (search) {
+            filter.$or = [
+                { name: { $regex: search, $options: "i" } },
+                { email: { $regex: search, $options: "i" } }, 
+            ];
+        }
+        const users = await User.find(filter).select('_id name email'); 
+
+        res.json({
+            users,
+            totalUsers: users.length,s
+        });
+
+    } catch (error) {
+        console.log("Error in getSearchUsers controller", error.message);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+}
 
 
 export const deleteUser = async (req, res) => {

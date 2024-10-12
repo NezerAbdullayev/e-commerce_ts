@@ -84,6 +84,7 @@ const AdminPage: FC = () => {
                             background: colorBgContainer,
                             borderRadius: borderRadiusLG,
                         }}
+                        minHeight={"90vh"}
                     >
                         <Outlet />
                     </Box>

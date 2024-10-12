@@ -1,20 +1,10 @@
 import { FC, useCallback } from "react";
 
-import {
-    Alert,
-    Box,
-    Button,
-    CircularProgress,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableRow,
-    Typography,
-} from "@mui/material";
+import { Alert, Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 import { useGetAllFavoritesQuery, useRemoveAllFavoritesMutation } from "../../redux/services/favoritesApi";
 import FavoritesItem from "./FavoritesItem";
+import Loading from "../../components/Loading";
+import Error from "../admin/components/Error";
 
 const FavoritesPage: FC = () => {
     const { data: favoriteProducts, isLoading: favoritesLoading, error: favoritesError } = useGetAllFavoritesQuery();
@@ -28,22 +18,13 @@ const FavoritesPage: FC = () => {
             console.log(error);
         }
     }, [removeAllFavoritesItems]);
-
     if (favoritesError) {
-        return (
-            <Box display="flex" justifyContent="center" alignItems={"center"} p={2} minHeight={"100vh"}>
-                <Alert severity="error">An error occurred while fetching the favorites data.</Alert>
-            </Box>
-        );
+        return <Error message="An error occurred while fetching the favorites data." />;
     }
 
     return (
         <Box className="relative mx-auto mt-10 w-[1280px] max-w-[90%]">
-            {favoritesLoading && (
-                <Box display="flex" justifyContent="center" p={2} position="absolute" className="left-[50%] top-[50%]">
-                    <CircularProgress />
-                </Box>
-            )}
+            {favoritesLoading && <Loading />}
 
             <Typography variant="h4" gutterBottom className="font-bold text-white" align="center">
                 Favorites

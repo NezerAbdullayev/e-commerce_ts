@@ -6,7 +6,7 @@ interface UsePaginationProps {
     initialPage?: number;
 }
 
-const usePagination = ({ initialPage = 1, limit = 10 }: UsePaginationProps) => {
+const useAllProductsPagination = ({ initialPage = 1, limit = 10 }: UsePaginationProps) => {
     const [currentPage, setCurrentPage] = useState(initialPage);
     const { data, isLoading, error } = useGetAllProductsQuery({ page: currentPage, limit });
 
@@ -24,4 +24,4 @@ const usePagination = ({ initialPage = 1, limit = 10 }: UsePaginationProps) => {
     };
 };
 
-export default usePagination;
+export default useAllProductsPagination;

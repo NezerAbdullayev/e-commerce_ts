@@ -13,7 +13,7 @@ const FavoritesControl: FC<FavoritesProps> = ({ id, productId, image, name, pric
 
     const [addToCart, { isLoading: cartCoading }] = useAddToCartMutation();
 
-    const onRemoveFavoritesIem = useCallback(async () => {
+    const onRemoveFavoritesItem = useCallback(async () => {
         Modal.confirm({
             title: "Are you sure you want to remove this item from favorites?",
             okText: "Yes",
@@ -50,7 +50,7 @@ const FavoritesControl: FC<FavoritesProps> = ({ id, productId, image, name, pric
                 <AddShoppingCartIcon />
             </IconButton>
 
-            <IconButton aria-label="Delete" color="error" onClick={onRemoveFavoritesIem} disabled={favoritesLoading}>
+            <IconButton aria-label="Delete" color="error" onClick={onRemoveFavoritesItem} disabled={favoritesLoading}>
                 <DeleteIcon />
             </IconButton>
         </>

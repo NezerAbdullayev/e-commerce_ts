@@ -2,13 +2,16 @@ import { FC, useMemo } from "react";
 import { Alert, Box, Pagination } from "@mui/material";
 import ProductCard from "../productCard/ProductCard";
 import CardContainer from "../productCard/CardContainer";
-import usePagination from "../../hooks/use-Pagination";
+import useAllProductsPagination from "../../hooks/use-allProductsPagination";
 import Loading from "../Loading";
 import { useGetAllFavoritesQuery } from "../../redux/services/favoritesApi";
 
 const ProductsPagination: FC = () => {
-    const { products, totalPages, currentPage, isLoading, error, handlePageChange } = usePagination({ initialPage: 1, limit: 12 });
-    const { data: favoritesData } = useGetAllFavoritesQuery(); 
+    const { products, totalPages, currentPage, isLoading, error, handlePageChange } = useAllProductsPagination({
+        initialPage: 1,
+        limit: 12,
+    });
+    const { data: favoritesData } = useGetAllFavoritesQuery();
 
     const favoriteIds = useMemo(() => (favoritesData && favoritesData?.map((fav) => fav.productId)) || [], [favoritesData]);
 

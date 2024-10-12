@@ -1,7 +1,7 @@
 import { CartData, CartProps } from "../../types/globalTypes";
 import { CART_URL } from "../constants";
 
-import { rootApi } from "./api";
+import { rootApi } from "../rootApi";
 
 export const cartApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({

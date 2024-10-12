@@ -6,7 +6,7 @@ import userReducer from "./slice/userSlice";
 
 // api
 import productsApi from "./services/productsApi";
-import { rootApi } from "./services/api";
+import { rootApi } from "./rootApi";
 
 const store = configureStore({
     reducer: {

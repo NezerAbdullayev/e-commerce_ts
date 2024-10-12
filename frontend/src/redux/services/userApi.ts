@@ -1,6 +1,6 @@
 import { setUser } from "../slice/userSlice";
 import { USERS_URL } from "../constants";
-import { rootApi } from "./api";
+import { rootApi } from "../rootApi";
 
 const authApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({

@@ -1,5 +1,5 @@
 import { FavoritesResponse } from "../../types/globalTypes";
-import { rootApi } from "./api";
+import { rootApi } from "../rootApi";
 import { FAVORITES_URL } from "../constants";
 
 const favoritesApi = rootApi.injectEndpoints({

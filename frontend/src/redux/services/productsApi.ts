@@ -8,6 +8,8 @@ const productsApi = createApi({
     endpoints: (builder) => ({
         getAllProducts: builder.query<Products[], { page: number; limit: number }>({
             query: ({ page, limit }) => `?page=${page}&limit=${limit}`,
+            keepUnusedDataFor: 5,
+            providesTags: ["Products"],
         }),
 
         getRandomProducts: builder.query<Products[], { count: number }>({
@@ -23,6 +25,8 @@ const productsApi = createApi({
 
         getProductById: builder.query<Products, { id: string }>({
             query: ({ id }) => `${id}`,
+
+            keepUnusedDataFor: 5,
         }),
     }),
 });

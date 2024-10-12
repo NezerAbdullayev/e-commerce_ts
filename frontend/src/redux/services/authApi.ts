@@ -1,12 +1,12 @@
 import { logout, setUser } from "../slice/authSlice";
-import { USERS_URL } from "../constants";
+import { AUTH_URL } from "../constants";
 import { rootApi } from "../rootApi";
 
 const authApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
         login: builder.mutation({
             query: (user) => ({
-                url: `${USERS_URL}/login`,
+                url: `${AUTH_URL}/login`,
                 method: "POST",
                 body: user,
                 credentials: "include",
@@ -25,7 +25,7 @@ const authApi = rootApi.injectEndpoints({
 
         signup: builder.mutation({
             query: (newUser) => ({
-                url: `${USERS_URL}/signup`,
+                url: `${AUTH_URL}/signup`,
                 method: "POST",
                 body: newUser,
             }),
@@ -33,7 +33,7 @@ const authApi = rootApi.injectEndpoints({
 
         userLogout: builder.mutation<void, void>({
             query: () => ({
-                url: `${USERS_URL}/logout`,
+                url: `${AUTH_URL}/logout`,
                 method: "POST",
                 credentials: "include",
             }),

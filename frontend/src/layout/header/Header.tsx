@@ -42,8 +42,6 @@ function Header() {
         }
     }, [userLogout]);
 
-    console.log("re-ernder");
-
     return (
         <AppBar position="sticky" sx={{ background: "#102e42" }}>
             <Toolbar>

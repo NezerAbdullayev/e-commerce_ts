@@ -1,11 +1,15 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC } from "react";
 // components
 import { AppstoreAddOutlined } from "@ant-design/icons";
 import PlaylistAddCircleIcon from "@mui/icons-material/PlaylistAddCircle";
-import { Layout, Menu, MenuProps, theme } from "antd";
-import Analytics from "./components/analytics/Analytics.tsx";
-import Products from "./components/products/Products.tsx";
-import AddNewProduct from "./components/products/AddNewProduct.tsx";
+import CategoryIcon from "@mui/icons-material/Category";
+import GroupIcon from "@mui/icons-material/Group";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import { Layout, theme } from "antd";
+
+import { Outlet } from "react-router";
+import { Box, Typography } from "@mui/material";
+import Link from "./components/Link";
 
 const { Header, Content, Sider } = Layout;
 
@@ -20,65 +24,69 @@ const siderStyle: React.CSSProperties = {
     scrollbarWidth: "thin",
     scrollbarColor: "unset",
 };
-type MenuItem = Required<MenuProps>["items"][number];
-
-const items: MenuItem[] = [
-    { key: "1", icon: <AppstoreAddOutlined />, label: "Dashboard" },
-    { key: "2", icon: <PlaylistAddCircleIcon />, label: "Add new Product" },
-    { key: "3", icon: <div />, label: "Analytics" },
-];
 
 const AdminPage: FC = () => {
-    const [current, setCurrent] = useState("1");
-
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
-    const onClick: MenuProps["onClick"] = (e) => {
-        setCurrent(e.key);
-    };
-
-    const renderContent = useCallback(() => {
-        switch (current) {
-            case "1":
-                return <Products />;
-            case "2":
-                return <AddNewProduct />;
-            case "3":
-                return <Analytics />;
-            default:
-                return <div>page not found</div>;
-        }
-    }, [current]);
-
     return (
         <Layout hasSider style={{ padding: 0, minHeight: "100vh" }}>
+            {/* sidebar */}
             <Sider style={siderStyle}>
-                <Menu
-                    theme="dark"
-                    mode="inline"
-                    defaultSelectedKeys={["4"]}
-                    style={{ width: 256, margin: "20px 0" }}
-                    selectedKeys={[current]}
-                    items={items}
-                    onClick={onClick}
-                />
+                <Box mt={1}>
+                    <Link to="/admin/dashboard">
+                        <BarChartIcon className="mr-2 text-xl" />
+                        <Typography variant="body1" component="span">
+                            Dashboard
+                        </Typography>
+                    </Link>
+
+                    <Link to="/admin/products">
+                        <AppstoreAddOutlined className="mr-2 text-xl" />
+                        <Typography variant="body1" component="span">
+                            Products
+                        </Typography>
+                    </Link>
+
+                    <Link to="/admin/createProduct">
+                        <PlaylistAddCircleIcon className="mr-2 text-xl" />
+                        <Typography variant="body1" component="span">
+                            Create New Product
+                        </Typography>
+                    </Link>
+
+                    <Link to="/admin/categorys">
+                        <CategoryIcon className="mr-2 text-xl" />
+                        <Typography variant="body1" component="span">
+                            Category
+                        </Typography>
+                    </Link>
+
+                    <Link to="/admin/users">
+                        <GroupIcon className="mr-2 text-xl" />
+                        <Typography variant="body1" component="span">
+                            Users
+                        </Typography>
+                    </Link>
+                </Box>
             </Sider>
+
+            {/* content */}
             <Layout style={{ marginInlineStart: 200 }}>
                 <Header style={{ padding: 0, background: colorBgContainer, textAlign: "center", fontWeight: "bold", fontSize: "28px" }}>
                     WELCOME TO ADMIN
                 </Header>
                 <Content style={{ overflow: "initial", maxWidth: "95%", margin: "10px auto", width: "1200px" }}>
-                    <div
+                    <Box
                         style={{
                             textAlign: "center",
                             background: colorBgContainer,
                             borderRadius: borderRadiusLG,
                         }}
                     >
-                        {renderContent()}
-                    </div>
+                        <Outlet />
+                    </Box>
                 </Content>
             </Layout>
         </Layout>

@@ -17,6 +17,11 @@ import PageNotFound from "./pages/error/PageNotFound";
 import PirvateRoute from "./components/PirvateRoute";
 import { userRole } from "./redux/slice/userSlice";
 import { useSelector } from "react-redux";
+import Dashboard from "./pages/admin/components/dashboard/Dashboard";
+import UsersTable from "./pages/admin/components/usersTable/UsersTable";
+import AddNewProduct from "./pages/admin/components/createProduct/AddNewProduct";
+import TableProducts from "./pages/admin/components/productsTable/TableProducts";
+import Categories from "./pages/admin/components/category/Categories";
 
 const App: React.FC = () => {
     const role = useSelector(userRole);
@@ -24,18 +29,19 @@ const App: React.FC = () => {
     return (
         <BrowserRouter>
             <Routes>
-                {/* Admin route */}
-                <Route path="/admin" element={role === "admin" ? <AdminPage /> : <Navigate to="/" />} />
+                {/* Admin panel */}
+                <Route path="/admin" element={role === "admin" ? <AdminPage /> : <Navigate to="/" />}>
+                    <Route index element={<Navigate to="dashboard" />} />
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="products" element={<TableProducts />} />
+                    <Route path="users" element={<UsersTable />} />
+                    <Route path="createProduct" element={<AddNewProduct />} />
+                    <Route path="categorys" element={<Categories />} />
+                </Route>
+
+                {/* auth */}
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
-
-                {/* <Route path="/admin" element={role === "admin" ? <AdminPage /> : <Navigate to="/" />}>
-
-                    <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="createproduct" element={<CreateProduct />} />
-                    <Route path="users" element={<Users />} />
-                    
-                </Route> */}
 
                 {/* App layout routes */}
                 <Route path="/" element={<AppLayout />}>

@@ -12,27 +12,6 @@ import FormTextarea from "../../../../components/Forms/FormTextarea";
 import FormSelect from "../../../../components/Forms/FormSellect";
 import FormInputFile from "../../../../components/Forms/FormInputFile";
 
-// const productFormArr: FormItem[] = [
-//     { label: "name", type: "text" },
-//     { label: "price", type: "number" },
-//     { label: "stock", type: "number" },
-//     { label: "brand", type: "text" },
-//     {
-//         label: "category",
-//         type: "select",
-//         multiple: true,
-//         options: [
-//             { value: "OverSized", label: "OverSized" },
-//             { value: "T-shirt", label: "T-Shirt" },
-//             { value: "Long-sleeve", label: "Long-sleeve" },
-//             { value: "Basic Tees", label: "Basic Tees" },
-//             { value: "Hoodie", label: "Hoodie" },
-//         ],
-//     },
-//     { label: "image", type: "file" },
-//     { label: "description", type: "textarea" },
-// ];
-
 const options: Options[] = [
     { value: "OverSized", label: "OverSized" },
     { value: "T-shirt", label: "T-Shirt" },

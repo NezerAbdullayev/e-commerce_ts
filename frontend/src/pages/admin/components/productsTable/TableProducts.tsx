@@ -7,7 +7,7 @@ import { Products as ProductsType } from "../../../../types/globalTypes";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FormInput from "../../../../components/Forms/FormInput";
-import { NewProduct } from "./AddNewProduct";
+import { NewProduct } from "../createProduct/AddNewProduct";
 import FormTextarea from "../../../../components/Forms/FormTextarea";
 import FormInputFile from "../../../../components/Forms/FormInputFile";
 import FormSelect from "../../../../components/Forms/FormSellect";
@@ -26,7 +26,7 @@ interface DataType {
     description: string;
 }
 
-const Products: FC = () => {
+const TableProducts: FC = () => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [products, setProducts] = useState<DataType[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -73,7 +73,7 @@ const Products: FC = () => {
             okType: "danger",
         });
     };
-    
+
     const onEditProduct = async (id: string) => {
         setIsEdit(true);
         console.log(id);
@@ -187,4 +187,4 @@ const Products: FC = () => {
     );
 };
 
-export default Products;
+export default TableProducts;

@@ -29,6 +29,8 @@ export const getAllUsers = async (req, res) => {
 
 
 export const  getSearchUsers =async(req,res)=>{
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10; 
     const search = req.query.search ? req.query.search.trim() : "";
 
 
@@ -44,11 +46,18 @@ export const  getSearchUsers =async(req,res)=>{
                 { email: { $regex: search, $options: "i" } }, 
             ];
         }
-        const users = await User.find(filter).select('_id name email'); 
+
+        const totalUsers = await User.countDocuments(filter);
+
+        const users = await User.find(filter).select('_id name email').skip((page - 1) * limit).limit(limit);
+
+        console.log(users?.length)
 
         res.json({
             users,
-            totalUsers: users.length,
+            totalUsers,
+            totalPages: Math.ceil(totalUsers / limit),
+            currentPage: page,
         });
 
     } catch (error) {

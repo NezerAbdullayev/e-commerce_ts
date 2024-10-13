@@ -27,7 +27,7 @@ const siderStyle: React.CSSProperties = {
 
 const AdminPage: FC = () => {
     const {
-        token: { colorBgContainer, borderRadiusLG },
+        token: { colorBgContainer },
     } = theme.useToken();
 
     return (
@@ -81,10 +81,9 @@ const AdminPage: FC = () => {
                     <Box
                         style={{
                             textAlign: "center",
-                            background: colorBgContainer,
-                            borderRadius: borderRadiusLG,
                         }}
                         minHeight={"90vh"}
+                        mt={3}
                     >
                         <Outlet />
                     </Box>

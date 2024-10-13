@@ -10,7 +10,7 @@ const categoryApi = rootApi.injectEndpoints({
             keepUnusedDataFor: 5,
         }),
 
-        createCategory: builder.mutation({
+        createCategory: builder.mutation<void, { name: string }>({
             query: ({ name }) => ({
                 url: `${CATEGORY_URL}/`,
                 method: "POST",
@@ -20,7 +20,7 @@ const categoryApi = rootApi.injectEndpoints({
             invalidatesTags: ["Category"],
         }),
 
-        deleteCategory: builder.mutation({
+        deleteCategory: builder.mutation<void, { id: string }>({
             query: ({ id }) => ({
                 url: `${CATEGORY_URL}/${id}`,
                 method: "DELETE",
@@ -29,7 +29,7 @@ const categoryApi = rootApi.injectEndpoints({
             invalidatesTags: ["Category"],
         }),
 
-        updateCategory: builder.mutation({
+        updateCategory: builder.mutation<void, { name: string; id: string }>({
             query: ({ name, id }) => ({
                 url: `${CATEGORY_URL}/${id}`,
                 method: "PUT",

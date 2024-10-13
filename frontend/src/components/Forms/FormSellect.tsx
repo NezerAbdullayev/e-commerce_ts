@@ -1,5 +1,5 @@
 import { Form, Select } from "antd";
-import { Control, Controller, FieldErrors, FieldValues, Path, PathValue } from "react-hook-form";
+import { Control, Controller, FieldValues, Path, PathValue } from "react-hook-form";
 
 const { Option } = Select;
 
@@ -9,14 +9,14 @@ interface FormSelectProps<T extends FieldValues> {
     options: { label: string; value: string | number }[];
     multiple?: boolean;
     placeholder?: string;
-    errors: FieldErrors<T>;
+    error?: string;
     defaultValue?: PathValue<T, Path<T>>;
 }
 
 const FormSelect = <T extends FieldValues>({
     name,
     control,
-    errors,
+    error,
     options,
     multiple,
     placeholder,
@@ -24,17 +24,16 @@ const FormSelect = <T extends FieldValues>({
     ...rest
 }: FormSelectProps<T>) => {
     return (
-        <Form.Item
-            label={name.charAt(0).toUpperCase() + name.slice(1)}
-            validateStatus={errors[name] ? "error" : ""}
-            help={errors[name]?.message ? String(errors[name]?.message) : null}
-        >
+        <Form.Item validateStatus={error ? "error" : ""} help={error ? String(error) : null}>
+            <label className="mb-1 ml-2 block text-start text-sm font-bold text-gray-700">
+                {name.charAt(0).toUpperCase() + name.slice(1)}
+            </label>
             <Controller
                 name={name}
                 control={control}
                 render={({ field: { onChange, onBlur, value, ref } }) => (
                     <Select
-                        style={{ width: "100%" }}
+                        style={{ width: "100%", backgroundColor: "lightyellow" }}
                         mode={multiple ? "multiple" : undefined}
                         defaultValue={defaultValue}
                         placeholder={placeholder}
@@ -42,6 +41,9 @@ const FormSelect = <T extends FieldValues>({
                         onBlur={onBlur}
                         ref={ref}
                         value={value}
+                        className={`block w-full rounded-md transition-all focus:outline-none ${
+                            error ? "border-red-500" : "border-gray-300"
+                        }`}
                         {...rest}
                     >
                         {options.map((option) => (

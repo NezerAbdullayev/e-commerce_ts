@@ -1,21 +1,24 @@
 import { Form, Input } from "antd";
-import { Control, Controller, FieldErrors, FieldValues, Path, PathValue } from "react-hook-form";
+import { Control, Controller, FieldValues, Path, PathValue } from "react-hook-form";
 
 interface FormInputProps<T extends FieldValues> {
     name: Path<T>;
     control: Control<T>;
     defaultValue?: PathValue<T, Path<T>>;
-    errors: FieldErrors<T>;
+    error?: string;
     type?: string;
 }
 
-const FormInput = <T extends FieldValues>({ name, control, errors, defaultValue, type = "text", ...rest }: FormInputProps<T>) => {
+const FormInput = <T extends FieldValues>({ name, control, error, defaultValue, type = "text", ...rest }: FormInputProps<T>) => {
     return (
         <Form.Item
-            label={name.charAt(0).toUpperCase() + name.slice(1)}
-            validateStatus={errors[name] ? "error" : ""}
-            help={errors[name]?.message ? (errors[name]?.message as string) : null}
+            className="mb-4"
+            validateStatus={error ? "error" : ""}
+            help={error ? <span className="text-xs italic text-red-500">{error}</span> : null}
         >
+            <label className="mb-1 ml-2 block text-start text-sm font-bold text-gray-700">
+                {name.charAt(0).toUpperCase() + name.slice(1)}
+            </label>
             <Controller
                 name={name}
                 control={control}
@@ -27,7 +30,15 @@ const FormInput = <T extends FieldValues>({ name, control, errors, defaultValue,
                         onBlur={onBlur}
                         value={value}
                         ref={ref}
-                        className="rounded bg-stone-50 p-2 hover:bg-stone-50"
+                        placeholder={name}
+                        className={`block w-full rounded-md border px-4 transition-all focus:outline-none ${
+                            error ? "border-red-500" : "border-gray-300"
+                        }`}
+                        style={{
+                            backgroundColor: "lightyellow",
+                            borderRadius: "8px",
+                            padding: "12px",
+                        }}
                         {...rest}
                     />
                 )}
@@ -35,4 +46,5 @@ const FormInput = <T extends FieldValues>({ name, control, errors, defaultValue,
         </Form.Item>
     );
 };
+
 export default FormInput;

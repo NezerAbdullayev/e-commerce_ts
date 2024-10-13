@@ -1,43 +1,45 @@
 import { Button, Form, Upload } from "antd";
-import { Control, Controller, FieldErrors, FieldValues, Path, PathValue } from "react-hook-form";
+import { Control, Controller, FieldValues, Path, PathValue } from "react-hook-form";
 import { UploadOutlined } from "@ant-design/icons";
+import { Box } from "@mui/material";
 
 interface FormInputProps<T extends FieldValues> {
     name: Path<T>;
     control: Control<T>;
-    errors: FieldErrors<T>;
+    error?: string;
     defaultValue?: PathValue<T, Path<T>>;
 }
 
-const FormInputFile = <T extends FieldValues>({ name, control, defaultValue, errors }: FormInputProps<T>) => {
+const FormInputFile = <T extends FieldValues>({ name, control, defaultValue, error }: FormInputProps<T>) => {
     return (
-        <Form.Item
-            label={name.charAt(0).toUpperCase() + name.slice(1)}
-            validateStatus={errors[name] ? "error" : ""}
-            help={errors[name]?.message ? String(errors[name]?.message) : null}
-        >
+        <Form.Item validateStatus={error ? "error" : ""} help={error ? error.toString() : null}>
+            <label className="mb-1 ml-2 block text-start text-sm font-bold text-gray-700">
+                {name.charAt(0).toUpperCase() + name.slice(1)}
+            </label>
             <Controller
                 name={name}
                 control={control}
                 defaultValue={defaultValue}
                 render={({ field: { onChange, value } }) => (
-                    <Upload
-                        multiple
-                        accept="image/*"
-                        beforeUpload={(file) => {
-                            onChange([...(value || []), file]);
-                            return false;
-                        }}
-                        onChange={(info) => {
-                            const { fileList } = info;
-                            onChange(fileList);
-                        }}
-                        showUploadList={true}
-                    >
-                        <Button className="rounded bg-stone-50 p-2">
-                            <UploadOutlined /> Download
-                        </Button>
-                    </Upload>
+                    <Box display={"flex"} justifyContent={"start"}>
+                        <Upload
+                            multiple
+                            accept="image/*"
+                            beforeUpload={(file) => {
+                                onChange([...(value || []), file]);
+                                return false;
+                            }}
+                            onChange={(info) => {
+                                const { fileList } = info;
+                                onChange(fileList);
+                            }}
+                            showUploadList={true}
+                        >
+                            <Button className="rounded bg-stone-50 p-2">
+                                <UploadOutlined /> Download
+                            </Button>
+                        </Upload>
+                    </Box>
                 )}
             />
         </Form.Item>

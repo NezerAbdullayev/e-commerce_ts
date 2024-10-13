@@ -144,7 +144,11 @@ function UsersTable() {
                     {/* table body */}
                     <TableBody>
                         {searchLoading || usersLoading ? (
-                            <Loading />
+                            <TableRow>
+                                <TableCell colSpan={3} align="center">
+                                    <Loading />
+                                </TableCell>
+                            </TableRow>
                         ) : hasSearchResults || hasDefaultUsers ? (
                             displayUsers.map((item) => <UserTableRow key={item._id} id={item._id} name={item.name} email={item.email} />)
                         ) : (

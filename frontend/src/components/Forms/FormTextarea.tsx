@@ -1,5 +1,5 @@
 import { Form, Input } from "antd";
-import { Control, Controller, FieldErrors, FieldValues, Path, PathValue } from "react-hook-form";
+import { Control, Controller, FieldValues, Path, PathValue } from "react-hook-form";
 
 const { TextArea } = Input;
 
@@ -7,16 +7,12 @@ interface FormTextareaProps<T extends FieldValues> {
     name: Path<T>;
     control: Control<T>;
     defaultValue?: PathValue<T, Path<T>>;
-    errors: FieldErrors<T>;
+    error?: string;
 }
 
-const FormTextarea = <T extends FieldValues>({ name, control, errors, defaultValue }: FormTextareaProps<T>) => {
+const FormTextarea = <T extends FieldValues>({ name, control, error, defaultValue }: FormTextareaProps<T>) => {
     return (
-        <Form.Item
-            label={name.charAt(0).toUpperCase() + name.slice(1)}
-            validateStatus={errors[name] ? "error" : ""}
-            help={errors[name]?.message ? String(errors[name]?.message) : null}
-        >
+        <Form.Item validateStatus={error ? "error" : ""} help={error ? error.toString() : null}>
             <Controller
                 name={name}
                 control={control}
@@ -27,8 +23,16 @@ const FormTextarea = <T extends FieldValues>({ name, control, errors, defaultVal
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value}
+                        placeholder={name}
                         ref={ref}
-                        className="rounded bg-stone-50 p-2 hover:bg-stone-50"
+                        className={`block w-full rounded-md border px-4 transition-all focus:outline-none ${
+                            error ? "border-red-500" : "border-gray-300"
+                        }`}
+                        style={{
+                            backgroundColor: "lightyellow",
+                            borderRadius: "8px",
+                            padding: "12px",
+                        }}
                     />
                 )}
             />

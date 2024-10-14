@@ -16,18 +16,18 @@ export const getAllCategory=async(_,res)=>{
 
 
 export const  createCategory=async(req,res)=>{
+    const {categoryName}=req.body
     try {
-        const {name}=req.body
 
-        if(!name){
+        if(!categoryName){
             return res.status(404).json({error:"Name is required!"})
         }
 
-        const existingCayegory= await Category.findOne({name})
+        const existingCayegory= await Category.findOne({name:categoryName})
 
         if(existingCayegory) return res.status(404).json({error:"Already exists"})
 
-        const category=await Category.create({name})
+        const category=await Category.create({name:categoryName})
 
         res.status(201).json({
             _id:category._id,
@@ -53,18 +53,19 @@ export const  deleteCategory =async(req,res)=>{
 }
 export const updateCategory=async(req,res)=>{
     try {
-        const {name}=req.body;
+        const {categoryName:updateCategory}=req.body;
         const {id}=req.params
+
     
-        if(!id || !name)
+        if(!id || !updateCategory)
             return res.status(404).json({message:"Category not found"});
     
         const category= await Category.findOne({_id:id});
     
         if(!category)
             return res.status(404).json({message:"Category not found"});
-    
-        category.name=name 
+
+        category.name=updateCategory 
     
         const updatedCategory=await category.save()
 

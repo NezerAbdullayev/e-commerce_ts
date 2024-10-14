@@ -11,6 +11,7 @@ import FormInput from "../../../../components/Forms/FormInput";
 import FormTextarea from "../../../../components/Forms/FormTextarea";
 import FormSelect from "../../../../components/Forms/FormSellect";
 import FormInputFile from "../../../../components/Forms/FormInputFile";
+import { Box } from "@mui/material";
 
 const options: Options[] = [
     { value: "OverSized", label: "OverSized" },
@@ -32,6 +33,7 @@ export interface NewProduct {
 
 const AddNewProduct: FC = () => {
     const [createNewProduct, { data: createdData, error: createProductError, isLoading }] = useCreateNewProductMutation();
+
     const {
         control,
         handleSubmit,
@@ -46,7 +48,7 @@ const AddNewProduct: FC = () => {
                 ...data,
                 image: base64Images,
             };
-            // createNewProduct({ newProduct });
+            createNewProduct({ newProduct });
             console.log(newProduct);
         } catch (error) {
             console.error("Error converting images to base64:", error);
@@ -64,20 +66,30 @@ const AddNewProduct: FC = () => {
         // );
     }
 
-    console.log(createProductError, "createProductError", createdData, "data");
+    console.log(errors, "errors");
 
     return (
-        <Form onFinish={handleSubmit(onSubmit)} {...formItemLayout}>
-            <FormInput<NewProduct> errors={errors} name="name" control={control} />
-            <FormInput<NewProduct> errors={errors} name="price" type="number" control={control} />
-            <FormInput<NewProduct> errors={errors} name="stock" type="number" control={control} />
-            <FormInput<NewProduct> errors={errors} name="brand" control={control} />
-            <FormTextarea<NewProduct> errors={errors} name="description" control={control} />
-            <FormInputFile<NewProduct> errors={errors} name="image" control={control} />
-            <FormSelect<NewProduct> errors={errors} name="category" control={control} options={options} multiple={true} />
+        <Box className="max-w-[600px]">
+            <Form onFinish={handleSubmit(onSubmit)} {...formItemLayout} className="w-full">
+                <FormInput<NewProduct> error={errors.name?.message} name="name" control={control} />
+                <Box display={"flex"}>
+                    <FormInput<NewProduct> error={errors.price?.message} name="price" type="number" control={control} />
+                    <FormInput<NewProduct> error={errors.stock?.message} name="stock" type="number" control={control} />
+                </Box>
+                <FormInput<NewProduct> error={errors.brand?.message} name="brand" control={control} />
+                <FormTextarea<NewProduct> error={errors.description?.message} name="description" control={control} />
+                <FormInputFile<NewProduct> error={errors.image?.message} name="image" control={control} />
+                <FormSelect<NewProduct>
+                    error={errors.category?.message}
+                    name="category"
+                    control={control}
+                    options={options}
+                    multiple={true}
+                />
 
-            <Button htmlType="submit">Submit</Button>
-        </Form>
+                <Button htmlType="submit">Submit</Button>
+            </Form>
+        </Box>
     );
 };
 

@@ -10,11 +10,11 @@ const categoryApi = rootApi.injectEndpoints({
             keepUnusedDataFor: 5,
         }),
 
-        createCategory: builder.mutation<void, { name: string }>({
-            query: ({ name }) => ({
+        createCategory: builder.mutation<void, { categoryName: string }>({
+            query: ({ categoryName }) => ({
                 url: `${CATEGORY_URL}/`,
                 method: "POST",
-                body: name,
+                body: { categoryName },
                 credentials: "include",
             }),
             invalidatesTags: ["Category"],
@@ -29,11 +29,11 @@ const categoryApi = rootApi.injectEndpoints({
             invalidatesTags: ["Category"],
         }),
 
-        updateCategory: builder.mutation<void, { name: string; id: string }>({
-            query: ({ name, id }) => ({
+        updateCategory: builder.mutation<void, { categoryName: string; id: string }>({
+            query: ({ categoryName, id }) => ({
                 url: `${CATEGORY_URL}/${id}`,
                 method: "PUT",
-                body: name,
+                body: { categoryName },
                 credentials: "include",
             }),
             invalidatesTags: ["Category"],

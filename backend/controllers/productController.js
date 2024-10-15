@@ -1,6 +1,7 @@
 import cloudinary from "../config/cloudinary.js";
 import { redis } from "../config/redis.js";
 import ProductModel from "../models/productModel.js";
+import Category from "../models/categoryModel.js";
 
 const getAllProducts = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
@@ -8,6 +9,7 @@ const getAllProducts = async (req, res) => {
     try {
         // get all products
         const products = await ProductModel.find({})
+            .populate("category", "name")
             .sort({ $natural: -1 })
             .limit(limit)
             .skip((page - 1) * limit);
@@ -112,7 +114,6 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-
 const getRecommendedProducts = async (_, res) => {
     try {
         const products = await ProductModel.aggregate([
@@ -135,11 +136,11 @@ const getRecommendedProducts = async (_, res) => {
     }
 };
 
-const getRandomProducts=async(req,res)=>{
-    const count = parseInt(req.params.count) || 5; 
+const getRandomProducts = async (req, res) => {
+    const count = parseInt(req.params.count) || 5;
 
     try {
-        const randomProducts = await ProductModel.aggregate([{ $sample: { size: count } }]); 
+        const randomProducts = await ProductModel.aggregate([{ $sample: { size: count } }]);
 
         if (randomProducts.length === 0) {
             return res.status(404).json({ message: "No products found" });
@@ -150,46 +151,69 @@ const getRandomProducts=async(req,res)=>{
         console.error("Error in getting random products", error.message);
         res.status(500).json({ message: "Server error", error: error.message });
     }
-}
+};
 
-const getProductById= async(req,res)=>{
+const getProductById = async (req, res) => {
     try {
         const productId = req.params.id;
-        const product = await ProductModel.findById(productId); 
+        const product = await ProductModel.findById(productId).populate("category", "name");
         if (!product) {
             return res.status(404).json({ message: "Product not found" });
         }
         res.json(product);
     } catch (error) {
-        res.status(500).json({ message: "Server error",error:error.message});
+        res.status(500).json({ message: "Server error", error: error.message });
     }
-}
+};
 
 const getProductByCategory = async (req, res) => {
-    const { categories } = req.params;
-    const page = parseInt(req.query.page) || 1;  
-    const limit = parseInt(req.query.limit) || 10; 
-
-    console.log(categories)
+    const { categories, brand, minPrice, maxPrice, search } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
     try {
-        const categoryArray = categories.split(",");
+        const filter = {};
 
+        // Categories
+        if (categories) {
+            const categoryArray = categories.split(",");
+            const categoryIds = await Category.find({ name: { $in: categoryArray } }, "_id");
+            filter.category = { $in: categoryIds };
+        }
 
-        const products = await ProductModel.find({ category: { $in: categoryArray } })
+        // Brand
+        if (brand) {
+            filter.brand = brand;
+        }
+
+        // Price Range (
+        if (minPrice || maxPrice) {
+            filter.price = {};
+            if (minPrice) filter.price.$gte = parseInt(minPrice);
+            if (maxPrice) filter.price.$lte = parseInt(maxPrice);
+        }
+
+        // Search
+        if (search) {
+            filter.name = { $regex: search, $options: "i" };
+        }
+
+        // find products
+        const products = await ProductModel.find(filter)
             .limit(limit)
             .skip((page - 1) * limit);
 
-        const totalProducts = await ProductModel.countDocuments({ category: { $in: categoryArray } });
+        // total products
+        const totalProducts = await ProductModel.countDocuments(filter);
 
         res.json({
             products,
             currentPage: page,
             totalPages: Math.ceil(totalProducts / limit),
-            totalProducts
+            totalProducts,
         });
     } catch (error) {
-        console.log("Error in getProductsByCategory controller", error.message);
+        console.log("Error in getProducts controller", error.message);
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };

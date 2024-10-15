@@ -1,13 +1,17 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "swiper/swiper-bundle.css";
 import "swiper/css";
 import "swiper/css/pagination";
+import { userRole } from "./redux/slice/authSlice";
+import { useSelector } from "react-redux";
+
 import AppLayout from "./layout/AppLayout";
 import HomePage from "./pages/home/HomePage";
 import CartPage from "./pages/cart/CartPage";
 import AdminPage from "./pages/admin/AdminPage";
-
 import LoginPage from "./pages/login/LoginPage";
 import SignupPage from "./pages/signup/SignupPage";
 import ProductsPage from "./pages/products/ProductsPage";
@@ -15,8 +19,6 @@ import DetailsPage from "./pages/details/DetailsPage";
 import FavoritesPage from "./pages/favorites/FavoritesPage";
 import PageNotFound from "./pages/error/PageNotFound";
 import PirvateRoute from "./components/PirvateRoute";
-import { userRole } from "./redux/slice/authSlice";
-import { useSelector } from "react-redux";
 import Dashboard from "./pages/admin/components/dashboard/Dashboard";
 import UsersTable from "./pages/admin/components/usersTable/UsersTable";
 import AddNewProduct from "./pages/admin/components/createProduct/AddNewProduct";
@@ -28,6 +30,19 @@ const App: React.FC = () => {
 
     return (
         <BrowserRouter>
+            <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+                style={{ top: "100px" }}
+            />
             <Routes>
                 {/* Admin panel */}
                 <Route path="/admin" element={role === "admin" ? <AdminPage /> : <Navigate to="/" />}>
@@ -73,7 +88,5 @@ const App: React.FC = () => {
         </BrowserRouter>
     );
 };
-
-// https://au.pinterest.com/alarnahope/mens-style-types/trend-setter/
 
 export default App;

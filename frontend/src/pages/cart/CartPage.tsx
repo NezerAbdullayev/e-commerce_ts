@@ -17,8 +17,6 @@ const CartPage: FC = () => {
         );
     }
 
-    console.log("burada cart pagedir ");
-
     return (
         <Box className="relative mx-auto mt-10 w-[1280px] max-w-[90%]">
             {cartLoading && <Loading />}

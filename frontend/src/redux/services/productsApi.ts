@@ -25,14 +25,14 @@ const productsApi = rootApi.injectEndpoints({
         }),
 
         getProductById: builder.query<Products, { id: string | undefined }>({
-            query: ({ id }) => `${id}`,
+            query: ({ id }) => `${PRODUCTS_URL}/${id}`,
 
             keepUnusedDataFor: 5,
         }),
 
-        getTopProducts:builder.query({
-            query:()=>`${PRODUCTS_URL}/top`,
-            keepUnusedDataFor:5
+        getTopProducts: builder.query({
+            query: () => `${PRODUCTS_URL}/top`,
+            keepUnusedDataFor: 5,
         }),
 
         createNewProduct: builder.mutation({

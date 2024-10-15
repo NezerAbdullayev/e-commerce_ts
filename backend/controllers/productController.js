@@ -146,14 +146,12 @@ const deleteProduct = async (req, res) => {
         if (!product) return res.status(404).json({ message: "Product not found" });
 
         if (product.image && product.image.length > 0) {
-            console.log(product.image);
             for (const imageUrl of product.image) {
                 const publicId = imageUrl.split("/").pop().split(".")[0];
                 try {
                     await cloudinary.uploader.destroy(`products/${publicId}`);
-                    console.log(`Deleted image ${publicId} from Cloudinary`);
                 } catch (error) {
-                    console.log("Error deleting image in Cloudinary", error);
+                    throw new Error("Error deleting image in Cloudinary");
                 }
             }
         }

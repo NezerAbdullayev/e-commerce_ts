@@ -2,9 +2,10 @@ import { IconButton } from "@mui/material";
 import { FC, useCallback } from "react";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
+import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
 import { Modal } from "antd";
 import { useRemoveAllCartMutation, useUpdateCartQuantityMutation } from "../../redux/services/cartApi";
+import { toast } from "react-toastify";
 
 interface CartControlsProps {
     saveIsActive: boolean;
@@ -16,14 +17,17 @@ const CartControls: FC<CartControlsProps> = ({ saveIsActive, quantityEL, id }) =
     const [updateCartQuantity] = useUpdateCartQuantityMutation();
     const [removeCart] = useRemoveAllCartMutation();
 
-    console.log("mutation");
-
     const onUpdateQuantity = useCallback(() => {
         Modal.confirm({
             title: "Do you want to change the product count?",
             onOk: async () => {
-                const res = await updateCartQuantity({ quantity: quantityEL, id: id }).unwrap();
-                console.log(res, "burana ona goredirki modal ciaracam ");
+                try {
+                    await updateCartQuantity({ quantity: quantityEL, id: id });
+                    toast.success("Product quantity updated successfully!");
+                } catch (error) {
+                    console.error(error);
+                    toast.error("Failed to update the product quantity. Please try again.");
+                }
             },
             okText: "Yes",
         });
@@ -33,8 +37,13 @@ const CartControls: FC<CartControlsProps> = ({ saveIsActive, quantityEL, id }) =
         Modal.confirm({
             title: "Do you want to delete this Cart?",
             onOk: async () => {
-                const res = await removeCart({ id }).unwrap();
-                console.log(res);
+                try {
+                    await removeCart({ id });
+                    toast.success("Cart item deleted successfully!");
+                } catch (error) {
+                    console.error(error);
+                    toast.error("Failed to delete the cart item. Please try again.");
+                }
             },
             okText: "Yes",
             okType: "danger",

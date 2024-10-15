@@ -1,5 +1,5 @@
 import { Box, IconButton, TableCell, TableRow, Typography } from "@mui/material";
-import { FC, memo, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -16,8 +16,6 @@ interface CartItemProp {
 const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity }) => {
     const [quantityEL, setQuantityEl] = useState<number>(quantity);
     const [saveIsActive, setSaveIsActive] = useState<boolean>(false);
-
-    console.log("re-renderings");
 
     useEffect(() => {
         if (quantityEL !== quantity && !saveIsActive) {
@@ -67,4 +65,4 @@ const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity }) => {
     );
 };
 
-export default memo(CartItem);
+export default CartItem;

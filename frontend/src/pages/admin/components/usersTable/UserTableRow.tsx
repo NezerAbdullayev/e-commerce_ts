@@ -3,6 +3,7 @@ import { Modal } from "antd";
 import { FC, useCallback } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDeleteUserMutation } from "../../../../redux/services/usersApi";
+import { toast } from "react-toastify";
 
 interface UserTableRowProps {
     id: string;
@@ -19,10 +20,11 @@ const UserTableRow: FC<UserTableRowProps> = ({ id, name, email }) => {
             cancelText: "No",
             onOk: async () => {
                 try {
-                    const res = await deleteUser({ id }).unwrap();
-                    console.log("removed from user:", res);
+                    await deleteUser({ id }).unwrap();
+                    toast.success("User deleted successfully!");
                 } catch (error) {
-                    console.error("Failed to remove user:", error);
+                    console.error(error);
+                    toast.error("Failed to remove user:");
                 }
             },
         });

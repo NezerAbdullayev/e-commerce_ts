@@ -9,6 +9,7 @@ import { useAddToCartMutation } from "../../redux/services/cartApi";
 import { useAddtoFavoritesMutation } from "../../redux/services/favoritesApi";
 import { shallowEqual, useSelector } from "react-redux";
 import { isAuthenticated } from "../../redux/slice/authSlice";
+import { toast } from "react-toastify";
 
 interface ProductCardProps {
     id: string;
@@ -34,27 +35,29 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, isF
 
     const onAddToFavorites = useCallback(async () => {
         if (!isAuth) {
-            alert("no user");
+            toast.error("Please log in to your account or create a new one.");
             return;
         }
         try {
-            const res = await addToFavorite({ name, productId: id, image, price });
-            console.log(res);
+            await addToFavorite({ name, productId: id, image, price });
+            toast.success("Product added to the favorite successfully!");
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            toast.error("Failed to add the product to the favorite. Please try again.");
         }
     }, [addToFavorite, name, id, image, price, isAuth]);
 
     const onAddToBasket = useCallback(async () => {
         if (!isAuth) {
-            alert("no user");
+            toast.error("Please log in to your account or create a new one.");
             return;
         }
         try {
-            const res = await addToCart({ name, productId: id, image, price });
-            console.log(res, { productId: id });
+            await addToCart({ name, productId: id, image, price });
+            toast.success("Product added to the basket successfully!");
         } catch (error) {
-            console.log(error);
+            toast.error("Failed to add the product to the basket. Please try again.");
+            console.error(error);
         }
     }, [addToCart, name, id, image, price, isAuth]);
 

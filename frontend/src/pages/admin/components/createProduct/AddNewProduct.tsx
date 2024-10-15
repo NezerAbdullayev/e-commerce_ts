@@ -15,6 +15,7 @@ import { useCreateNewProductMutation } from "../../../../redux/services/products
 import PageTitle from "../../../../components/PageTitle";
 import Loading from "../../../../components/Loading";
 import Error from "../Error";
+import { toast } from "react-toastify";
 
 export interface NewProduct {
     brand?: string;
@@ -46,10 +47,11 @@ const AddNewProduct: FC = () => {
                     image: base64Images,
                 };
                 await createNewProduct({ newProduct });
-                console.log(newProduct);
+                toast.success("Product created successfully!");
                 reset();
             } catch (error) {
-                console.error("Error converting images to base64:", error);
+                console.error(error);
+                toast.error("Failed to create the product. Please try again.");
             }
         },
         [createNewProduct, reset],
@@ -68,7 +70,7 @@ const AddNewProduct: FC = () => {
                     </Box>
                     <Box display="grid" gridTemplateColumns={"1fr 1fr"} mb={2} gap={2}>
                         <FormInput<NewProduct> error={errors.brand?.message} name="brand" control={control} />
-                        <Box className="relative">
+                        <Box className="relative max-h-[100px]">
                             {CategiresLoading ? (
                                 <Loading />
                             ) : categoriesError ? (

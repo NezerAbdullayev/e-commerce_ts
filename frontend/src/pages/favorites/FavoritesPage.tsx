@@ -5,6 +5,7 @@ import { useGetAllFavoritesQuery, useRemoveAllFavoritesMutation } from "../../re
 import FavoritesItem from "./FavoritesItem";
 import Loading from "../../components/Loading";
 import Error from "../admin/components/Error";
+import { toast } from "react-toastify";
 
 const FavoritesPage: FC = () => {
     const { data: favoriteProducts, isLoading: favoritesLoading, error: favoritesError } = useGetAllFavoritesQuery();
@@ -13,11 +14,14 @@ const FavoritesPage: FC = () => {
 
     const removeAllFavorites = useCallback(async () => {
         try {
-            await removeAllFavoritesItems().unwrap();
+            await removeAllFavoritesItems();
+            toast.success("All favorite items have been removed successfully!");
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            toast.error("Failed to remove favorite items. Please try again.");
         }
     }, [removeAllFavoritesItems]);
+
     if (favoritesError) {
         return <Error message="An error occurred while fetching the favorites data." />;
     }

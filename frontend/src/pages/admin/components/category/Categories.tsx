@@ -11,6 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import Loading from "../../../../components/Loading";
 import PageTitle from "../../../../components/PageTitle";
+import Error from "../Error";
 
 // Modal stili
 const style = {
@@ -33,7 +34,7 @@ const CategoriesSchema = object().shape({
 });
 
 const Categories: FC = () => {
-    const { data: categoryData, isLoading: loadingCategories } = useGetAllCategoryQuery();
+    const { data: categoryData, isLoading: loadingCategories, error: categoriesError } = useGetAllCategoryQuery();
     const [createCategory, { isLoading: createLoading }] = useCreateCategoryMutation();
     const [deleteCategory] = useDeleteCategoryMutation();
     const [updateCategory, { isLoading: updateLoading }] = useUpdateCategoryMutation();
@@ -83,6 +84,7 @@ const Categories: FC = () => {
     const handleDelete = (categoryId: string) => {
         deleteCategory({ id: categoryId });
     };
+    console.log(categoriesError);
 
     return (
         <Box>
@@ -101,6 +103,8 @@ const Categories: FC = () => {
 
                 {loadingCategories ? (
                     <Loading />
+                ) : categoriesError ? (
+                    <Error message={categoriesError.error} />
                 ) : (
                     categoryData &&
                     categoryData.map((category) => (

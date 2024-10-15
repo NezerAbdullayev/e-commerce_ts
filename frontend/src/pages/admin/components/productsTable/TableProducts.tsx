@@ -19,6 +19,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 // hooks
 import { useDeleteProductMutation, useGetAllProductsQuery } from "../../../../redux/services/productsApi";
 import { formItemLayout } from "../../../../utils/formLayoutsize";
+import { toast } from "react-toastify";
+import { useGetAllCategoryQuery } from "../../../../redux/services/categoryApi";
+import Loading from "../../../../components/Loading";
+import Error from "../Error";
 
 interface DataType {
     key: React.Key;
@@ -31,7 +35,6 @@ interface DataType {
 }
 
 const TableProducts: FC = () => {
-
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [products, setProducts] = useState<DataType[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -39,14 +42,7 @@ const TableProducts: FC = () => {
     const limit = 15;
 
     const { data: productsData, error, isLoading } = useGetAllProductsQuery({ page: currentPage, limit });
-
-    const options = [
-        { value: "OverSized", label: "OverSized" },
-        { value: "T-shirt", label: "T-Shirt" },
-        { value: "Long-sleeve", label: "Long-sleeve" },
-        { value: "Basic Tees", label: "Basic Tees" },
-        { value: "Hoodie", label: "Hoodie" },
-    ];
+    const { data: AllCategories, isLoading: categoryLoading, error: categoryError } = useGetAllCategoryQuery();
 
     const {
         control,
@@ -69,10 +65,13 @@ const TableProducts: FC = () => {
         Modal.confirm({
             title: "Do you want to delete this product?",
             onOk: async () => {
-                console.log(id);
-                const res = await deleteProduct({ id });
-                if (res) console.log(res);
-                else console.log("xeta bas verdi ");
+                try {
+                    await deleteProduct({ id });
+                    toast.success("Product updated successfully!");
+                } catch (error) {
+                    console.error(error);
+                    toast.error("Failed to update the product. Please try again.");
+                }
             },
             okText: "Yes",
             okType: "danger",
@@ -172,13 +171,27 @@ const TableProducts: FC = () => {
             />
             <Modal title="Edit Product" open={isEdit} onCancel={onCloseEditModal} onOk={() => setIsEdit(false)} okText="Save">
                 <Form onFinish={handleSubmit(onSubmit)} {...formItemLayout}>
-                    <FormInput<NewProduct> errors={errors} name="name" control={control} />
-                    <FormInput<NewProduct> errors={errors} name="price" type="number" control={control} />
-                    <FormInput<NewProduct> errors={errors} name="stock" type="number" control={control} />
-                    <FormInput<NewProduct> errors={errors} name="brand" control={control} />
-                    <FormTextarea<NewProduct> errors={errors} name="description" control={control} />
-                    <FormInputFile<NewProduct> errors={errors} name="image" control={control} />
-                    <FormSelect<NewProduct> errors={errors} name="category" control={control} options={options} multiple={true} />
+                    <FormInput<NewProduct> error={error} name="name" control={control} />
+                    <FormInput<NewProduct> error={error} name="price" type="number" control={control} />
+                    <FormInput<NewProduct> error={error} name="stock" type="number" control={control} />
+                    <FormInput<NewProduct> error={error} name="brand" control={control} />
+                    <FormTextarea<NewProduct> error={error} name="description" control={control} />
+                    <FormInputFile<NewProduct> error={error} name="image" control={control} />
+                    {categoryLoading ? (
+                        <Loading />
+                    ) : categoryError ? (
+                        <Error message={categoryError?.message} />
+                    ) : (
+                        AllCategories && (
+                            <FormSelect<NewProduct>
+                                error={error}
+                                name="category"
+                                control={control}
+                                options={AllCategories}
+                                multiple={true}
+                            />
+                        )
+                    )}
 
                     <Button htmlType="submit">Submit</Button>
                 </Form>

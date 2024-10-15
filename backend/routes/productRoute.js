@@ -7,7 +7,8 @@ import {
     getProductByCategory,
     getRecommendedProducts,
     toggleFeaturedProduct,
-    getProductById
+    getProductById,
+    addProductReview,
 } from "../controllers/productController.js";
 import express from "express";
 import { adminRoute, protectRoute } from "../middleware/authMiddleware.js";
@@ -20,7 +21,7 @@ productRouter.get("/", getAllProducts);
 
 productRouter.get("/featured", getFeaturedProducts);
 
-productRouter.get("/random/:count",getRandomProducts);
+productRouter.get("/random/:count", getRandomProducts);
 
 productRouter.get("/:id", getProductById);
 
@@ -29,6 +30,8 @@ productRouter.get("/category/:categories", getProductByCategory);
 productRouter.get("/recommendations", getRecommendedProducts);
 
 productRouter.post("/new", protectRoute, adminRoute, createProduct);
+
+productRouter.post("/:id/reviews", protectRoute, addProductReview);
 
 productRouter.put("/:id", protectRoute, adminRoute, toggleFeaturedProduct);
 

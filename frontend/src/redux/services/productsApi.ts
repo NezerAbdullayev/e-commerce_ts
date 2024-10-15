@@ -30,6 +30,11 @@ const productsApi = rootApi.injectEndpoints({
             keepUnusedDataFor: 5,
         }),
 
+        getTopProducts:builder.query({
+            query:()=>`${PRODUCTS_URL}/top`,
+            keepUnusedDataFor:5
+        }),
+
         createNewProduct: builder.mutation({
             query: (newProduct) => ({
                 url: `${PRODUCTS_URL}/new`,
@@ -58,6 +63,16 @@ const productsApi = rootApi.injectEndpoints({
             }),
             invalidatesTags: ["Products"],
         }),
+
+        addReview: builder.mutation({
+            query: ({ productId, review }) => ({
+                url: `${PRODUCTS_URL}/${productId}/reviews`,
+                method: "POST",
+                body: review,
+                credentials: "include",
+            }),
+            invalidatesTags: ["Products"],
+        }),
     }),
 });
 
@@ -69,6 +84,7 @@ export const {
     useCreateNewProductMutation,
     useDeleteProductMutation,
     useUpdateProductMutation,
+    useAddReviewMutation,
 } = productsApi;
 
 export default productsApi;

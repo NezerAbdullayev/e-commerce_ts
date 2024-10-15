@@ -10,6 +10,7 @@ import { object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import Loading from "../../../../components/Loading";
+import PageTitle from "../../../../components/PageTitle";
 
 // Modal stili
 const style = {
@@ -85,9 +86,7 @@ const Categories: FC = () => {
 
     return (
         <Box>
-            <Typography variant="h4" gutterBottom className="font-bold text-stone-700" align="center">
-                Categories
-            </Typography>
+            <PageTitle>Categories</PageTitle>
 
             <Button onClick={handleOpen} variant="contained" color="primary">
                 Add New Category

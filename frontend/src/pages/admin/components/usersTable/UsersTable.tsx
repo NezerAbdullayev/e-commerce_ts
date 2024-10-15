@@ -25,6 +25,7 @@ import { object, string } from "yup";
 
 import { SearchParams, UserResponse } from "../../../../types/globalTypes";
 import UserTableRow from "./UserTableRow";
+import PageTitle from "../../../../components/PageTitle";
 
 const schema = object({
     searchTerm: string().required("Search term is required"),
@@ -83,9 +84,7 @@ function UsersTable() {
         <Box className="relative mx-auto mt-10 w-[1280px] max-w-[90%]">
             {usersError && <Error message="User data could not be loaded." />}
             {/* header */}
-            <Typography variant="h4" gutterBottom className="font-bold text-stone-700" align="center">
-                Total user: {searchResults?.totalUsers || allUsersData?.totalUsers}
-            </Typography>
+            <PageTitle>Total user: {searchResults?.totalUsers || allUsersData?.totalUsers}</PageTitle>
             {/* search */}
             <Paper
                 component="form"

@@ -1,10 +1,13 @@
 import { FC, useCallback, useEffect, useState } from "react";
-import { Alert, Button, Col, Flex, Table, Modal, Form } from "antd";
-import type { TableColumnsType } from "antd";
 import { Products as ProductsType } from "../../../../types/globalTypes";
+import { createProductSchema } from "../../../../validations/product.validation";
 
+// icons
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+// components
+import { Alert, Button, Col, Flex, Table, Modal, Form } from "antd";
+import type { TableColumnsType } from "antd";
 import FormInput from "../../../../components/Forms/FormInput";
 import { NewProduct } from "../createProduct/AddNewProduct";
 import FormTextarea from "../../../../components/Forms/FormTextarea";
@@ -12,9 +15,10 @@ import FormInputFile from "../../../../components/Forms/FormInputFile";
 import FormSelect from "../../../../components/Forms/FormSellect";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { createProductSchema } from "../../../../validations/product.validation";
-import { formItemLayout } from "../../../../utils/formLayoutsize";
+
+// hooks
 import { useDeleteProductMutation, useGetAllProductsQuery } from "../../../../redux/services/productsApi";
+import { formItemLayout } from "../../../../utils/formLayoutsize";
 
 interface DataType {
     key: React.Key;
@@ -27,6 +31,7 @@ interface DataType {
 }
 
 const TableProducts: FC = () => {
+
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [products, setProducts] = useState<DataType[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -139,11 +144,6 @@ const TableProducts: FC = () => {
 
     if (isLoading) {
         console.log(isLoading);
-        // return (
-        //     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999 }}>
-        //         <Spin tip="Loading..." size="large" />
-        //     </div>
-        // );
     }
 
     if (error) {

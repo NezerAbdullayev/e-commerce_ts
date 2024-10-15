@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.placeholder-left .ant-select-selection-placeholder {
+    text-align: left !important;
+    padding-right: 0 !important;
+}

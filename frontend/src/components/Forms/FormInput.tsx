@@ -36,7 +36,6 @@ const FormInput = <T extends FieldValues>({ name, control, error, defaultValue, 
                             error ? "border-red-500" : "border-gray-300"
                         }`}
                         style={{
-                            backgroundColor: "lightyellow",
                             borderRadius: "8px",
                             padding: "12px",
                             width: "100%",

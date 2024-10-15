@@ -10,6 +10,7 @@ import {
     getProductById,
     addProductReview,
     getTopProducts,
+    updateProduct,
 } from "../controllers/productController.js";
 import express from "express";
 import { adminRoute, protectRoute } from "../middleware/authMiddleware.js";
@@ -37,6 +38,8 @@ productRouter.post("/new", protectRoute, adminRoute, createProduct);
 productRouter.post("/:id/reviews", protectRoute, addProductReview);
 
 productRouter.put("/:id", protectRoute, adminRoute, toggleFeaturedProduct);
+
+productRouter.put("/", protectRoute, adminRoute, updateProduct);
 
 productRouter.delete("/:id", protectRoute, adminRoute, deleteProduct);
 

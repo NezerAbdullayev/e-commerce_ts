@@ -87,6 +87,58 @@ const createProduct = async (req, res) => {
     }
 };
 
+const updateProduct = async (req, res) => {
+    try {
+        const { id, name, description, price, image, category, stock, brand } = req.body.updatedProduct;
+
+        const existingProduct = await ProductModel.findById(id);
+        if (!existingProduct) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        const existingImages = existingProduct.image.slice();
+
+        let cloudinaryResponses = [];
+
+        if (Array.isArray(image) && image.length > 0) {
+            for (const img of image) {
+                try {
+                    const cloudinaryResponse = await cloudinary.uploader.upload(img, { folder: "products" });
+                    cloudinaryResponses.push(cloudinaryResponse.secure_url);
+                } catch (err) {
+                    console.error("Error uploading image:", err.message);
+                    return res.status(500).json({ message: "Image upload failed", error: err.message || "Unknown error" });
+                }
+            }
+        }
+
+        const imagesToDelete = existingImages.filter((existingImage) => !cloudinaryResponses.includes(existingImage));
+
+        for (const img of imagesToDelete) {
+            const publicId = img.split("/").pop().split(".")[0];
+            await cloudinary.uploader.destroy(publicId);
+        }
+
+        const updatedProduct = await ProductModel.findByIdAndUpdate(
+            id,
+            {
+                name,
+                description,
+                price,
+                image: cloudinaryResponses.length > 0 ? cloudinaryResponses : existingImages,
+                category,
+                stock,
+                brand: brand ? brand : "",
+            },
+            { new: true }
+        );
+        res.status(200).json(updatedProduct);
+    } catch (error) {
+        console.error("Error in updateProduct controller", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
 const deleteProduct = async (req, res) => {
     try {
         const product = await ProductModel.findById(req.params.id);
@@ -303,4 +355,5 @@ export {
     toggleFeaturedProduct,
     getProductById,
     getTopProducts,
+    updateProduct,
 };

@@ -1,36 +1,63 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Products } from "../../types/globalTypes";
+import { Products, ProductsResponse } from "../../types/globalTypes";
 
-const productsApi = createApi({
-    reducerPath: "products",
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/products/" }),
-    tagTypes: ["Products"],
+import { PRODUCTS_URL } from "../constants";
+import { rootApi } from "../rootApi";
+
+const productsApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
-        getAllProducts: builder.query<Products[], { page: number; limit: number }>({
-            query: ({ page, limit }) => `?page=${page}&limit=${limit}`,
+        getAllProducts: builder.query<ProductsResponse, { page: number; limit: number }>({
+            query: ({ page, limit }) => `${PRODUCTS_URL}?page=${page}&limit=${limit}`,
             keepUnusedDataFor: 5,
             providesTags: ["Products"],
         }),
 
         getRandomProducts: builder.query<Products[], { count: number }>({
-            query: ({ count }) => `random/${count}`,
+            query: ({ count }) => `${PRODUCTS_URL}/random/${count}`,
+            providesTags: (result) =>
+                result ? result.map((product) => ({ type: "Products", id: product._id })) : [{ type: "Products", id: "LIST" }],
         }),
 
         getProductsByCategory: builder.query<Products[], { categories: string; page?: number; limit?: number }>({
             query: ({ categories, page = 1, limit = 10 }) => ({
-                url: `category/${categories}`,
+                url: `${PRODUCTS_URL}/category/${categories}`,
                 params: { page, limit },
             }),
         }),
 
-        getProductById: builder.query<Products, { id: string }>({
+        getProductById: builder.query<Products, { id: string | undefined }>({
             query: ({ id }) => `${id}`,
 
             keepUnusedDataFor: 5,
         }),
+
+        createNewProduct: builder.mutation({
+            query: (newProduct) => ({
+                url: `${PRODUCTS_URL}/new`,
+                method: "POST",
+                body: newProduct,
+                credentials: "include",
+            }),
+            invalidatesTags: ["Products"],
+        }),
+
+        deleteProduct: builder.mutation({
+            query: ({ id }) => ({
+                url: `${PRODUCTS_URL}/${id}`,
+                method: "DELETE",
+                credentials: "include",
+            }),
+            invalidatesTags: ["Products"],
+        }),
     }),
 });
 
-export const { useGetAllProductsQuery, useGetRandomProductsQuery, useGetProductsByCategoryQuery, useGetProductByIdQuery } = productsApi;
+export const {
+    useGetAllProductsQuery,
+    useGetRandomProductsQuery,
+    useGetProductsByCategoryQuery,
+    useGetProductByIdQuery,
+    useCreateNewProductMutation,
+    useDeleteProductMutation,
+} = productsApi;
 
 export default productsApi;

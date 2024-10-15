@@ -23,6 +23,13 @@ export interface FileObject {
     size: number;
     originFileObj: File;
 }
+
+// category
+export interface CategoryResponse {
+    name: string;
+    _id: string;
+}
+
 // products
 export interface Products {
     _id: string;
@@ -31,12 +38,13 @@ export interface Products {
     rating: number;
     isFeatured: string;
     description: string;
-    category: string[];
+    category: CategoryResponse[];
     image: string[];
     price: number;
     stock: number;
     reviews: string[];
 }
+
 
 export interface ProductsResponse {
     currentPage: number;
@@ -70,11 +78,6 @@ export interface FavoritesProps extends Favorites {
 export interface FavoritesResponse extends Favorites {
     _id: string;
     productId: string;
-}
-// category
-export interface CategoryResponse {
-    name: string;
-    _id: string;
 }
 
 // users

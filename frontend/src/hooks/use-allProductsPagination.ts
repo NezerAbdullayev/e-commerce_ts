@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
-import { useGetAllProductsQuery } from "../redux/services/adminApi";
+import { useGetAllProductsQuery } from "../redux/services/productsApi";
+
 
 interface UsePaginationProps {
     limit?: number;

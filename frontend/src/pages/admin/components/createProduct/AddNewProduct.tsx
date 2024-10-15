@@ -1,7 +1,6 @@
 import { FC } from "react";
-import { useCreateNewProductMutation } from "../../../../redux/services/adminApi";
 import { createProductSchema } from "../../../../validations/product.validation";
-import { FileObject, Options } from "../../../../types/globalTypes";
+import { FileObject } from "../../../../types/globalTypes";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Form } from "antd";
@@ -12,14 +11,8 @@ import FormTextarea from "../../../../components/Forms/FormTextarea";
 import FormSelect from "../../../../components/Forms/FormSellect";
 import FormInputFile from "../../../../components/Forms/FormInputFile";
 import { Box } from "@mui/material";
-
-const options: Options[] = [
-    { value: "OverSized", label: "OverSized" },
-    { value: "T-shirt", label: "T-Shirt" },
-    { value: "Long-sleeve", label: "Long-sleeve" },
-    { value: "Basic Tees", label: "Basic Tees" },
-    { value: "Hoodie", label: "Hoodie" },
-];
+import { useGetAllCategoryQuery } from "../../../../redux/services/categoryApi";
+import { useCreateNewProductMutation } from "../../../../redux/services/productsApi";
 
 export interface NewProduct {
     brand?: string;
@@ -32,7 +25,10 @@ export interface NewProduct {
 }
 
 const AddNewProduct: FC = () => {
-    const [createNewProduct, { data: createdData, error: createProductError, isLoading }] = useCreateNewProductMutation();
+    const [createNewProduct, { error: createProductError, isLoading: createLoading }] = useCreateNewProductMutation();
+    const { data: categoriesData, isLoading: CategiresLoading, error: categoriesError } = useGetAllCategoryQuery();
+
+    console.log(categoriesData);
 
     const {
         control,
@@ -57,16 +53,14 @@ const AddNewProduct: FC = () => {
         reset();
     };
 
-    if (isLoading) {
-        console.log(isLoading);
+    if (createLoading) {
+        console.log(createLoading);
         // return (
         //     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999 }}>
         //         <Spin tip="Loading..." size="large" />
         //     </div>
         // );
     }
-
-    console.log(errors, "errors");
 
     return (
         <Box className="max-w-[600px]">
@@ -83,7 +77,7 @@ const AddNewProduct: FC = () => {
                     error={errors.category?.message}
                     name="category"
                     control={control}
-                    options={options}
+                    options={categoriesData || []}
                     multiple={true}
                 />
 

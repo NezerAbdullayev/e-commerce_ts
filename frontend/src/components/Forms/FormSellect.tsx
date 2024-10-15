@@ -1,12 +1,13 @@
 import { Form, Select } from "antd";
 import { Control, Controller, FieldValues, Path, PathValue } from "react-hook-form";
+import { CategoryResponse } from "../../types/globalTypes";
 
 const { Option } = Select;
 
 interface FormSelectProps<T extends FieldValues> {
     name: Path<T>;
     control: Control<T>;
-    options: { label: string; value: string | number }[];
+    options: CategoryResponse[];
     multiple?: boolean;
     placeholder?: string;
     error?: string;
@@ -47,8 +48,8 @@ const FormSelect = <T extends FieldValues>({
                         {...rest}
                     >
                         {options.map((option) => (
-                            <Option key={option.value} value={option.value}>
-                                {option.label}
+                            <Option key={option._id} value={option._id}>
+                                {option.name[0] + option.name.slice(1)}
                             </Option>
                         ))}
                     </Select>

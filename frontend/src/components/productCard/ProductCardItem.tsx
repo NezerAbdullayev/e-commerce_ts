@@ -5,8 +5,7 @@ import { useNavigate } from "react-router";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { useAddToCartMutation } from "../../redux/services/cartApi";
-import { useAddtoFavoritesMutation, useGetAllFavoritesQuery } from "../../redux/services/favoritesApi";
+
 import { CartProps } from "../../types/globalTypes";
 
 interface ProductCardProps {
@@ -20,36 +19,12 @@ interface ProductCardProps {
 }
 
 const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, onAddToFavorites, onAddToBasket }) => {
-    // const [addToCart, { isLoading: addCartLoading }] = useAddToCartMutation();
-    // const { data: FavoritesData } = useGetAllFavoritesQuery();
-
-    // const [addToFavorite] = useAddtoFavoritesMutation();
-
     const [value, setValue] = useState<number | null>(rating < 3 ? 3 : rating);
-    // const [isFavorite, setIsFavorite] = useState<boolean>(false);
     const navigate = useNavigate();
-
-    // Check if the product is already in favorites
-    // useEffect(() => {
-    //     if (FavoritesData) {
-    //         const found = FavoritesData.some((item) => item.productId === id);
-    //         setIsFavorite(found);
-    //     }
-    // }, [FavoritesData, id]);
 
     const onDetailsClick = () => {
         navigate(`/product/${id}`);
     };
-
-    // const onAddToFavorites = async () => {
-    //     const res = await addToFavorite({ name, productId: id, image, price });
-    //     console.log(res);
-    // };
-
-    // const onAddToBasket = async () => {
-    //     const res = await addToCart({ name, productId: id, image, price });
-    //     console.log(res, { productId: id });
-    // };
 
     console.log("re-render product");
 

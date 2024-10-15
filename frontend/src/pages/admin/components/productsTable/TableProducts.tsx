@@ -1,5 +1,4 @@
 import { FC, useCallback, useEffect, useState } from "react";
-import { useDeleteProductMutation, useGetAllProductsQuery } from "../../../../redux/services/adminApi";
 import { Alert, Button, Col, Flex, Table, Modal, Form } from "antd";
 import type { TableColumnsType } from "antd";
 import { Products as ProductsType } from "../../../../types/globalTypes";
@@ -15,6 +14,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createProductSchema } from "../../../../validations/product.validation";
 import { formItemLayout } from "../../../../utils/formLayoutsize";
+import { useDeleteProductMutation, useGetAllProductsQuery } from "../../../../redux/services/productsApi";
 
 interface DataType {
     key: React.Key;

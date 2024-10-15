@@ -1,10 +1,12 @@
-import { Box, Card, CardContent, CardMedia, Chip, Rating, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Card, CardContent, Chip, Rating, Tab, Tabs, Typography } from "@mui/material";
 import { FC, useState } from "react";
 import { useParams } from "react-router";
-import { useGetProductByIdQuery } from "../../redux/services/productsApi";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
+import Loading from "../../components/Loading";
+import Error from "../admin/components/Error";
+import { useGetProductByIdQuery } from "../../redux/services/productsApi";
 
 const DetailsPage: FC = () => {
     const { id } = useParams();
@@ -17,8 +19,12 @@ const DetailsPage: FC = () => {
 
     const { data, isLoading, error } = useGetProductByIdQuery({ id });
 
+    console.log(error?.data?.message);
+
     return (
         <Box className="flex h-screen items-center justify-center rounded-md">
+            {isLoading && <Loading />}
+            {error && <Error message={error.data?.message || "Products not found"} />}
             {data && (
                 <Card className="grid max-w-[900px] grid-cols-2 shadow-lg">
                     {/* carousel  */}
@@ -45,14 +51,13 @@ const DetailsPage: FC = () => {
                         <Typography variant="h3" component="h3" sx={{ color: "text.secondary" }}>
                             {data.name}
                         </Typography>
-
                         {/* categories */}
                         {data?.category?.length > 0 && (
                             <Box className="flex items-center gap-1">
                                 {data.category.map((item) => (
                                     <Chip
-                                        key={item}
-                                        label={item}
+                                        key={item._id}
+                                        label={item.name}
                                         sx={{
                                             backgroundColor: "#8b854e",
                                             color: "#d3dbd4",
@@ -63,7 +68,6 @@ const DetailsPage: FC = () => {
                                 ))}
                             </Box>
                         )}
-
                         {/* price and rating */}
                         <Box className="my-2.5 mb-10 mt-2 flex items-center justify-between">
                             <Typography variant="h4" className="text-[#3f3f3d]">
@@ -86,7 +90,6 @@ const DetailsPage: FC = () => {
                                 <Box className="font-bold">({data.rating})</Box>
                             </Typography>
                         </Box>
-
                         <Box>
                             <Tabs
                                 value={navBar}

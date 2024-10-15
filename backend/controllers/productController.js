@@ -255,7 +255,7 @@ const getProductByCategory = async (req, res) => {
     }
 };
 
-export const getTopProducts = async (req, res) => {
+const getTopProducts = async (req, res) => {
     try {
         products = await ProductModel.find({}).sort({ rating: -1 }).limit(8);
         res.json(products);

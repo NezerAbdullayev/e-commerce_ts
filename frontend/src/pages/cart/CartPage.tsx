@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { Alert, Box, Paper, Table, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Alert, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 import { useGetAllCartQuery } from "../../redux/services/cartApi";
 
@@ -37,22 +37,28 @@ const CartPage: FC = () => {
                     </TableHead>
 
                     {/* table body */}
-                    {userCartData && userCartData.length > 0 ? (
-                        userCartData.map((cart) => (
-                            <CartItem
-                                key={cart._id}
-                                id={cart._id}
-                                name={cart.name}
-                                image={cart.image}
-                                price={cart.price}
-                                quantity={cart.quantity}
-                            />
-                        ))
-                    ) : (
-                        <Box display="flex" justifyContent="center" p={2}>
-                            <Alert severity="warning">Your cart is empty.</Alert>
-                        </Box>
-                    )}
+                    <TableBody sx={{ alignItems: "center" }}>
+                        {userCartData && userCartData.length > 0 ? (
+                            userCartData.map((cart) => (
+                                <CartItem
+                                    key={cart._id}
+                                    id={cart._id}
+                                    name={cart.name}
+                                    image={cart.image}
+                                    price={cart.price}
+                                    quantity={cart.quantity}
+                                />
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={5}>
+                                    <Box display="flex" justifyContent="center" p={2}>
+                                        <Alert severity="warning">Your cart is empty.</Alert>
+                                    </Box>
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
                 </Table>
             </TableContainer>
         </Box>

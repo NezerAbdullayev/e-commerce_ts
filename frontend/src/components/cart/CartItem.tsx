@@ -1,4 +1,4 @@
-import { Box, IconButton, TableBody, TableCell, Typography } from "@mui/material";
+import { Box, IconButton, TableCell, TableRow, Typography } from "@mui/material";
 import { FC, memo, useCallback, useEffect, useState } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -36,7 +36,7 @@ const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity }) => {
     }, [quantity]);
 
     return (
-        <TableBody sx={{ alignItems: "center" }}>
+        <TableRow sx={{ alignItems: "center" }}>
             <TableCell>
                 <Box display="flex" alignItems="center" gap={2}>
                     <img src={image} className="h-24 w-24 object-cover" />
@@ -63,7 +63,7 @@ const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity }) => {
             <TableCell align="center">
                 <CartControls saveIsActive={saveIsActive} quantityEL={quantityEL} id={id} />
             </TableCell>
-        </TableBody>
+        </TableRow>
     );
 };
 

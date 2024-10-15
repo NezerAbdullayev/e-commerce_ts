@@ -1,6 +1,6 @@
 import { FC, useCallback } from "react";
 
-import { Alert, Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { useGetAllFavoritesQuery, useRemoveAllFavoritesMutation } from "../../redux/services/favoritesApi";
 import FavoritesItem from "./FavoritesItem";
 import Loading from "../../components/Loading";
@@ -33,15 +33,17 @@ const FavoritesPage: FC = () => {
             <TableContainer component={Paper}>
                 <Table stickyHeader aria-label="sticky table">
                     {/* tabel headers */}
-                    <TableRow>
-                        <TableCell>Image</TableCell>
-                        <TableCell align="center">Name</TableCell>
-                        <TableCell align="center">Price</TableCell>
-                        <TableCell align="center">Action</TableCell>
-                    </TableRow>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Image</TableCell>
+                            <TableCell align="center">Name</TableCell>
+                            <TableCell align="center">Price</TableCell>
+                            <TableCell align="center">Action</TableCell>
+                        </TableRow>
+                    </TableHead>
 
                     {/* table body */}
-                    <TableBody>
+                    <TableBody sx={{ alignItems: "center" }}>
                         {favoriteProducts && favoriteProducts.length > 0 ? (
                             favoriteProducts.map((item) => (
                                 <FavoritesItem

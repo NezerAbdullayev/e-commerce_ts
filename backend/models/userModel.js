@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 
-
 const userSchema = new mongoose.Schema(
     {
         name: {
@@ -23,14 +22,14 @@ const userSchema = new mongoose.Schema(
         },
         cartItem: [
             {
-                name:{
+                name: {
                     type: String,
                 },
-                image:{
+                image: {
                     type: String,
                 },
-                price:{
-                    type:Number,
+                price: {
+                    type: Number,
                 },
                 quantity: {
                     type: Number,
@@ -41,7 +40,7 @@ const userSchema = new mongoose.Schema(
                 },
             },
         ],
-        favorites: [ 
+        favorites: [
             {
                 productId: {
                     type: String,
@@ -51,9 +50,9 @@ const userSchema = new mongoose.Schema(
                     type: String,
                     required: true,
                 },
-                price:{
-                    type:Number,
-                    requeried:true
+                price: {
+                    type: Number,
+                    required: true,
                 },
                 image: {
                     type: String,
@@ -72,14 +71,13 @@ const userSchema = new mongoose.Schema(
     }
 );
 
-
 // pre-save hook to hash password before saving to database
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
 
     try {
         const salt = await bcrypt.genSalt(10);
-        this.password = await bcrypt.hash(this.password , salt);
+        this.password = await bcrypt.hash(this.password, salt);
         next();
     } catch (error) {
         next(error);
@@ -91,7 +89,5 @@ userSchema.methods.comparePassword = async function (password) {
 };
 
 const User = mongoose.model("User", userSchema);
-
-
 
 export default User;

@@ -10,7 +10,7 @@ interface FormInputProps<T extends FieldValues> {
     defaultValue?: PathValue<T, Path<T>>;
 }
 
-const FormInputFile = <T extends FieldValues>({ name, control, defaultValue, error }: FormInputProps<T>) => {
+const FormInputFile = <T extends FieldValues>({ name, control, error }: FormInputProps<T>) => {
     return (
         <Form.Item validateStatus={error ? "error" : ""} help={error ? error.toString() : null}>
             <label className="mb-1 ml-2 block text-start text-sm font-bold text-gray-700">
@@ -19,14 +19,14 @@ const FormInputFile = <T extends FieldValues>({ name, control, defaultValue, err
             <Controller
                 name={name}
                 control={control}
-                defaultValue={defaultValue}
                 render={({ field: { onChange, value } }) => (
                     <Box display={"flex"} justifyContent={"start"}>
                         <Upload
                             multiple
                             accept="image/*"
                             beforeUpload={(file) => {
-                                onChange([...(value || []), file]);
+                                const updatedFileList = [...(value || []), file];
+                                onChange(updatedFileList);
                                 return false;
                             }}
                             onChange={(info) => {
@@ -34,6 +34,7 @@ const FormInputFile = <T extends FieldValues>({ name, control, defaultValue, err
                                 onChange(fileList);
                             }}
                             showUploadList={true}
+                            fileList={value}
                         >
                             <Button className="rounded bg-stone-50 p-2">
                                 <UploadOutlined /> Download

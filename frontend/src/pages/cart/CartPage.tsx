@@ -6,15 +6,12 @@ import { useGetAllCartQuery } from "../../redux/services/cartApi";
 
 import CartItem from "../../components/cart/CartItem";
 import Loading from "../../components/Loading";
+import Error from "../admin/components/Error";
 const CartPage: FC = () => {
     const { data: userCartData, error, isLoading: cartLoading } = useGetAllCartQuery();
 
     if (error) {
-        return (
-            <Box display="flex" justifyContent="center" alignItems={"center"} p={2} minHeight={"100vh"}>
-                <Alert severity="error">An error occurred while fetching the cart data.</Alert>
-            </Box>
-        );
+        return <Error message="An error occurred while fetching the cart data." />;
     }
 
     return (

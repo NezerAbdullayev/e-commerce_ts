@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import { useGetAllCategoryQuery } from "../../../../redux/services/categoryApi";
 import Loading from "../../../../components/Loading";
 import Error from "../Error";
+import { Box } from "@mui/material";
 
 interface DataType {
     key: React.Key;
@@ -170,31 +171,38 @@ const TableProducts: FC = () => {
                 pagination={{ pageSize: limit, position: ["bottomCenter"], total: totalPages * limit, onChange: handlePageChange }}
             />
             <Modal title="Edit Product" open={isEdit} onCancel={onCloseEditModal} onOk={() => setIsEdit(false)} okText="Save">
-                <Form onFinish={handleSubmit(onSubmit)} {...formItemLayout}>
-                    <FormInput<NewProduct> error={error} name="name" control={control} />
-                    <FormInput<NewProduct> error={error} name="price" type="number" control={control} />
-                    <FormInput<NewProduct> error={error} name="stock" type="number" control={control} />
-                    <FormInput<NewProduct> error={error} name="brand" control={control} />
-                    <FormTextarea<NewProduct> error={error} name="description" control={control} />
-                    <FormInputFile<NewProduct> error={error} name="image" control={control} />
-                    {categoryLoading ? (
-                        <Loading />
-                    ) : categoryError ? (
-                        <Error message={categoryError?.message} />
-                    ) : (
-                        AllCategories && (
-                            <FormSelect<NewProduct>
-                                error={error}
-                                name="category"
-                                control={control}
-                                options={AllCategories}
-                                multiple={true}
-                            />
-                        )
-                    )}
+                <Box className="px-10 py-5">
+                    <Form onFinish={handleSubmit(onSubmit)}>
+                        <FormInput<NewProduct> error={errors.name?.message} name="name" control={control} />
+                        <Box display="grid" gridTemplateColumns={"1fr 1fr"} mb={2} gap={2}>
+                            <FormInput<NewProduct> error={errors.price?.message} name="price" type="number" control={control} />
+                            <FormInput<NewProduct> error={errors.stock?.message} name="stock" type="number" control={control} />
+                        </Box>
 
-                    <Button htmlType="submit">Submit</Button>
-                </Form>
+                        <Box display="grid" gridTemplateColumns={"1fr 1fr"} mb={2} gap={2}>
+                            <FormInput<NewProduct> error={errors.brand?.message} name="brand" control={control} />
+                            <Box className="relative max-h-[100px]">
+                                {categoryLoading ? (
+                                    <Loading />
+                                ) : categoryError ? (
+                                    <Error message={categoryError?.message} />
+                                ) : (
+                                    AllCategories && (
+                                        <FormSelect<NewProduct>
+                                            error={errors.category?.message}
+                                            name="category"
+                                            control={control}
+                                            options={AllCategories}
+                                            multiple={true}
+                                        />
+                                    )
+                                )}
+                            </Box>
+                        </Box>
+                        <FormTextarea<NewProduct> error={errors.description?.message} name="description" control={control} />
+                        <FormInputFile<NewProduct> error={errors.image?.message} name="image" control={control} />
+                    </Form>
+                </Box>
             </Modal>
         </Col>
     );

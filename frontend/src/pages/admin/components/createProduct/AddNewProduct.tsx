@@ -48,7 +48,9 @@ const AddNewProduct: FC = () => {
                 };
                 await createNewProduct({ newProduct });
                 toast.success("Product created successfully!");
-                reset();
+                reset({
+                    image: [],
+                });
             } catch (error) {
                 console.error(error);
                 toast.error("Failed to create the product. Please try again.");

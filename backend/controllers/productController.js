@@ -255,6 +255,15 @@ const getProductByCategory = async (req, res) => {
     }
 };
 
+export const getTopProducts = async (req, res) => {
+    try {
+        products = await ProductModel.find({}).sort({ rating: -1 }).limit(8);
+        res.json(products);
+    } catch (error) {
+        res.status(400).json(error.message);
+    }
+};
+
 const toggleFeaturedProduct = async (req, res) => {
     try {
         const product = await ProductModel.findById(req.params.id);
@@ -293,4 +302,5 @@ export {
     getRandomProducts,
     toggleFeaturedProduct,
     getProductById,
+    getTopProducts,
 };

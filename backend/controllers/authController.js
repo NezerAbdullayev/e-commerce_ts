@@ -91,6 +91,7 @@ export const login = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
+    console.log(req)
     try {
         const refreshToken = req.cookies.refreshToken;
         if (refreshToken) {

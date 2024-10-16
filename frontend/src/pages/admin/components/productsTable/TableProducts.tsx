@@ -83,6 +83,7 @@ const TableProducts: FC = () => {
         setIsEdit(true);
         console.log(id);
     };
+    //onEditProduct ,onDeleteProduct
 
     const onCloseEditModal = useCallback(() => {
         setIsEdit(false);

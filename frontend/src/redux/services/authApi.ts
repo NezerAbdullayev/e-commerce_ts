@@ -14,7 +14,6 @@ const authApi = rootApi.injectEndpoints({
             async onQueryStarted(_, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    console.log(data);
                     dispatch(setUser({ role: data.role, name: data.name }));
                 } catch (error) {
                     console.error("Login error:", error);

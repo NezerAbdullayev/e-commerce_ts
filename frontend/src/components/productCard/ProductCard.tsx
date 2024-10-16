@@ -26,6 +26,7 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, isF
     const [addToCart, { isLoading: addCartLoading }] = useAddToCartMutation();
     const [addToFavorite] = useAddtoFavoritesMutation();
 
+
     const [value, setValue] = useState<number | null>(rating < 3 ? 3 : rating);
     const navigate = useNavigate();
 

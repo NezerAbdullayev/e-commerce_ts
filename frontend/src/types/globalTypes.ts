@@ -1,15 +1,3 @@
-export interface Login {
-    email: string;
-    password: string;
-}
-export interface Signup extends Login {
-    name: string;
-}
-
-export interface Auth extends Login {
-    name?: string;
-}
-
 export interface Options {
     value: string;
     label: string;
@@ -44,7 +32,6 @@ export interface Products {
     stock: number;
     reviews: string[];
 }
-
 
 export interface ProductsResponse {
     currentPage: number;

@@ -1,22 +1,16 @@
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Alert, Button, Form } from "antd";
-import { FormItem, Signup } from "../../types/globalTypes";
-import AntFormItem from "../../components/AntFormItem";
+import { Button, Col, Form, Row } from "antd";
 import AuthContainer from "../../components/AuthContainer";
-// api
 import { useSignupMutation } from "../../redux/services/authApi";
-import { formItemLayout } from "../../utils/formLayoutsize";
 import { signupSchema } from "../../validations/authform.validation";
 import { useNavigate } from "react-router";
-
-// const formArr: Array<keyof Signup> = ["name", "email", "password"];
-const formArr: FormItem[] = [
-    { label: "name", type: "text" },
-    { label: "email", type: "email" },
-    { label: "password", type: "password" },
-];
+import { ErrorRes, Signup } from "../../redux/services/types/auth.types";
+import PageTitle from "../../components/PageTitle";
+import FormInput from "../../components/Forms/FormInput";
+import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // Form layout
 
@@ -31,37 +25,42 @@ const SignupPage: FC = () => {
     } = useForm<Signup>({ resolver: yupResolver(signupSchema) });
 
     // query hooks
-    const [signup, { isLoading, error }] = useSignupMutation();
+    const [signup, { isLoading }] = useSignupMutation();
 
     // Submit handler
-    const onSubmit = useCallback(
-        async (data: Signup) => {
-            try {
-                await signup(data);
-                navigate("/login");
-                console.log("basarili signup");
-            } catch (error) {
-                console.log(error);
-            }
-            reset();
-        },
-        [signup, reset, navigate],
-    );
+    const onSubmit = async (data: Signup) => {
+        try {
+            await signup(data).unwrap();
+            navigate("/login");
+            toast.success("Signup successful!");
+        } catch (error) {
+            const typedError = error as ErrorRes;
+            toast.error(typedError.error ? typedError.error.error : "Signup failed! Please try again.");
+        }
+        reset();
+    };
 
     return (
         <AuthContainer>
-            {error && <Alert message="Error" description="An error occurred. Please try again." type="error" closable />}
+            <Form onFinish={handleSubmit(onSubmit)} className="w-full">
+                <PageTitle className="text-stone-600">Signup</PageTitle>
+                <FormInput error={errors.name?.message} name="name" control={control} />
+                <FormInput error={errors.email?.message} name="email" control={control} />
+                <FormInput error={errors.password?.message} name="password" control={control} />
 
-            <Form onFinish={handleSubmit(onSubmit)} {...formItemLayout}>
-                {/* inputs */}
-                <AntFormItem formArr={formArr} control={control} errors={errors} />
-
-                <Form.Item style={{ marginBottom: "0" }}>
-                    <Button type="primary" htmlType="submit" disabled={isLoading}>
-                        Submit
-                    </Button>
-                </Form.Item>
+                <Button type="primary" htmlType="submit" disabled={isLoading} className="mt-3 h-11 w-full">
+                    Sign Up
+                </Button>
             </Form>
+
+            <Col className="mt-2.5 flex items-center">
+                <Row>Already have an account? </Row>
+                <Button type="link" danger className="font-bold">
+                    <NavLink to="/login" className="text-red-500">
+                        Log in now!
+                    </NavLink>
+                </Button>
+            </Col>
         </AuthContainer>
     );
 };

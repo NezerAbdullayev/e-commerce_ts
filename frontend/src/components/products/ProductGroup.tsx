@@ -11,6 +11,7 @@ interface ProductsGroupProps {
 }
 
 const ProductsGroup: FC<ProductsGroupProps> = ({ catgoryTitle, productData, favoriteIds }) => {
+    console.log("re-rendering ProductsGroup");
     return (
         <Box marginY={10}>
             {productData?.length > 0 && (

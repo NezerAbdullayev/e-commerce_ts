@@ -26,6 +26,9 @@ const HomeProducts: FC = () => {
 
     const favoriteIds = useMemo(() => favortiesData?.map((fav) => fav.productId) || [], [favortiesData]);
 
+    console.log("re-rendering HomeProducts");
+
+
     return (
         <div>
             {tShirtLoading ? <Loading /> : <ProductsGroup catgoryTitle={"T-shirt"} productData={productData} favoriteIds={favoriteIds} />}

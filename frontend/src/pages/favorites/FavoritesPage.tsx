@@ -15,10 +15,10 @@ const FavoritesPage: FC = () => {
     const removeAllFavorites = useCallback(async () => {
         try {
             await removeAllFavoritesItems();
-            toast.success("All favorite items have been removed successfully!");
+            toast.success("Favorites cleared successfully!");
         } catch (error) {
             console.error(error);
-            toast.error("Failed to remove favorite items. Please try again.");
+            toast.error("Failed to clear favorites. Try again.");
         }
     }, [removeAllFavoritesItems]);
 

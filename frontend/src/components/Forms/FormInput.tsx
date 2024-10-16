@@ -17,9 +17,7 @@ const FormInput = <T extends FieldValues>({ name, control, error, defaultValue, 
             style={{ width: "100%" }}
             help={error ? <span className="text-xs italic text-red-500">{error}</span> : null}
         >
-            <label className="mb-1 ml-2 block text-start text-sm font-bold text-gray-700">
-                {name.charAt(0).toUpperCase() + name.slice(1)}
-            </label>
+            <label className="ml-2 block text-start text-sm font-bold text-gray-700">{name.charAt(0).toUpperCase() + name.slice(1)}</label>
             <Controller
                 name={name}
                 control={control}

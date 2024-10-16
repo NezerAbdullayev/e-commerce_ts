@@ -1,22 +1,20 @@
-import { FC, useCallback } from "react";
+import { FC } from "react";
+
 // components
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Alert, Button, Col, Form, Row } from "antd";
+import { Button, Col, Form, Row } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
-import AntFormItem from "../../components/AntFormItem";
 import AuthContainer from "../../components/AuthContainer";
-import { formItemLayout } from "../../utils/formLayoutsize";
+import FormInput from "../../components/Forms/FormInput";
+import { ErrorRes, Login } from "../../redux/services/types/auth.types";
+
 // api
 import { useLoginMutation } from "../../redux/services/authApi";
-// type
-import { FormItem, Login } from "../../types/globalTypes";
+// schema
 import { loginSchema } from "../../validations/authform.validation";
-
-const formArr: FormItem[] = [
-    { label: "email", type: "email" },
-    { label: "password", type: "password" },
-];
+import PageTitle from "../../components/PageTitle";
+import { toast } from "react-toastify";
 
 const LoginPage: FC = () => {
     const navigate = useNavigate();
@@ -29,55 +27,47 @@ const LoginPage: FC = () => {
     } = useForm<Login>({ resolver: yupResolver(loginSchema) });
 
     // rtk hooks
-    const [login, { isLoading, error }] = useLoginMutation();
+    const [login, { isLoading }] = useLoginMutation();
 
     // submit
-    const onSubmit: SubmitHandler<Login> = useCallback(
-        async (data) => {
-            const res = await login(data);
+    const onSubmit: SubmitHandler<Login> = async (data) => {
+        try {
+            const res = await login(data).unwrap();
             if (res?.data?.role === "admin") {
                 navigate("/admin");
             } else if (res?.data?.role === "customer") {
-                console.log("22", res.data.role);
                 navigate("/");
             }
-            reset();
-        },
-        [login, reset, navigate],
-    );
+        } catch (error) {
+            const typedError = error as ErrorRes;
+            toast.error(typedError.error ? typedError.error.error : "An unexpected error occurred.");
+        }
+
+        reset();
+    };
 
     return (
-        <AuthContainer>
-            {error && (
-                <Alert
-                    style={{ marginBottom: "10px" }}
-                    message="Error"
-                    description={"Invalid Email or Password"}
-                    type="error"
-                    showIcon
-                    closable
-                />
-            )}
+        <>
+            <AuthContainer>
+                <Form onFinish={handleSubmit(onSubmit)} className="w-full">
+                    <PageTitle className="text-stone-600">Login</PageTitle>
 
-            <Form onFinish={handleSubmit(onSubmit)} {...formItemLayout}>
-                {/* inputs */}
-                <AntFormItem formArr={formArr} control={control} errors={errors} />
-
-                <Form.Item style={{ marginBottom: "0" }}>
-                    <Button type="primary" htmlType="submit" disabled={isLoading}>
-                        Submit
+                    <FormInput error={errors.email?.message} name="email" control={control} />
+                    <FormInput error={errors.password?.message} name="password" control={control} />
+                    <Button type="primary" htmlType="submit" disabled={isLoading} className="mt-3 h-11 w-full">
+                        Login
                     </Button>
-                </Form.Item>
-            </Form>
-            <Col style={{ marginTop: "10px" }}>
-                <Row>Don't have an account? </Row>
-                <Button type="link" danger>
-                    Sign up now!
-                </Button>
-            </Col>
-
-            <NavLink to={"/admin"}>admin</NavLink>
-        </AuthContainer>
+                </Form>
+                <Col className="mt-2.5 flex items-center">
+                    <Row>Don't have an account? </Row>
+                    <Button type="link" danger className="font-bold">
+                        <NavLink to="/signup" className="text-red-500">
+                            Sign up now!
+                        </NavLink>
+                    </Button>
+                </Col>
+            </AuthContainer>
+        </>
     );
 };
 

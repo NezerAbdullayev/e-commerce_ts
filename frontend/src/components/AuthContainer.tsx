@@ -1,14 +1,23 @@
-import { Col, Row } from "antd";
 import { FC, ReactNode } from "react";
-import bgImage from "../assets/bg-shopping.jpg";
+import { Box, Button } from "@mui/material";
+import { useNavigate } from "react-router";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const AuthContainer: FC<{ children: ReactNode }> = ({ children }) => {
+    const navigate = useNavigate();
+    const handleBackClick = () => {
+        navigate("/");
+    };
     return (
-        <Row justify="center" align="middle" style={{ height: "100vh", backgroundImage: `url(${bgImage})` }}>
-            <Col style={{ maxWidth: 600, border: "2px solid #4f696339", padding: "30px 20px", borderRadius: "8px", background: "#ffffff" }}>
+        <Box minHeight={"100vh"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
+            <Box className="mx-auto min-w-[500px] rounded-xl border-2 bg-[#e1daed] px-8 py-14">
+                <Button variant="outlined" startIcon={<ArrowBackIcon />} onClick={handleBackClick} className="mb-3">
+                    Go Home
+                </Button>
+                {/* children */}
                 {children}
-            </Col>
-        </Row>
+            </Box>
+        </Box>
     );
 };
 

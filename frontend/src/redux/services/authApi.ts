@@ -1,10 +1,12 @@
 import { logout, setUser } from "../slice/authSlice";
 import { AUTH_URL } from "../constants";
 import { rootApi } from "../rootApi";
+import { toast } from "react-toastify";
+import { AuthResponse, ErrorRes, Login, Signup } from "./types/auth.types";
 
 const authApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
-        login: builder.mutation({
+        login: builder.mutation<AuthResponse, Login>({
             query: (user) => ({
                 url: `${AUTH_URL}/login`,
                 method: "POST",
@@ -16,13 +18,13 @@ const authApi = rootApi.injectEndpoints({
                     const { data } = await queryFulfilled;
                     dispatch(setUser({ role: data.role, name: data.name }));
                 } catch (error) {
-                    console.error("Login error:", error);
+                    const typedError = error as ErrorRes;
+                    toast.error(typedError.error ? typedError.error.error : "An unexpected error occurred.");
                 }
             },
-            invalidatesTags: ["Auth"],
         }),
 
-        signup: builder.mutation({
+        signup: builder.mutation<AuthResponse, Signup>({
             query: (newUser) => ({
                 url: `${AUTH_URL}/signup`,
                 method: "POST",
@@ -44,7 +46,6 @@ const authApi = rootApi.injectEndpoints({
                     console.error("Login error:", error);
                 }
             },
-            invalidatesTags: ["Auth"],
         }),
     }),
 });

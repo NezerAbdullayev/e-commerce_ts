@@ -11,6 +11,9 @@ import PageTitle from "../../components/PageTitle";
 import FormInput from "../../components/Forms/FormInput";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaRegUser } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
+import FormPasswordInput from "../../components/Forms/FormPasswordInput";
 
 // Form layout
 
@@ -30,9 +33,11 @@ const SignupPage: FC = () => {
     // Submit handler
     const onSubmit = async (data: Signup) => {
         try {
-            await signup(data).unwrap();
-            navigate("/login");
-            toast.success("Signup successful!");
+            const res = await signup(data).unwrap();
+            if (res._id) {
+                navigate("/login");
+                toast.success("Signup successful!");
+            }
         } catch (error) {
             const typedError = error as ErrorRes;
             toast.error(typedError.error ? typedError.error.error : "Signup failed! Please try again.");
@@ -44,9 +49,9 @@ const SignupPage: FC = () => {
         <AuthContainer>
             <Form onFinish={handleSubmit(onSubmit)} className="w-full">
                 <PageTitle className="text-stone-600">Signup</PageTitle>
-                <FormInput error={errors.name?.message} name="name" control={control} />
-                <FormInput error={errors.email?.message} name="email" control={control} />
-                <FormInput error={errors.password?.message} name="password" control={control} />
+                <FormInput error={errors.name?.message} name="name" control={control} icon={<FaRegUser />} />
+                <FormInput error={errors.email?.message} name="email" control={control} icon={<MdEmail />} />
+                <FormPasswordInput error={errors.password?.message} name="password" control={control} />
 
                 <Button type="primary" htmlType="submit" disabled={isLoading} className="mt-3 h-11 w-full">
                     Sign Up

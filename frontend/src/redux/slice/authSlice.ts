@@ -30,7 +30,6 @@ const authSlice = createSlice({
 });
 
 export const userName = (state: RootState) => state.auth.name;
-console.log(userName);
 
 export const userRole = (state: RootState) => state.auth.role;
 export const isAuthenticated = (state: RootState) => state.auth.isAuthenticated;

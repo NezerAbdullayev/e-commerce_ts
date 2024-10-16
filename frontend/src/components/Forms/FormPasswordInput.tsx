@@ -1,8 +1,8 @@
 import { Form, Input } from "antd";
 import { Controller, FieldValues } from "react-hook-form";
-import { InputProps } from "./types";
+import { BaseFormProps } from "./types";
 
-const FormInput = <T extends FieldValues>({ name, control, error, defaultValue, type = "text", icon, ...rest }: InputProps<T>) => {
+const FormPasswordInput = <T extends FieldValues>({ name, control, error, defaultValue, ...rest }: BaseFormProps<T>) => {
     return (
         <Form.Item
             className="mb-4 w-full"
@@ -15,12 +15,13 @@ const FormInput = <T extends FieldValues>({ name, control, error, defaultValue, 
                 name={name}
                 control={control}
                 defaultValue={defaultValue}
-                render={({ field }) => (
-                    <Input
-                        type={type}
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <Input.Password
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                        ref={ref}
                         placeholder={name}
-                        suffix={icon}
-                        {...field}
                         className={`w-full rounded-md border px-4 transition-all focus:outline-none ${
                             error ? "border-red-500" : "border-gray-300"
                         }`}
@@ -38,4 +39,4 @@ const FormInput = <T extends FieldValues>({ name, control, error, defaultValue, 
     );
 };
 
-export default FormInput;
+export default FormPasswordInput;

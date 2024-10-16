@@ -8,14 +8,15 @@ import { NavLink, useNavigate } from "react-router-dom";
 import AuthContainer from "../../components/AuthContainer";
 import FormInput from "../../components/Forms/FormInput";
 import { ErrorRes, Login } from "../../redux/services/types/auth.types";
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import FormPasswordInput from "../../components/Forms/FormPasswordInput";
+import PageTitle from "../../components/PageTitle";
+import { toast } from "react-toastify";
 
 // api
 import { useLoginMutation } from "../../redux/services/authApi";
 // schema
 import { loginSchema } from "../../validations/authform.validation";
-import PageTitle from "../../components/PageTitle";
-import { toast } from "react-toastify";
+import { MdEmail } from "react-icons/md";
 
 const LoginPage: FC = () => {
     const navigate = useNavigate();
@@ -34,9 +35,9 @@ const LoginPage: FC = () => {
     const onSubmit: SubmitHandler<Login> = async (data) => {
         try {
             const res = await login(data).unwrap();
-            if (res?.data?.role === "admin") {
+            if (res?.role === "admin") {
                 navigate("/admin");
-            } else if (res?.data?.role === "customer") {
+            } else if (res?.role === "customer") {
                 navigate("/");
             }
         } catch (error) {
@@ -53,8 +54,8 @@ const LoginPage: FC = () => {
                 <Form onFinish={handleSubmit(onSubmit)} className="w-full">
                     <PageTitle className="text-stone-600">Login</PageTitle>
 
-                    <FormInput error={errors.email?.message} name="email" control={control} icon={<PersonOutlineIcon/>} />
-                    <FormInput error={errors.password?.message} name="password" control={control} />
+                    <FormInput error={errors.email?.message} name="email" control={control} icon={<MdEmail />} />
+                    <FormPasswordInput error={errors.password?.message} name="password" control={control} />
                     <Button type="primary" htmlType="submit" disabled={isLoading} className="mt-3 h-11 w-full">
                         Login
                     </Button>

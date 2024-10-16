@@ -1,16 +1,10 @@
 import { Button, Form, Upload } from "antd";
-import { Control, Controller, FieldValues, Path, PathValue } from "react-hook-form";
+import { Controller, FieldValues } from "react-hook-form";
 import { UploadOutlined } from "@ant-design/icons";
 import { Box } from "@mui/material";
+import { BaseFormProps } from "./types";
 
-interface FormInputProps<T extends FieldValues> {
-    name: Path<T>;
-    control: Control<T>;
-    error?: string;
-    defaultValue?: PathValue<T, Path<T>>;
-}
-
-const FormInputFile = <T extends FieldValues>({ name, control, error }: FormInputProps<T>) => {
+const FormInputFile = <T extends FieldValues>({ name, control, error }: BaseFormProps<T>) => {
     return (
         <Form.Item validateStatus={error ? "error" : ""} help={error ? error.toString() : null}>
             <label className="mb-1 ml-2 block text-start text-sm font-bold text-gray-700">

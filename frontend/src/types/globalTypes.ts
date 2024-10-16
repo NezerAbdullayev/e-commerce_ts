@@ -85,3 +85,44 @@ export interface UserResponse {
 export interface SearchParams {
     searchTerm: string;
 }
+
+// refactor
+
+// interface FormInputProps<T extends FieldValues> {
+//     name: Path<T>;
+//     control: Control<T>;
+//     defaultValue?: PathValue<T, Path<T>>;
+//     error?: string;
+//     type?: string;
+//     icon?: ReactNode;
+// }
+
+// interface FormSelectProps<T extends FieldValues> {
+//     name: Path<T>;
+//     control: Control<T>;
+//     options: CategoryResponse[];
+//     multiple?: boolean;
+//     error?: string;
+//     defaultValue?: PathValue<T, Path<T>>;
+// }
+
+// interface FormTextareaProps<T extends FieldValues> {
+//     name: Path<T>;
+//     control: Control<T>;
+//     defaultValue?: PathValue<T, Path<T>>;
+//     error?: string;
+// }
+
+// interface FormInputProps<T extends FieldValues> {
+//     name: Path<T>;
+//     control: Control<T>;
+//     error?: string;
+//     defaultValue?: PathValue<T, Path<T>>;
+// }
+
+// interface FormInputProps<T extends FieldValues> {
+//     name: Path<T>;
+//     control: Control<T>;
+//     defaultValue?: PathValue<T, Path<T>>;
+//     error?: string;
+// }

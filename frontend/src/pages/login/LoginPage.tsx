@@ -8,6 +8,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import AuthContainer from "../../components/AuthContainer";
 import FormInput from "../../components/Forms/FormInput";
 import { ErrorRes, Login } from "../../redux/services/types/auth.types";
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 // api
 import { useLoginMutation } from "../../redux/services/authApi";
@@ -52,7 +53,7 @@ const LoginPage: FC = () => {
                 <Form onFinish={handleSubmit(onSubmit)} className="w-full">
                     <PageTitle className="text-stone-600">Login</PageTitle>
 
-                    <FormInput error={errors.email?.message} name="email" control={control} />
+                    <FormInput error={errors.email?.message} name="email" control={control} icon={<PersonOutlineIcon/>} />
                     <FormInput error={errors.password?.message} name="password" control={control} />
                     <Button type="primary" htmlType="submit" disabled={isLoading} className="mt-3 h-11 w-full">
                         Login

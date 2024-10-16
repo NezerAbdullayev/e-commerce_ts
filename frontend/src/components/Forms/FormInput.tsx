@@ -1,5 +1,6 @@
 import { Form, Input } from "antd";
 import { Control, Controller, FieldValues, Path, PathValue } from "react-hook-form";
+import { ReactNode } from "react";
 
 interface FormInputProps<T extends FieldValues> {
     name: Path<T>;
@@ -7,9 +8,10 @@ interface FormInputProps<T extends FieldValues> {
     defaultValue?: PathValue<T, Path<T>>;
     error?: string;
     type?: string;
+    icon?: ReactNode;
 }
 
-const FormInput = <T extends FieldValues>({ name, control, error, defaultValue, type = "text", ...rest }: FormInputProps<T>) => {
+const FormInput = <T extends FieldValues>({ name, control, error, defaultValue, type = "text", icon, ...rest }: FormInputProps<T>) => {
     return (
         <Form.Item
             className="mb-4 w-full"
@@ -30,12 +32,15 @@ const FormInput = <T extends FieldValues>({ name, control, error, defaultValue, 
                         value={value}
                         ref={ref}
                         placeholder={name}
+                        suffix={icon}
                         className={`block w-full rounded-md border px-4 transition-all focus:outline-none ${
                             error ? "border-red-500" : "border-gray-300"
                         }`}
                         style={{
                             borderRadius: "8px",
-                            padding: "12px",
+                            padding: "12px", // Ümumi padding
+                            paddingRight: "40px", // Suffix üçün əlavə boşluq
+                            height: "48px", // İstədiyin height dəyəri
                             width: "100%",
                         }}
                         {...rest}

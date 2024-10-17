@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,28 +8,32 @@ import "swiper/css/pagination";
 import { userRole } from "./redux/slice/authSlice";
 import { useSelector } from "react-redux";
 
-import AppLayout from "./layout/AppLayout";
-import HomePage from "./pages/home/HomePage";
-import CartPage from "./pages/cart/CartPage";
-import AdminPage from "./pages/admin/AdminPage";
-import LoginPage from "./pages/login/LoginPage";
-import SignupPage from "./pages/signup/SignupPage";
-import ProductsPage from "./pages/products/ProductsPage";
-import DetailsPage from "./pages/details/DetailsPage";
-import FavoritesPage from "./pages/favorites/FavoritesPage";
-import PageNotFound from "./pages/error/PageNotFound";
 import PirvateRoute from "./components/PirvateRoute";
-import Dashboard from "./pages/admin/components/dashboard/Dashboard";
-import UsersTable from "./pages/admin/components/usersTable/UsersTable";
-import AddNewProduct from "./pages/admin/components/createProduct/AddNewProduct";
-import TableProducts from "./pages/admin/components/productsTable/TableProducts";
-import Categories from "./pages/admin/components/category/Categories";
+import ScrollToTop from "./components/ScrollToTop";
+import Loading from "./components/Loading";
+// Lazy loading components
+const AppLayout = lazy(() => import("./layout/AppLayout"));
+const HomePage = lazy(() => import("./pages/home/HomePage"));
+const CartPage = lazy(() => import("./pages/cart/CartPage"));
+const AdminPage = lazy(() => import("./pages/admin/AdminPage"));
+const LoginPage = lazy(() => import("./pages/login/LoginPage"));
+const SignupPage = lazy(() => import("./pages/signup/SignupPage"));
+const ProductsPage = lazy(() => import("./pages/products/ProductsPage"));
+const DetailsPage = lazy(() => import("./pages/details/DetailsPage"));
+const FavoritesPage = lazy(() => import("./pages/favorites/FavoritesPage"));
+const PageNotFound = lazy(() => import("./pages/error/PageNotFound"));
+const Dashboard = lazy(() => import("./pages/admin/components/dashboard/Dashboard"));
+const UsersTable = lazy(() => import("./pages/admin/components/usersTable/UsersTable"));
+const AddNewProduct = lazy(() => import("./pages/admin/components/createProduct/AddNewProduct"));
+const TableProducts = lazy(() => import("./pages/admin/components/productsTable/TableProducts"));
+const Categories = lazy(() => import("./pages/admin/components/category/Categories"));
 
 const App: React.FC = () => {
     const role = useSelector(userRole);
 
     return (
         <BrowserRouter>
+            <ScrollToTop />
             <ToastContainer
                 position="top-right"
                 autoClose={2000}
@@ -43,48 +47,50 @@ const App: React.FC = () => {
                 theme="colored"
                 style={{ top: "100px" }}
             />
-            <Routes>
-                {/* Admin panel */}
-                <Route path="/admin" element={role === "admin" ? <AdminPage /> : <Navigate to="/" />}>
-                    <Route index element={<Navigate to="dashboard" />} />
-                    <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="products" element={<TableProducts />} />
-                    <Route path="users" element={<UsersTable />} />
-                    <Route path="createProduct" element={<AddNewProduct />} />
-                    <Route path="categorys" element={<Categories />} />
-                </Route>
+            <Suspense fallback={<Loading />}>
+                <Routes>
+                    {/* Admin panel */}
+                    <Route path="/admin" element={role === "admin" ? <AdminPage /> : <Navigate to="/" />}>
+                        <Route index element={<Navigate to="dashboard" />} />
+                        <Route path="dashboard" element={<Dashboard />} />
+                        <Route path="products" element={<TableProducts />} />
+                        <Route path="users" element={<UsersTable />} />
+                        <Route path="createProduct" element={<AddNewProduct />} />
+                        <Route path="categorys" element={<Categories />} />
+                    </Route>
 
-                {/* auth */}
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
+                    {/* auth */}
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignupPage />} />
 
-                {/* App layout routes */}
-                <Route path="/" element={<AppLayout />}>
-                    <Route index element={<HomePage />} />
-                    <Route path="products" element={<ProductsPage />} />
-                    <Route path="product/:id" element={<DetailsPage />} />
+                    {/* App layout routes */}
+                    <Route path="/" element={<AppLayout />}>
+                        <Route index element={<HomePage />} />
+                        <Route path="products" element={<ProductsPage />} />
+                        <Route path="product/:id" element={<DetailsPage />} />
 
-                    <Route
-                        path="favorites"
-                        element={
-                            <PirvateRoute>
-                                <FavoritesPage />
-                            </PirvateRoute>
-                        }
-                    />
+                        <Route
+                            path="favorites"
+                            element={
+                                <PirvateRoute>
+                                    <FavoritesPage />
+                                </PirvateRoute>
+                            }
+                        />
 
-                    <Route
-                        path="cart"
-                        element={
-                            <PirvateRoute>
-                                <CartPage />
-                            </PirvateRoute>
-                        }
-                    />
-                </Route>
+                        <Route
+                            path="cart"
+                            element={
+                                <PirvateRoute>
+                                    <CartPage />
+                                </PirvateRoute>
+                            }
+                        />
+                    </Route>
 
-                <Route path="*" element={<PageNotFound />} />
-            </Routes>
+                    <Route path="*" element={<PageNotFound />} />
+                </Routes>
+            </Suspense>
         </BrowserRouter>
     );
 };

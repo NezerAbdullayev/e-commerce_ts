@@ -11,6 +11,7 @@ export interface Products {
     image: string[];
     price: number;
     stock: number;
+    numReview?: number;
     reviews: string[];
 }
 

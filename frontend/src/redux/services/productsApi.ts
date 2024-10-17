@@ -1,4 +1,3 @@
-
 import { PRODUCTS_URL } from "../constants";
 import { rootApi } from "../rootApi";
 import { Products, ProductsResponse } from "./types/products.types";
@@ -64,7 +63,7 @@ const productsApi = rootApi.injectEndpoints({
             invalidatesTags: ["Products"],
         }),
 
-        addReview: builder.mutation({
+        createReview: builder.mutation({
             query: ({ productId, review }) => ({
                 url: `${PRODUCTS_URL}/${productId}/reviews`,
                 method: "POST",
@@ -84,7 +83,7 @@ export const {
     useCreateNewProductMutation,
     useDeleteProductMutation,
     useUpdateProductMutation,
-    useAddReviewMutation,
+    useCreateReviewMutation,
 } = productsApi;
 
 export default productsApi;

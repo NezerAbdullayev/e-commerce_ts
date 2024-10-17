@@ -89,8 +89,10 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
     try {
-        const { id, name, description, price, image, category, stock, brand } = req.body.updatedProduct;
+        const { id, name, description, price, image, category, stock, brand } = req.body.data;
 
+        console.log(id,"id")
+        console.log(req.body.data)
         const existingProduct = await ProductModel.findById(id);
         if (!existingProduct) {
             return res.status(404).json({ message: "Product not found" });

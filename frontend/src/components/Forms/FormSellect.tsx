@@ -7,9 +7,7 @@ const { Option } = Select;
 const FormSelect = <T extends FieldValues>({ name, control, error, options, multiple, defaultValue, ...rest }: SelectProps<T>) => {
     return (
         <Form.Item validateStatus={error ? "error" : ""} help={error ? String(error) : null}>
-            <label className="mb-1 ml-2 block text-start text-sm font-bold text-gray-700">
-                {name.charAt(0).toUpperCase() + name.slice(1)}
-            </label>
+            <label className="ml-2 block text-start text-sm font-bold text-gray-700">{name.charAt(0).toUpperCase() + name.slice(1)}</label>
             <Controller
                 name={name}
                 control={control}

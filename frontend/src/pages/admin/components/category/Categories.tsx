@@ -104,7 +104,7 @@ const Categories: FC = () => {
                 {loadingCategories ? (
                     <Loading />
                 ) : categoriesError ? (
-                    <Error message={categoriesError.error} />
+                    <Error message="There was an error fetching the categories." />
                 ) : (
                     categoryData &&
                     categoryData.map((category) => (

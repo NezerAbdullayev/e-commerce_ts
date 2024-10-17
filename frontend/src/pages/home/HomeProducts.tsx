@@ -20,18 +20,17 @@ const HomeProducts: FC = () => {
 
     console.log(error);
 
-    const productData = useMemo(() => {
-        return tShirtProductData?.products || [];
-    }, [tShirtProductData]);
-
     const favoriteIds = useMemo(() => favortiesData?.map((fav) => fav.productId) || [], [favortiesData]);
 
     console.log("re-rendering HomeProducts");
 
-
     return (
         <div>
-            {tShirtLoading ? <Loading /> : <ProductsGroup catgoryTitle={"T-shirt"} productData={productData} favoriteIds={favoriteIds} />}
+            {tShirtLoading ? (
+                <Loading />
+            ) : (
+                <ProductsGroup catgoryTitle={"T-shirt"} productData={tShirtProductData?.products} favoriteIds={favoriteIds} />
+            )}
 
             <ProductsGroup catgoryTitle={"Oversized"} productData={oversizedProductData?.products || []} favoriteIds={favoriteIds} />
 

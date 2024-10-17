@@ -18,27 +18,6 @@ export interface CategoryResponse {
     _id: string;
 }
 
-// products
-export interface Products {
-    _id: string;
-    name: string;
-    brand: string;
-    rating: number;
-    isFeatured: string;
-    description: string;
-    category: CategoryResponse[];
-    image: string[];
-    price: number;
-    stock: number;
-    reviews: string[];
-}
-
-export interface ProductsResponse {
-    currentPage: number;
-    products: Products[];
-    totalPages: number;
-    totalProducts: number;
-}
 //cart
 
 export interface CartProps {
@@ -85,44 +64,3 @@ export interface UserResponse {
 export interface SearchParams {
     searchTerm: string;
 }
-
-// refactor
-
-// interface FormInputProps<T extends FieldValues> {
-//     name: Path<T>;
-//     control: Control<T>;
-//     defaultValue?: PathValue<T, Path<T>>;
-//     error?: string;
-//     type?: string;
-//     icon?: ReactNode;
-// }
-
-// interface FormSelectProps<T extends FieldValues> {
-//     name: Path<T>;
-//     control: Control<T>;
-//     options: CategoryResponse[];
-//     multiple?: boolean;
-//     error?: string;
-//     defaultValue?: PathValue<T, Path<T>>;
-// }
-
-// interface FormTextareaProps<T extends FieldValues> {
-//     name: Path<T>;
-//     control: Control<T>;
-//     defaultValue?: PathValue<T, Path<T>>;
-//     error?: string;
-// }
-
-// interface FormInputProps<T extends FieldValues> {
-//     name: Path<T>;
-//     control: Control<T>;
-//     error?: string;
-//     defaultValue?: PathValue<T, Path<T>>;
-// }
-
-// interface FormInputProps<T extends FieldValues> {
-//     name: Path<T>;
-//     control: Control<T>;
-//     defaultValue?: PathValue<T, Path<T>>;
-//     error?: string;
-// }

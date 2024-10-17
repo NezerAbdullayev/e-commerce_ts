@@ -23,5 +23,3 @@ export interface ErrorRes {
         type: string;
     };
 }
-// {_id: '67052d407a3ec4123a641faa',
-//  name: 'nezer', email: 'nezer@g', role: 'customer'}

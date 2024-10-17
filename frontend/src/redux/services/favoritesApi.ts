@@ -11,7 +11,7 @@ const favoritesApi = rootApi.injectEndpoints({
                 credentials: "include",
             }),
             providesTags: ["Favorites"],
-            keepUnusedDataFor: 5,
+            keepUnusedDataFor: 300,
         }),
 
         addtoFavorites: builder.mutation({

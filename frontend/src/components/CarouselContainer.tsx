@@ -8,7 +8,7 @@ import { useGetRandomProductsQuery } from "../redux/services/productsApi";
 import Loading from "./Loading";
 
 const CarouselContainer: FC = () => {
-    const { data, isLoading, error } = useGetRandomProductsQuery({ count: 8 });
+    const { data, isLoading } = useGetRandomProductsQuery({ count: 8 });
 
     return (
         <Box className="mx-auto max-w-[90%]" sx={{ margin: "80px auto " }}>

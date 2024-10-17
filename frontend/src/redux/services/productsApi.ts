@@ -1,7 +1,7 @@
-import { Products, ProductsResponse } from "../../types/globalTypes";
 
 import { PRODUCTS_URL } from "../constants";
 import { rootApi } from "../rootApi";
+import { Products, ProductsResponse } from "./types/products.types";
 
 const productsApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({

@@ -16,7 +16,6 @@ const usersApi = rootApi.injectEndpoints({
                 credentials: "include",
             }),
             providesTags: ["Users"],
-            keepUnusedDataFor: 300,
         }),
 
         getSearchUsers: builder.query<UserResponse, { search: string }>({
@@ -26,7 +25,6 @@ const usersApi = rootApi.injectEndpoints({
                 credentials: "include",
             }),
             providesTags: ["Users"],
-            keepUnusedDataFor: 300,
         }),
 
         deleteUser: builder.mutation<void, { id: string }>({

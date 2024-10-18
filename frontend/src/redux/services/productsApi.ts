@@ -6,7 +6,6 @@ const productsApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllProducts: builder.query<ProductsResponse, { page: number; limit: number }>({
             query: ({ page, limit }) => `${PRODUCTS_URL}?page=${page}&limit=${limit}`,
-            keepUnusedDataFor: 5,
             providesTags: ["Products"],
         }),
 
@@ -25,13 +24,10 @@ const productsApi = rootApi.injectEndpoints({
 
         getProductById: builder.query<Products, { id: string | undefined }>({
             query: ({ id }) => `${PRODUCTS_URL}/${id}`,
-
-            keepUnusedDataFor: 5,
         }),
 
         getTopProducts: builder.query({
             query: () => `${PRODUCTS_URL}/top`,
-            keepUnusedDataFor: 5,
         }),
 
         createNewProduct: builder.mutation({

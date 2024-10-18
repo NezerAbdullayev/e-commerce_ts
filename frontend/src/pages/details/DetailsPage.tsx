@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Chip, Tab, Tabs, Typography } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { useParams } from "react-router";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,7 +8,7 @@ import Loading from "../../components/Loading";
 import Error from "../admin/components/Error";
 import { useGetProductByIdQuery } from "../../redux/services/productsApi";
 import Review from "../../components/review/Review";
-import AddNewReview from "../../components/review/addNewReview";
+import AddNewReview from "../../components/review/AddNewReview";
 
 const DetailsPage: FC = () => {
     const { id } = useParams();
@@ -20,6 +20,9 @@ const DetailsPage: FC = () => {
     const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
         setNavBar(newValue);
     };
+
+    console.log(data?.reviews);
+    const reviews=useMemo( ()=>{},[])
 
     return (
         <Box className="bg-stone-50">
@@ -115,7 +118,7 @@ const DetailsPage: FC = () => {
                                                 {data.description}
                                             </Typography>
                                         )}
-                                        {navBar === 1 && <Review rating={data.rating} text={data?.numReview || 0} />}
+                                        {navBar === 1 && <Review />}
                                         {navBar === 2 && <AddNewReview productId={id} />}
                                     </Box>
                                 </Box>

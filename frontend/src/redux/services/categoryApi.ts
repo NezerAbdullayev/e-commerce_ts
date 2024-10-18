@@ -7,7 +7,6 @@ const categoryApi = rootApi.injectEndpoints({
         getAllCategory: builder.query<CategoryResponse[], void>({
             query: () => `${CATEGORY_URL}/`,
             providesTags: ["Category"],
-            keepUnusedDataFor: 300,
         }),
 
         createCategory: builder.mutation<void, { categoryName: string }>({

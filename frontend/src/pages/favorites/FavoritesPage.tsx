@@ -1,16 +1,60 @@
 import { FC, useCallback } from "react";
 
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { useGetAllFavoritesQuery, useRemoveAllFavoritesMutation } from "../../redux/services/favoritesApi";
+import { useGetAllFavoritesQuery, useRemoveAllFavoritesMutation, useRemoveFavoritesItemMutation } from "../../redux/services/favoritesApi";
 import FavoritesItem from "./FavoritesItem";
 import Loading from "../../components/Loading";
 import Error from "../admin/components/Error";
 import { toast } from "react-toastify";
+import { Modal } from "antd";
+import { useAddToCartMutation } from "../../redux/services/cartApi";
+import { FavorityItem } from "../../types/globalTypes";
 
 const FavoritesPage: FC = () => {
     const { data: favoriteProducts, isLoading: favoritesLoading, error: favoritesError } = useGetAllFavoritesQuery();
 
     const [removeAllFavoritesItems] = useRemoveAllFavoritesMutation();
+
+    const [removeFavoritesItem] = useRemoveFavoritesItemMutation();
+
+    const [addToCart] = useAddToCartMutation();
+
+    const onRemoveFavoritesItem = useCallback(
+        async (id: string) => {
+            Modal.confirm({
+                title: "Are you sure you want to remove this item from favorites?",
+                okText: "Yes",
+                cancelText: "No",
+                onOk: async () => {
+                    try {
+                        const res = await removeFavoritesItem({ id }).unwrap();
+                        toast.success(`Item removed from favorites: ${res}`);
+                    } catch (error) {
+                        toast.error(`Failed to remove item: ${error}`);
+                    }
+                },
+            });
+        },
+        [removeFavoritesItem],
+    );
+
+    const onAddToCart = useCallback(
+        async ({ productId, image, name, price }: FavorityItem) => {
+            Modal.confirm({
+                title: "Do you want to add this product to the cart?",
+                onOk: async () => {
+                    try {
+                        const res = await addToCart({ productId, image, name, price }).unwrap();
+                        console.log(res);
+                        console.log(productId, image, name, price);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                },
+            });
+        },
+        [addToCart],
+    );
 
     const removeAllFavorites = useCallback(async () => {
         try {
@@ -57,6 +101,8 @@ const FavoritesPage: FC = () => {
                                     name={item.name}
                                     price={item.price}
                                     image={item.image}
+                                    onRemove={onRemoveFavoritesItem}
+                                    onAddToCart={onAddToCart}
                                 />
                             ))
                         ) : (

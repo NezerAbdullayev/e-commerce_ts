@@ -1,9 +1,21 @@
-import { TableCell, TableRow } from "@mui/material";
+import { IconButton, TableCell, TableRow } from "@mui/material";
 import { FC, memo } from "react";
-import { FavoritesProps } from "../../types/globalTypes";
-import FavoritesControl from "./FavoritesControl";
+import { FavorityItem } from "../../types/globalTypes";
 
-const FavoritesItem: FC<FavoritesProps> = ({ id, name, productId, price, image }) => {
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+
+interface FavoritesProps extends FavorityItem {
+    id: string;
+    onRemove: (id: string) => void;
+    onAddToCart: (item: FavorityItem) => void;
+}
+
+const FavoritesItem: FC<FavoritesProps> = ({ id, name, productId, price, image, onRemove, onAddToCart }) => {
+    const handleAddCart = () => {
+        onAddToCart({ name, productId, price, image });
+    };
+
     return (
         <TableRow>
             <TableCell align="center">
@@ -13,7 +25,13 @@ const FavoritesItem: FC<FavoritesProps> = ({ id, name, productId, price, image }
             <TableCell align="center">{name}</TableCell>
             <TableCell align="center">{price}</TableCell>
             <TableCell align="center">
-                <FavoritesControl id={id} productId={productId} image={image} name={name} price={price} />
+                <IconButton aria-label="Save" color="primary" onClick={handleAddCart}>
+                    <AddShoppingCartIcon />
+                </IconButton>
+
+                <IconButton aria-label="Delete" color="error" onClick={() => onRemove(id)}>
+                    <DeleteIcon />
+                </IconButton>
             </TableCell>
         </TableRow>
     );

@@ -64,3 +64,10 @@ export interface UserResponse {
 export interface SearchParams {
     searchTerm: string;
 }
+
+export interface FavorityItem {
+    productId: string;
+    image: string;
+    name: string;
+    price: number;
+}

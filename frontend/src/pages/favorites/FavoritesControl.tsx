@@ -7,6 +7,7 @@ import { useRemoveFavoritesItemMutation } from "../../redux/services/favoritesAp
 import { Modal } from "antd";
 import { FavoritesProps } from "../../types/globalTypes";
 import { useAddToCartMutation } from "../../redux/services/cartApi";
+import { toast } from "react-toastify";
 
 const FavoritesControl: FC<FavoritesProps> = ({ id, productId, image, name, price }) => {
     const [removeFavoritesItem, { isLoading: favoritesLoading }] = useRemoveFavoritesItemMutation();
@@ -21,9 +22,9 @@ const FavoritesControl: FC<FavoritesProps> = ({ id, productId, image, name, pric
             onOk: async () => {
                 try {
                     const res = await removeFavoritesItem({ id }).unwrap();
-                    console.log("Item removed from favorites:", res);
+                    toast.success(`Item removed from favorites: ${res}`);
                 } catch (error) {
-                    console.error("Failed to remove item:", error);
+                    toast.error(`Failed to remove item: ${error}`);
                 }
             },
         });

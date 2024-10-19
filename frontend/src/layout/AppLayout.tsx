@@ -8,7 +8,7 @@ const AppLayout: FC = () => {
     return (
         <Box>
             <Header />
-            <Box sx={{ minHeight: "100vh", mb: 10 }}>
+            <Box sx={{ minHeight: "100vh"}}>
                 <Outlet />
             </Box>
             <Footer />

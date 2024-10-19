@@ -14,7 +14,7 @@ const FavoritesPage: FC = () => {
 
     const removeAllFavorites = useCallback(async () => {
         try {
-            await removeAllFavoritesItems();
+            await removeAllFavoritesItems().unwrap();
             toast.success("Favorites cleared successfully!");
         } catch (error) {
             console.error(error);

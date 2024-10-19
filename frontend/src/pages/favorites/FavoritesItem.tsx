@@ -16,6 +16,8 @@ const FavoritesItem: FC<FavoritesProps> = ({ id, name, productId, price, image, 
         onAddToCart({ name, productId, price, image });
     };
 
+    console.log("re-rendering fav")
+
     return (
         <TableRow>
             <TableCell align="center">

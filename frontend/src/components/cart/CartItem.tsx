@@ -1,9 +1,11 @@
 import { Box, IconButton, TableCell, TableRow, Typography } from "@mui/material";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, memo, useCallback, useEffect, useState } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import CartControls from "./CartControls";
+
+import DeleteIcon from "@mui/icons-material/Delete";
+import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
 
 interface CartItemProp {
     id: string;
@@ -11,13 +13,13 @@ interface CartItemProp {
     image: string;
     price: number;
     quantity: number;
+    onUpdateQuantity: (item: { quantity: number; id: string }) => void;
+    onDeleteCart: (item: { id: string }) => void;
 }
 
-const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity }) => {
+const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity, onUpdateQuantity, onDeleteCart }) => {
     const [quantityEL, setQuantityEl] = useState<number>(quantity);
     const [saveIsActive, setSaveIsActive] = useState<boolean>(false);
-
-    console.log("re-rendering -->1");
 
     useEffect(() => {
         if (quantityEL !== quantity && !saveIsActive) {
@@ -32,8 +34,16 @@ const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity }) => {
     }, []);
 
     const decQuantity = useCallback(() => {
-        setQuantityEl((quantityEL) => (quantityEL <= 1 ? quantity : quantityEL - 1));
-    }, [quantity]);
+        setQuantityEl((quantityEL) => (quantityEL <= 1 ? 1 : quantityEL - 1));
+    }, []);
+
+    const handleDelete = () => {
+        onDeleteCart({ id });
+    };
+
+    const handleUpdate = () => {
+        onUpdateQuantity({ quantity: quantityEL, id });
+    };
 
     return (
         <TableRow sx={{ alignItems: "center" }}>
@@ -61,10 +71,16 @@ const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity }) => {
             <TableCell align="center">${(price * quantityEL).toFixed(1)}</TableCell>
 
             <TableCell align="center">
-                <CartControls saveIsActive={saveIsActive} quantityEL={quantityEL} id={id} />
+                <IconButton aria-label="Save" color="primary" onClick={handleUpdate}>
+                    <DownloadDoneIcon />
+                </IconButton>
+
+                <IconButton aria-label="Delete" color="error" onClick={handleDelete}>
+                    <DeleteIcon />
+                </IconButton>
             </TableCell>
         </TableRow>
     );
 };
 
-export default CartItem;
+export default memo(CartItem);

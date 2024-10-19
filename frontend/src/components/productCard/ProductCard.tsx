@@ -1,15 +1,11 @@
 import { Box, Card, CardContent, CardMedia, Grid2 as Grid, IconButton, Rating, Typography } from "@mui/material";
-import { FC, useCallback, useState } from "react";
+import { FC, memo, useCallback } from "react";
 import { useNavigate } from "react-router";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { useAddToCartMutation } from "../../redux/services/cartApi";
-import { useAddtoFavoritesMutation } from "../../redux/services/favoritesApi";
-import { shallowEqual, useSelector } from "react-redux";
-import { isAuthenticated } from "../../redux/slice/authSlice";
-import { toast } from "react-toastify";
+import { HandlerRes } from "../productsPagination/ProductsPagination";
 
 interface ProductCardProps {
     id: string;
@@ -18,48 +14,26 @@ interface ProductCardProps {
     price: number;
     rating: number;
     isFavorited: boolean;
+    onAddToFavorites: ({ name, productId, image, price }: HandlerRes) => void;
+    onAddToBasket: ({ name, productId, image, price }: HandlerRes) => void;
 }
 
-const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, isFavorited }) => {
-    const isAuth = useSelector(isAuthenticated, shallowEqual);
+const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, isFavorited, onAddToFavorites, onAddToBasket }) => {
     // rkt query
-    const [addToCart, { isLoading: addCartLoading }] = useAddToCartMutation();
-    const [addToFavorite] = useAddtoFavoritesMutation();
 
-    const [value, setValue] = useState<number | null>(rating < 3 ? 3 : rating);
     const navigate = useNavigate();
 
     const onDetailsClick = useCallback(() => {
         navigate(`/product/${id}`);
     }, [navigate, id]);
 
-    const onAddToFavorites = useCallback(async () => {
-        if (!isAuth) {
-            toast.error("Please log in to your account or create a new one.");
-            return;
-        }
-        try {
-            await addToFavorite({ name, productId: id, image, price });
-            toast.success("Product added to the favorite successfully!");
-        } catch (error) {
-            console.error(error);
-            toast.error("Failed to add the product to the favorite. Please try again.");
-        }
-    }, [addToFavorite, name, id, image, price, isAuth]);
+    const handleAddToFavorites = () => {
+        onAddToFavorites({ name, productId: id, image, price });
+    };
 
-    const onAddToBasket = useCallback(async () => {
-        if (!isAuth) {
-            toast.error("Please log in to your account or create a new one.");
-            return;
-        }
-        try {
-            await addToCart({ name, productId: id, image, price });
-            toast.success("Product added to the basket successfully!");
-        } catch (error) {
-            toast.error("Failed to add the product to the basket. Please try again.");
-            console.error(error);
-        }
-    }, [addToCart, name, id, image, price, isAuth]);
+    const handleAddToCart = () => {
+        onAddToBasket({ name, productId: id, image, price });
+    };
 
     return (
         <Grid size={{ xs: 2, sm: 4, md: 3 }}>
@@ -76,13 +50,13 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, isF
                     />
 
                     <Box className="absolute bottom-3 right-3 z-40 rounded-md bg-stone-50/40">
-                        <IconButton aria-label="Add to favorites" color="error" onClick={onAddToFavorites} disabled={isFavorited}>
+                        <IconButton aria-label="Add to favorites" color="error" onClick={handleAddToFavorites} disabled={isFavorited}>
                             <FavoriteIcon
                                 className={`w-5 transition-all duration-300 hover:text-red-700 ${isFavorited ? "text-red-700" : "text-stone-50"}`}
                                 sx={{ fontSize: 30 }}
                             />
                         </IconButton>
-                        <IconButton aria-label="Add to basket" color="primary" onClick={onAddToBasket} disabled={addCartLoading}>
+                        <IconButton aria-label="Add to basket" color="primary" onClick={handleAddToCart}>
                             <AddShoppingCartIcon className="hover:text-blue-400" />
                         </IconButton>
                     </Box>
@@ -117,14 +91,8 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, isF
                         sx={{ marginTop: 1 }}
                     >
                         <Box>Rating: </Box>
-                        <Rating
-                            name="simple-controlled"
-                            value={value}
-                            onChange={(_, newValue) => {
-                                setValue(newValue);
-                            }}
-                        />
-                        <Box className="font-bold">({rating < 3 ? 3 : rating}.0)</Box>
+                        <Rating name="simple-controlled" value={rating} readOnly />
+                        <Box className="font-bold">({rating === 0 ? 0 : rating.toFixed(1)})</Box>
                     </Typography>
                 </CardContent>
             </Card>
@@ -132,4 +100,4 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, isF
     );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

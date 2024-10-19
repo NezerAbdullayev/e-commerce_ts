@@ -7,7 +7,7 @@ interface CardContainerProps {
 
 const CardContainer: FC<CardContainerProps> = ({ children }) => {
     return (
-        <Box className="max-w-[90%] mx-auto">
+        <Box className="mx-auto max-w-[90%]">
             <Grid container columns={{ xs: 4, sm: 8, md: 12 }} spacing={{ xs: 2, md: 3 }}>
                 {children}
             </Grid>

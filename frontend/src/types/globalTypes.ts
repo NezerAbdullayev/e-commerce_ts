@@ -71,3 +71,6 @@ export interface FavorityItem {
     name: string;
     price: number;
 }
+
+
+

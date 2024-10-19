@@ -32,7 +32,6 @@ const CartPage: FC = () => {
         },
         [updateCartQuantity],
     );
-    console.log("re-rendering cart Pagew");
 
     const onDeleteCart = useCallback(
         (id: string) => {

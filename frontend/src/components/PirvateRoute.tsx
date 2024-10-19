@@ -10,8 +10,6 @@ interface PirvateRouteProps {
 const PirvateRoute: FC<PirvateRouteProps> = ({ children }) => {
     const isAuth = useSelector(isAuthenticated);
 
-    console.log(isAuth, children);
-
     return isAuth ? <>{children}</> : <Navigate to="/login" replace />;
 };
 

@@ -27,7 +27,7 @@ const FavoritesPage: FC = () => {
     }
 
     return (
-        <Box className="relative mx-auto mt-10 w-[1280px] max-w-[90%]">
+        <Box className="relative mx-auto my-10 w-[1280px] max-w-[90%]">
             {favoritesLoading && <Loading />}
 
             <Typography variant="h4" gutterBottom className="font-bold text-white" align="center">

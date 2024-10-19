@@ -30,6 +30,7 @@ const AdminPage: FC = () => {
         token: { colorBgContainer },
     } = theme.useToken();
 
+
     return (
         <Layout hasSider style={{ padding: 0, minHeight: "100vh" }}>
             {/* sidebar */}

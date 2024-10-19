@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import {
     useCreateCategoryMutation,
     useDeleteCategoryMutation,
@@ -12,6 +12,8 @@ import { useForm } from "react-hook-form";
 import Loading from "../../../../components/Loading";
 import PageTitle from "../../../../components/PageTitle";
 import Error from "../Error";
+import CategoryItem from "./CategoryItem";
+import { toast } from "react-toastify";
 
 // Modal stili
 const style = {
@@ -44,7 +46,6 @@ const Categories: FC = () => {
         handleSubmit,
         reset,
         formState: { errors },
-        setValue,
     } = useForm<{ categoryName: string }>({
         resolver: yupResolver(CategoriesSchema),
     });
@@ -53,15 +54,16 @@ const Categories: FC = () => {
     const [isEditMode, setIsEditMode] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-    const handleOpen = () => {
-        reset();
+    const handleOpen = useCallback(() => {
+        reset({ categoryName: "" });
         setOpen(true);
-    };
-    const handleClose = () => {
+    }, [reset]);
+    
+    const handleClose = useCallback(() => {
         setOpen(false);
         setIsEditMode(false);
         setSelectedCategory(null);
-    };
+    }, []);
 
     const onSubmit = (data: { categoryName: string }) => {
         const { categoryName } = data;
@@ -74,17 +76,28 @@ const Categories: FC = () => {
         reset();
     };
 
-    const handleEdit = ({ id, name }: { id: string; name: string }) => {
-        setValue("categoryName", name);
-        setSelectedCategory(id);
-        setIsEditMode(true);
-        setOpen(true);
-    };
+    const handleEdit = useCallback(
+        ({ id, name }: { id: string; name: string }) => {
+            reset({ categoryName: name });
+            setSelectedCategory(id);
+            setIsEditMode(true);
+            setOpen(true);
+        },
+        [reset],
+    );
 
-    const handleDelete = (categoryId: string) => {
-        deleteCategory({ id: categoryId });
-    };
-    console.log(categoriesError);
+    const handleDelete = useCallback(
+        async (categoryId: string) => {
+            try {
+                await deleteCategory({ id: categoryId }).unwrap();
+                toast.success("Category deleted successfully!");
+            } catch (error) {
+                console.error(error);
+                toast.error("Failed to delete category. Please try again.");
+            }
+        },
+        [deleteCategory],
+    );
 
     return (
         <Box>
@@ -108,27 +121,13 @@ const Categories: FC = () => {
                 ) : (
                     categoryData &&
                     categoryData.map((category) => (
-                        <Box
+                        <CategoryItem
                             key={category._id}
-                            display="flex"
-                            justifyContent="space-between"
-                            mb={2}
-                            className="border-stone-550 rounded border-2 p-2 transition-all hover:border-stone-400"
-                        >
-                            <Typography variant="h6">{category.name}</Typography>
-                            <Box display={"flex"} gap={2}>
-                                <Button
-                                    variant="outlined"
-                                    color="primary"
-                                    onClick={() => handleEdit({ id: category._id, name: category.name })}
-                                >
-                                    Edit
-                                </Button>
-                                <Button variant="outlined" color="secondary" onClick={() => handleDelete(category._id)}>
-                                    Delete
-                                </Button>
-                            </Box>
-                        </Box>
+                            id={category._id}
+                            name={category.name}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                        />
                     ))
                 )}
             </Box>

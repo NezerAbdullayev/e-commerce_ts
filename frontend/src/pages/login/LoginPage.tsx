@@ -49,27 +49,25 @@ const LoginPage: FC = () => {
     };
 
     return (
-        <>
-            <AuthContainer>
-                <Form onFinish={handleSubmit(onSubmit)} className="w-full">
-                    <PageTitle className="text-stone-600">Login</PageTitle>
+        <AuthContainer>
+            <Form onFinish={handleSubmit(onSubmit)} className="w-full">
+                <PageTitle className="text-stone-600">Login</PageTitle>
 
-                    <FormInput error={errors.email?.message} name="email" control={control} icon={<MdEmail />} />
-                    <FormPasswordInput error={errors.password?.message} name="password" control={control} />
-                    <Button type="primary" htmlType="submit" disabled={isLoading} className="mt-3 h-11 w-full">
-                        Login
-                    </Button>
-                </Form>
-                <Col className="mt-2.5 flex items-center">
-                    <Row>Don't have an account? </Row>
-                    <Button type="link" danger className="font-bold">
-                        <NavLink to="/signup" className="text-red-500">
-                            Sign up now!
-                        </NavLink>
-                    </Button>
-                </Col>
-            </AuthContainer>
-        </>
+                <FormInput error={errors.email?.message} name="email" control={control} icon={<MdEmail />} />
+                <FormPasswordInput error={errors.password?.message} name="password" control={control} />
+                <Button type="primary" htmlType="submit" disabled={isLoading} className="mt-3 h-11 w-full">
+                    Login
+                </Button>
+            </Form>
+            <Col className="mt-2.5 flex items-center">
+                <Row>Don't have an account? </Row>
+                <Button type="link" danger className="font-bold">
+                    <NavLink to="/signup" className="text-red-500">
+                        Sign up now!
+                    </NavLink>
+                </Button>
+            </Col>
+        </AuthContainer>
     );
 };
 

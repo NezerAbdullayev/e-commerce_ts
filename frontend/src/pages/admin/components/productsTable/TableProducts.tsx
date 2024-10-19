@@ -110,22 +110,25 @@ const TableProducts: FC = () => {
         }
     }, [productsData]);
 
-    const onDeleteProduct = async (id: string) => {
-        Modal.confirm({
-            title: "Do you want to delete this product?",
-            onOk: async () => {
-                try {
-                    await deleteProduct({ id });
-                    toast.success("Product deleted successfully!");
-                } catch (error) {
-                    console.error(error);
-                    toast.error("Failed to update the product. Please try again.");
-                }
-            },
-            okText: "Yes",
-            okType: "danger",
-        });
-    };
+    const onDeleteProduct = useCallback(
+        (id: string) => {
+            Modal.confirm({
+                title: "Do you want to delete this product?",
+                onOk: async () => {
+                    try {
+                        await deleteProduct({ id });
+                        toast.success("Product deleted successfully!");
+                    } catch (error) {
+                        console.error(error);
+                        toast.error("Failed to delete the product. Please try again.");
+                    }
+                },
+                okText: "Yes",
+                okType: "danger",
+            });
+        },
+        [deleteProduct],
+    );
 
     const onEditProduct = async (record) => {
         setEditPorductId(record.id);
@@ -160,6 +163,8 @@ const TableProducts: FC = () => {
 
         reset();
     };
+
+    console.log("re-rendering");
 
     return (
         <Col style={{ width: "100%", overflow: "scroll" }}>

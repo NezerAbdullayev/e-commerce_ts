@@ -67,7 +67,6 @@ const ProductsPagination: FC = () => {
         [addToCart, isAuth],
     );
 
-
     return (
         <Box className="my-10">
             <CardContainer>

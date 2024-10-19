@@ -13,6 +13,7 @@ const useAllProductsPagination = ({ initialPage = 1, limit = 10 }: UsePagination
 
     const handlePageChange = useCallback((_: React.ChangeEvent<unknown>, value: number) => {
         setCurrentPage(value);
+        window.scrollTo(0, 0); // Səhifənin başına qayıt
     }, []);
 
     return {

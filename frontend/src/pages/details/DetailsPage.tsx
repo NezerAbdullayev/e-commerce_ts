@@ -1,5 +1,5 @@
-import { Box, Card, CardContent, Chip, Tab, Tabs, Typography } from "@mui/material";
-import { FC, useMemo, useState } from "react";
+import { Box, Card, CardContent, Chip, Typography } from "@mui/material";
+import { FC } from "react";
 import { useParams } from "react-router";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,23 +7,16 @@ import { Pagination } from "swiper/modules";
 import Loading from "../../components/Loading";
 import Error from "../admin/components/Error";
 import { useGetProductByIdQuery } from "../../redux/services/productsApi";
-import Review from "../../components/review/Review";
-import AddNewReview from "../../components/review/AddNewReview";
+import DetailsBar from "./DetailsBar";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 const DetailsPage: FC = () => {
     const { id } = useParams();
-    const [navBar, setNavBar] = useState<number>(0);
 
-    const { data, isLoading, error } = useGetProductByIdQuery({ id });
+    const { data, isLoading, error } = useGetProductByIdQuery(id ? { id } : skipToken);
     console.log(data);
 
-    const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
-        setNavBar(newValue);
-    };
-
     console.log(data?.reviews);
-    const reviews=useMemo( ()=>{},[])
-
     return (
         <Box className="bg-stone-50">
             {isLoading ? (
@@ -100,27 +93,7 @@ const DetailsPage: FC = () => {
 
                                 {/* description and review */}
                                 <Box className="grid grid-rows-[50px_1fr]">
-                                    <Tabs
-                                        value={navBar}
-                                        onChange={handleTabChange}
-                                        textColor="primary"
-                                        indicatorColor="primary"
-                                        aria-label="details page tabs"
-                                    >
-                                        <Tab label="Description" />
-                                        <Tab label="Reviews" />
-                                        <Tab label="Add review" />
-                                    </Tabs>
-
-                                    <Box>
-                                        {navBar === 0 && (
-                                            <Typography variant="body1" sx={{ overflowY: "auto" }} className="h-[50%] overflow-auto">
-                                                {data.description}
-                                            </Typography>
-                                        )}
-                                        {navBar === 1 && <Review />}
-                                        {navBar === 2 && <AddNewReview productId={id} />}
-                                    </Box>
+                                    <DetailsBar productData={data} />
                                 </Box>
                             </CardContent>
                         </Box>

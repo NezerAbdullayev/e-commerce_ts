@@ -13,6 +13,7 @@ const Review: FC = () => {
     // const [createReview, { isLoading: reviewLoading }] = useCreateReviewMutation();
 
     const [value, setValue] = useState<number | null>(2);
+    console.log("re-rendering review");
 
     // comment: "perfect";
     // createdAt: "2024-10-15T12:37:07.882Z";

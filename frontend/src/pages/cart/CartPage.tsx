@@ -1,4 +1,4 @@
-import { FC, memo, useCallback } from "react";
+import { FC, useCallback } from "react";
 
 import { Alert, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
@@ -20,7 +20,7 @@ const CartPage: FC = () => {
                 title: "Do you want to change the product count?",
                 onOk: async () => {
                     try {
-                        await updateCartQuantity({ quantity, id }); //{ quantity: quantityEL, id: id }
+                        await updateCartQuantity({ quantity, id });
                         toast.success("Product quantity updated successfully!");
                     } catch (error) {
                         console.error(error);
@@ -32,6 +32,7 @@ const CartPage: FC = () => {
         },
         [updateCartQuantity],
     );
+    console.log("re-rendering cart Pagew");
 
     const onDeleteCart = useCallback(
         (id: string) => {
@@ -105,4 +106,4 @@ const CartPage: FC = () => {
     );
 };
 
-export default memo(CartPage);
+export default CartPage;

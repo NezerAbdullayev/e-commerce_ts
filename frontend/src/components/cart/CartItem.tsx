@@ -1,5 +1,5 @@
 import { Box, IconButton, TableCell, TableRow, Typography } from "@mui/material";
-import { FC, memo, useCallback, useEffect, useState } from "react";
+import { FC, memo, useEffect, useState } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -13,8 +13,8 @@ interface CartItemProp {
     image: string;
     price: number;
     quantity: number;
-    onUpdateQuantity: (item: { quantity: number; id: string }) => void;
-    onDeleteCart: (item: { id: string }) => void;
+    onUpdateQuantity: ({ quantity, id }: { quantity: number; id: string }) => void;
+    onDeleteCart: (id: string) => void;
 }
 
 const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity, onUpdateQuantity, onDeleteCart }) => {
@@ -29,16 +29,16 @@ const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity, onUpdate
         }
     }, [quantityEL, quantity, saveIsActive]);
 
-    const incQuantity = useCallback(() => {
+    const incQuantity = () => {
         setQuantityEl((quantityEL) => quantityEL + 1);
-    }, []);
+    };
 
-    const decQuantity = useCallback(() => {
+    const decQuantity = () => {
         setQuantityEl((quantityEL) => (quantityEL <= 1 ? 1 : quantityEL - 1));
-    }, []);
+    };
 
     const handleDelete = () => {
-        onDeleteCart({ id });
+        onDeleteCart(id);
     };
 
     const handleUpdate = () => {
@@ -71,7 +71,7 @@ const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity, onUpdate
             <TableCell align="center">${(price * quantityEL).toFixed(1)}</TableCell>
 
             <TableCell align="center">
-                <IconButton aria-label="Save" color="primary" onClick={handleUpdate}>
+                <IconButton aria-label="Save" color="primary" onClick={handleUpdate} disabled={!saveIsActive}>
                     <DownloadDoneIcon />
                 </IconButton>
 

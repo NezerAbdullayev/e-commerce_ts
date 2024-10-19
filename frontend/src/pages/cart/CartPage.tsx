@@ -15,7 +15,7 @@ const CartPage: FC = () => {
     }
 
     return (
-        <Box className="relative mx-auto mt-10 w-[1280px] max-w-[90%]">
+        <Box className="relative mx-auto my-10 w-[1280px] max-w-[90%]">
             {cartLoading && <Loading />}
 
             <TableContainer component={Paper}>

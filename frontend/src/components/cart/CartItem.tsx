@@ -17,6 +17,8 @@ const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity }) => {
     const [quantityEL, setQuantityEl] = useState<number>(quantity);
     const [saveIsActive, setSaveIsActive] = useState<boolean>(false);
 
+    console.log("re-rendering -->1");
+
     useEffect(() => {
         if (quantityEL !== quantity && !saveIsActive) {
             setSaveIsActive(true);

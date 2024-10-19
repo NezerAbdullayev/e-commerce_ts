@@ -27,10 +27,11 @@ const FavoritesPage: FC = () => {
                 cancelText: "No",
                 onOk: async () => {
                     try {
-                        const res = await removeFavoritesItem({ id }).unwrap();
-                        toast.success(`Item removed from favorites: ${res}`);
+                        await removeFavoritesItem({ id }).unwrap();
+                        toast.success("Item removed from favorites successfully!");
                     } catch (error) {
-                        toast.error(`Failed to remove item: ${error}`);
+                        console.error(error);
+                        toast.error("Failed to remove item from favorites.");
                     }
                 },
             });
@@ -44,11 +45,11 @@ const FavoritesPage: FC = () => {
                 title: "Do you want to add this product to the cart?",
                 onOk: async () => {
                     try {
-                        const res = await addToCart({ productId, image, name, price }).unwrap();
-                        console.log(res);
+                        await addToCart({ productId, image, name, price }).unwrap();
                         console.log(productId, image, name, price);
                     } catch (error) {
-                        console.log(error);
+                        toast.error("Failed to add product to cart.");
+                        console.error(error);
                     }
                 },
             });

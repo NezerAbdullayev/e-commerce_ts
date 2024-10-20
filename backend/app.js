@@ -15,6 +15,7 @@ import analyticsRouter from "./routes/analyticsRoute.js";
 import favoritesRouter from "./routes/favoritesRouter.js";
 import categoryRouter from "./routes/categoryRouter.js";
 import usersRouter from "./routes/usersRouter.js";
+import logoRouter from "./routes/logoRouter.js";
 
 
 dotenv.config();
@@ -46,6 +47,7 @@ app.use("/api/payments", paymentRouter);
 app.use("/api/favorites",favoritesRouter)
 app.use("/api/category",categoryRouter)
 app.use("/api/analytics", analyticsRouter);
+app.use("/api/logo",logoRouter)
 
 app.subscribe;
 

@@ -59,7 +59,7 @@ const TableProducts: FC = () => {
     const { productsData, productError, productLoading, AllCategories, categoryLoading, categoryError } = useProducts(currentPage, limit);
 
     const [deleteProduct] = useDeleteProductMutation();
-    const [updateProduct, { isLoading: updateLoading }] = useUpdateProductMutation();
+    const [updateProduct] = useUpdateProductMutation();
 
     const {
         control,

@@ -1,6 +1,7 @@
 import { FavoritesResponse } from "../../types/globalTypes";
 import { rootApi } from "../rootApi";
 import { FAVORITES_URL } from "../constants";
+import { FavoritesRes } from "./types/favorites.types";
 
 const favoritesApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -13,7 +14,7 @@ const favoritesApi = rootApi.injectEndpoints({
             providesTags: ["Favorites"],
         }),
 
-        addtoFavorites: builder.mutation({
+        addtoFavorites: builder.mutation<void, FavoritesRes>({
             query: ({ productId, name, image, price }) => ({
                 url: `${FAVORITES_URL}/`,
                 method: "POST",

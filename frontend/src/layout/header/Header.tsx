@@ -43,7 +43,7 @@ function Header() {
     }, [userLogout]);
 
     return (
-        <AppBar position="sticky" sx={{ background: "#102e42" }}>
+        <AppBar position="sticky" sx={{ background: "#055160" }}>
             <Toolbar>
                 <Typography variant="h6" component={NavLink} to="/" sx={{ mr: 2 }}>
                     <StoreIcon sx={{ mr: 1 }} />

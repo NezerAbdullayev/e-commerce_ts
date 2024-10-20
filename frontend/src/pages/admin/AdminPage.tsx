@@ -5,6 +5,7 @@ import PlaylistAddCircleIcon from "@mui/icons-material/PlaylistAddCircle";
 import CategoryIcon from "@mui/icons-material/Category";
 import GroupIcon from "@mui/icons-material/Group";
 import BarChartIcon from "@mui/icons-material/BarChart";
+import { CiLogout } from "react-icons/ci";
 import { Layout, theme } from "antd";
 
 import { Outlet } from "react-router";
@@ -30,12 +31,11 @@ const AdminPage: FC = () => {
         token: { colorBgContainer },
     } = theme.useToken();
 
-
     return (
         <Layout hasSider style={{ padding: 0, minHeight: "100vh" }}>
             {/* sidebar */}
             <Sider style={siderStyle}>
-                <Box mt={1}>
+                <Box mt={2}>
                     <Link to="/admin/dashboard">
                         <BarChartIcon className="mr-2 text-xl" />
                         <Typography variant="body1" component="span">
@@ -70,6 +70,13 @@ const AdminPage: FC = () => {
                             Users
                         </Typography>
                     </Link>
+
+                    <Box className="flex cursor-pointer items-center rounded bg-zinc-700 p-2 text-gray-300 transition-colors duration-300 hover:bg-gray-500">
+                        <CiLogout className="mr-2 text-xl" />
+                        <Typography variant="body1" component="span">
+                            Logout
+                        </Typography>
+                    </Box>
                 </Box>
             </Sider>
 

@@ -10,6 +10,7 @@ export const cartApi = rootApi.injectEndpoints({
                 method: "GET",
                 credentials: "include",
             }),
+            providesTags: ["Analytics"],
         }),
     }),
 });

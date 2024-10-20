@@ -1,14 +1,16 @@
-import Order from "../models/orderModel.js";
 import ProductModel from "../models/productModel.js";
 import User from "../models/userModel.js";
+import CategoriesModel from "../models/categoryModel.js"
 
 export const getAnalyticsData = async () => {
     const totalUsers = await User.countDocuments();
     const totalProducts = await ProductModel.countDocuments();
+    const totalCategories = await CategoriesModel.countDocuments()
 
     return {
         users: totalUsers,
         products: totalProducts,
+        categories:totalCategories
     };
 };
 

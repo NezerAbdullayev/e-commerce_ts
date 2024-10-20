@@ -16,7 +16,7 @@ const DetailsPage: FC = () => {
 
     const { data, isLoading, error } = useGetProductByIdQuery(id ? { id } : skipToken);
 
-    console.log(data)
+    console.log(data);
 
     return (
         <Box className="bg-stone-50">
@@ -27,7 +27,7 @@ const DetailsPage: FC = () => {
             ) : (
                 data && (
                     <Card className="min-h-screen py-2">
-                        <Box mt={10} className="flex h-full gap-10 shadow-lg">
+                        <Box mt={10} pb={1} className="flex h-full gap-10 shadow-lg">
                             {/* carousel  */}
                             <Box width={450} height={550} ml={5}>
                                 <Swiper
@@ -86,7 +86,7 @@ const DetailsPage: FC = () => {
                                         </Typography>
 
                                         <Box display={"flex"} alignItems="center">
-                                            <Rating name="simple-controlled" value={data.rating} />
+                                            <Rating name="simple-controlled" value={data.rating} readOnly />
                                             <Box className="font-bold">({data.rating === 0 ? 0 : data.rating.toFixed(1)})</Box>
                                         </Box>
                                     </Box>

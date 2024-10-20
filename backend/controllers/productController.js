@@ -6,15 +6,39 @@ import Category from "../models/categoryModel.js";
 const getAllProducts = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
+
+    const { categories, search, rating, price } = req.query;
+
     try {
+        const filter = {};
+
+        if (categories) {
+            filter.category = { $in: categories.split(",") };
+        }
+
+        if (search) {
+            filter.name = { $regex: search, $options: "i" };
+        }
+
+        if (rating) {
+            filter.rating = { $gte: parseFloat(rating) };
+        }
+
+        if (price) {
+            const [minPrice, maxPrice] = price.split(",").map(Number);
+            if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+                filter.price = { $gte: minPrice, $lte: maxPrice };
+            }
+        }
+
         // get all products
-        const products = await ProductModel.find({})
+        const products = await ProductModel.find(filter)
             .populate("category", "name")
             .sort({ $natural: -1 })
             .limit(limit)
             .skip((page - 1) * limit);
 
-        const totalProducts = await ProductModel.countDocuments();
+        const totalProducts = await ProductModel.countDocuments(filter);
 
         res.json({
             products,

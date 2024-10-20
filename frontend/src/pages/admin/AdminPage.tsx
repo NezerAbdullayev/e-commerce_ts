@@ -11,6 +11,7 @@ import { Layout, theme } from "antd";
 import { Outlet } from "react-router";
 import { Box, Typography } from "@mui/material";
 import Link from "./components/Link";
+import { useUserLogoutMutation } from "../../redux/services/authApi";
 
 const { Header, Content, Sider } = Layout;
 
@@ -30,6 +31,12 @@ const AdminPage: FC = () => {
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+
+    const [userLogout, { isLoading }] = useUserLogoutMutation();
+
+    const logout = () => {
+        userLogout();
+    };
 
     return (
         <Layout hasSider style={{ padding: 0, minHeight: "100vh" }}>
@@ -73,7 +80,7 @@ const AdminPage: FC = () => {
 
                     <Box className="flex cursor-pointer items-center rounded bg-zinc-700 p-2 text-gray-300 transition-colors duration-300 hover:bg-gray-500">
                         <CiLogout className="mr-2 text-xl" />
-                        <Typography variant="body1" component="span">
+                        <Typography variant="body1" component="span" onClick={logout} aria-disabled={isLoading}>
                             Logout
                         </Typography>
                     </Box>

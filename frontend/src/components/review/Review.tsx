@@ -14,7 +14,7 @@ interface ReviewProps {
 
 const Review: FC<ReviewProps> = ({ reviews }) => {
     return (
-        <Box sx={{ overflowY: "auto", maxHeight: "300px" }}>
+        <Box sx={{ overflowY: "auto", maxHeight: "1000px" }}>
             {reviews && reviews.length > 0 ? (
                 reviews.map((review) => (
                     <Box key={review._id} sx={{ marginBottom: 2 }}>

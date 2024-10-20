@@ -6,73 +6,44 @@ export const getAnalyticsData = async () => {
     const totalUsers = await User.countDocuments();
     const totalProducts = await ProductModel.countDocuments();
 
-    const salesData = await Order.aggregate([
-        {
-            $group: {
-                _id: null, //it groups all doc. together
-                totalSales: { $sum: 1 },
-                totalRevenue: { $sum: "$totalAmount" },
-            },
-        },
-    ]);
-
-    const { totalSales, totalRevenue } = salesData[0] || { totalSales: 0, totalRevenue: 0 };
-
     return {
         users: totalUsers,
         products: totalProducts,
-        totalSales,
-        totalRevenue,
     };
 };
 
 export const getDailySalesData = async (startDate, endDate) => {
     try {
-        const dailySalesData = await Order.aggregate([
-            {
-                $match: {
-                    createdAt: {
-                        $gte: startDate,
-                        $lte: endDate,
-                    },
-                },
-            },
-            {
-                $group: {
-                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-                    sales: { $sum: 1 },
-                    revenue: { $sum: "$totalAmount" },
-                },
-            },
-            { $sort: { _id: 1 } },
-        ]);
-        // ?example of dailySaLesDate
-        // [
-        //     [
-        //         {
-        //             _id: "2024-08-18",
-        //             sales: 12,
-        //             revenue: 1450.75,
-        //         },
-        //     ],
-        // ];
-
         const dateArray = getDatesInRange(startDate, endDate);
-        // console.log(dateArray)=> ["2024-09-28","2024-09-29"...]
 
-        return dateArray.map((date) => {
-            const foundData = dailySalesData.find((item) => item._id === date);
+        return await Promise.all(dateArray.map(async (date) => {
+            const usersCount = await User.countDocuments({
+                createdAt: {
+                    $gte: new Date(date),
+                    $lt: new Date(new Date(date).setDate(new Date(date).getDate() + 1)), 
+                },
+            });
+            
+            const productsCount = await ProductModel.countDocuments({
+                createdAt: {
+                    $gte: new Date(date),
+                    $lt: new Date(new Date(date).setDate(new Date(date).getDate() + 1)),
+                },
+            });
 
             return {
                 date,
-                sales: foundData?.sales || 0,
-                revenue: foundData?.revenue || 0,
+                users: usersCount,
+                products: productsCount,
             };
-        });
+        }));
     } catch (error) {
         throw error;
     }
 };
+
+
+
 
 function getDatesInRange(startDate, endDate) {
     const dates = [];

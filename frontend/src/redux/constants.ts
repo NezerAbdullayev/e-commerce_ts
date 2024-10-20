@@ -5,3 +5,4 @@ export const PRODUCTS_URL = "/api/products";
 export const FAVORITES_URL = "/api/favorites";
 export const CATEGORY_URL = "/api/category";
 export const USERS_URL = "/api/users";
+export const ANALYTICS_URL ="/api/analytics"

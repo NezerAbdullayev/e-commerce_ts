@@ -1,9 +1,11 @@
+import { useGetAnalitcsQuery } from "../../../../redux/services/analyticsApi";
+
 function Dashboard() {
-    return (
-        <div>
-            Dashboard
-        </div>
-    )
+    const { data } = useGetAnalitcsQuery();
+
+    console.log(data);
+    
+    return <div></div>;
 }
 
-export default Dashboard
+export default Dashboard;

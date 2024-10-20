@@ -12,6 +12,8 @@ const DetailsBar: FC<DetailsBarRespons> = ({ productData }) => {
     console.log(productData);
     const [navBar, setNavBar] = useState<number>(0);
 
+    console.log(productData.reviews);
+
     const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
         setNavBar(newValue);
     };
@@ -24,11 +26,11 @@ const DetailsBar: FC<DetailsBarRespons> = ({ productData }) => {
             </Tabs>
             <Box>
                 {navBar === 0 && (
-                    <Typography variant="body1" sx={{ overflowY: "auto" }} className="h-[50%] overflow-auto">
+                    <Typography variant="body1" sx={{ mt: 2.5 }} className="mt-2.5 h-[50%] overflow-auto">
                         {productData.description}
                     </Typography>
                 )}
-                {navBar === 1 && <Review  />}
+                {navBar === 1 && <Review reviews={productData.reviews} />}
                 {navBar === 2 && <AddNewReview productId={productData._id} />}
             </Box>
         </>

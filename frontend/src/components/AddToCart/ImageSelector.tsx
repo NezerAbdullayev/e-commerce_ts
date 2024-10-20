@@ -8,8 +8,6 @@ interface ImageSelectorProps {
 }
 
 const ImageSelector: FC<ImageSelectorProps> = ({ images, selectedImage, onSelectImage }) => {
-    console.log("re-rendering sellect img");
-
     return (
         <Box mb={2} display="flex" gap={2}>
             {images.map((img, index) => (

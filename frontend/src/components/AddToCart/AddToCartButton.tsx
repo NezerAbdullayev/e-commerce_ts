@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Button } from "@mui/material";
 import { useAddToCartMutation } from "../../redux/services/cartApi";
+import { toast } from "react-toastify";
 
 interface AddToCartButtonProps {
     name: string;
@@ -11,20 +12,20 @@ interface AddToCartButtonProps {
 }
 
 const AddToCartButton: FC<AddToCartButtonProps> = ({ name, productId, quantity, price, selectedImage }) => {
-    const [addToCart, { isLoading,error }] = useAddToCartMutation();
+    const [addToCart, { isLoading }] = useAddToCartMutation();
 
-    console.log(error)
-
-    console.log("re-rendering button");
-
-    const handleAddToCart = () => {
+    const handleAddToCart = async () => {
         if (!selectedImage) {
             alert("Please select an image");
             return;
         }
 
-        console.log({ productId, quantity, selectedImage });
-        addToCart({ name, productId, quantity, price, image: selectedImage });
+        try {
+            addToCart({ name, productId, quantity, price, image: selectedImage }).unwrap();
+            toast.success("Product added to cart successfully!");
+        } catch {
+            toast.error("Failed to add product to cart.");
+        }
     };
 
     return (

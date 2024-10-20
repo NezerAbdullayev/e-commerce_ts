@@ -1,5 +1,14 @@
 import { CategoryResponse } from "../../../types/globalTypes";
 
+export interface ReviewProps {
+    _id: string;
+    comment: string;
+    createdAt: string;
+    name: string;
+    rating: number;
+    updatedAt: string;
+    user: string;
+}
 export interface Products {
     _id: string;
     name: string;
@@ -12,7 +21,7 @@ export interface Products {
     price: number;
     stock: number;
     numReview?: number;
-    reviews: string[];
+    reviews: ReviewProps[];
 }
 
 export interface ProductsResponse {

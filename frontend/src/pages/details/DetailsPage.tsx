@@ -9,12 +9,12 @@ import Error from "../admin/components/Error";
 import { useGetProductByIdQuery } from "../../redux/services/productsApi";
 import { skipToken } from "@reduxjs/toolkit/query";
 import AddToBasket from "../../components/AddToCart/AddToCart";
+import DetailsBar from "./DetailsBar";
 
 const DetailsPage: FC = () => {
     const { id } = useParams();
 
     const { data, isLoading, error } = useGetProductByIdQuery(id ? { id } : skipToken);
-    console.log(data);
 
     return (
         <Box className="bg-stone-50">
@@ -24,7 +24,7 @@ const DetailsPage: FC = () => {
                 <Error message={"There was an error fetching the product details."} />
             ) : (
                 data && (
-                    <Card className="h-screen">
+                    <Card className="min-h-screen py-2">
                         <Box mt={10} className="flex h-full gap-10 shadow-lg">
                             {/* carousel  */}
                             <Box width={450} height={550} ml={5}>
@@ -92,13 +92,16 @@ const DetailsPage: FC = () => {
                                     <Divider />
                                 </Box>
 
-                                {/* description and review */}
+                                {/* add to cart  */}
                                 <Box className="mt-10">
                                     <AddToBasket data={data} />
                                 </Box>
                             </CardContent>
                         </Box>
-                        {/* <DetailsBar productData={data} /> */}
+
+                        <Box minHeight={"50vh"} my={8} className="mx-auto w-[1280px] max-w-[90%]">
+                            <DetailsBar productData={data} />
+                        </Box>
                     </Card>
                 )
             )}

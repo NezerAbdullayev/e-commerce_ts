@@ -6,8 +6,6 @@ interface QuantitySelectorProps {
     onChangeQuantity: (change: number) => void;
 }
 
-console.log("re-rendering qunatitys");
-
 const QuantitySelector: FC<QuantitySelectorProps> = ({ quantity, onChangeQuantity }) => {
     return (
         <Box display="flex" alignItems="center" mb={2}>

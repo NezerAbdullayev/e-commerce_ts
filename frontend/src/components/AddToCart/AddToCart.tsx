@@ -20,7 +20,6 @@ const AddToBasket: FC<AddToBasketProps> = ({ data }) => {
     const handleQuantityChange = useCallback((change: number) => {
         setQuantity((prevQuantity) => Math.max(1, prevQuantity + change));
     }, []);
-    console.log("re-rendering basket");
 
     return (
         <Box>

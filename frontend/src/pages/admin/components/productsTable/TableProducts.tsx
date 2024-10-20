@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 // import { Products as ProductsType } from "../../../../types/globalTypes";
 import { createProductSchema } from "../../../../validations/product.validation";
 import { toast } from "react-toastify";
@@ -8,7 +8,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 // Components
-import { Button, Col, Flex, Table, Modal, Form } from "antd";
+import { Button, Col, Table, Modal, Form } from "antd";
 import type { TableColumnsType } from "antd";
 import { Box } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -23,20 +23,30 @@ import Error from "../Error";
 import FormSelect from "../../../../components/Forms/FormSellect";
 
 // Hooks
-import { useDeleteProductMutation, useGetAllProductsQuery, useUpdateProductMutation } from "../../../../redux/services/productsApi";
-import { useGetAllCategoryQuery } from "../../../../redux/services/categoryApi";
+import { useDeleteProductMutation, useUpdateProductMutation } from "../../../../redux/services/productsApi";
+import { useProducts } from "../../../../hooks/use-TableProduct";
 import { NewProduct } from "../createProduct/AddNewProduct";
+import { CategoryResponse } from "../../../../types/globalTypes";
+import { convertImagesToBase64 } from "../../../../utils/convertImagesToBase64";
 
-interface DataType {
-    key: React.Key;
+interface BaseProduct {
     id: string;
     name: string;
     price: number;
-    image: string;
-    category: string;
     description: string;
+    image: string[];
 }
 
+interface DataType extends BaseProduct {
+    key: React.Key;
+    category: CategoryResponse[];
+}
+
+interface ProductRecord extends BaseProduct {
+    stock: number;
+    brand: string;
+    category: { _id: string }[];
+}
 const TableProducts: FC = () => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -45,13 +55,11 @@ const TableProducts: FC = () => {
 
     const limit = 14;
 
-    const { data: productsData, error: productError, isLoading: productLoading } = useGetAllProductsQuery({ page: currentPage, limit });
-    const { data: AllCategories, isLoading: categoryLoading, error: categoryError } = useGetAllCategoryQuery();
+    // useProducts hookunu çağırın
+    const { productsData, productError, productLoading, AllCategories, categoryLoading, categoryError } = useProducts(currentPage, limit);
 
     const [deleteProduct] = useDeleteProductMutation();
-    const [updateProduct, { error }] = useUpdateProductMutation();
-
-    if (error) console.log(error);
+    const [updateProduct, { isLoading: updateLoading }] = useUpdateProductMutation();
 
     const {
         control,
@@ -60,38 +68,77 @@ const TableProducts: FC = () => {
         formState: { errors },
     } = useForm<NewProduct>({ resolver: yupResolver(createProductSchema) });
 
-    const columns: TableColumnsType<DataType> = [
-        {
-            title: "Image",
-            dataIndex: "image",
-            key: "image",
-            width: "10%",
-            render: (image) => <img src={image[0]} alt="product" style={{ width: "50px", height: "50px", objectFit: "cover" }} />,
+    const onDeleteProduct = useCallback(
+        async (id: string) => {
+            Modal.confirm({
+                title: "Do you want to delete this product?",
+                onOk: async () => {
+                    try {
+                        await deleteProduct({ id });
+                        toast.success("Product deleted successfully!");
+                    } catch (error) {
+                        console.error(error);
+                        toast.error("Failed to delete the product. Please try again.");
+                    }
+                },
+            });
         },
-        { title: "Name", dataIndex: "name", key: "name", sorter: (a, b) => a.name.localeCompare(b.name) },
-        { title: "stock", dataIndex: "stock", key: "stock" },
-        { title: "brand", dataIndex: "brand", key: "brand" },
-        { title: "Price", dataIndex: "price", key: "price", sorter: (a, b) => a.price - b.price, render: (text) => `$${text}` },
-        {
-            title: "category",
-            dataIndex: "category",
-            key: "category",
-            render: (category) => <div>{category.toString().replace(/,/g, " ")}</div>,
+        [deleteProduct],
+    );
+
+    const onEditProduct = useCallback(
+        (record: ProductRecord) => {
+            setEditPorductId(record.id);
+            setIsEdit(true);
+            reset({
+                name: record.name,
+                price: record.price,
+                stock: record.stock,
+                brand: record.brand === "-" ? "" : record.brand,
+                category: record.category.map((c) => c._id),
+                description: record.description,
+                image: record.image.map((url) => ({
+                    uid: url,
+                    name: url.split("/").pop(),
+                    status: "done",
+                    url: url,
+                })),
+            });
         },
-        {
-            title: "Action",
-            dataIndex: "x",
-            key: "x",
-            render: (_, record) => {
-                return (
-                    <Flex gap={10}>
-                        <Button icon={<EditIcon />} onClick={() => onEditProduct(record)} />
-                        <Button icon={<DeleteIcon />} danger onClick={() => onDeleteProduct(record.id)} />
-                    </Flex>
-                );
+        [reset],
+    );
+
+    const columns: TableColumnsType<DataType> = useMemo(
+        () => [
+            {
+                title: "Image",
+                dataIndex: "image",
+                key: "image",
+                render: (image) => <img src={image[0]} alt="product" style={{ width: "50px", height: "50px", objectFit: "cover" }} />,
             },
-        },
-    ];
+            { title: "Name", dataIndex: "name", key: "name", sorter: (a, b) => a.name.localeCompare(b.name) },
+            { title: "Stock", dataIndex: "stock", key: "stock" },
+            { title: "Brand", dataIndex: "brand", key: "brand" },
+            { title: "Price", dataIndex: "price", key: "price", sorter: (a, b) => a.price - b.price, render: (text) => `$${text}` },
+            {
+                title: "Category",
+                dataIndex: "category",
+                key: "category",
+                render: (category) => category.map((c: CategoryResponse) => c.name).join(", "),
+            },
+            {
+                title: "Action",
+                key: "action",
+                render: (_, record) => (
+                    <div>
+                        <Button icon={<EditIcon />} onClick={() => onEditProduct(record)} className="mr-2" />
+                        <Button icon={<DeleteIcon />} danger onClick={() => onDeleteProduct(record.id)} />
+                    </div>
+                ),
+            },
+        ],
+        [onDeleteProduct, onEditProduct],
+    );
 
     useEffect(() => {
         if (productsData && productsData.products.length > 0) {
@@ -110,46 +157,6 @@ const TableProducts: FC = () => {
         }
     }, [productsData]);
 
-    const onDeleteProduct = useCallback(
-        (id: string) => {
-            Modal.confirm({
-                title: "Do you want to delete this product?",
-                onOk: async () => {
-                    try {
-                        await deleteProduct({ id });
-                        toast.success("Product deleted successfully!");
-                    } catch (error) {
-                        console.error(error);
-                        toast.error("Failed to delete the product. Please try again.");
-                    }
-                },
-                okText: "Yes",
-                okType: "danger",
-            });
-        },
-        [deleteProduct],
-    );
-
-    const onEditProduct = async (record) => {
-        setEditPorductId(record.id);
-        setIsEdit(true);
-
-        reset({
-            name: record.name,
-            price: record.price,
-            stock: record.stock,
-            brand: record.brand === "-" ? "" : record.brand,
-            category: record.category.map((c) => c._id),
-            description: record.description,
-            image: record.image.map((url) => ({
-                uid: url,
-                name: url.split("/").pop(),
-                status: "done",
-                url: url,
-            })),
-        });
-    };
-
     const onCloseEditModal = useCallback(() => {
         setIsEdit(false);
     }, []);
@@ -159,12 +166,35 @@ const TableProducts: FC = () => {
     }, []);
 
     const onSubmit: SubmitHandler<NewProduct> = async (data) => {
-        updateProduct({ data: { ...data, id: editProductId } });
+        console.log({ ...data, id: editProductId });
 
-        reset();
+        const imagesUrl = data.image.filter((img): img is { url: string } => !!img.url).map((i) => i.url);
+
+        const convertedImages = data.image.filter((img) => !img.url);
+
+        console.log(convertedImages);
+        let base64Images: string[] = [];
+
+        if (convertedImages.length > 0) {
+            base64Images = await convertImagesToBase64(convertedImages);
+        }
+
+        const reqImages = [...imagesUrl, ...base64Images];
+
+        try {
+            await updateProduct({
+                data: { ...data, id: editProductId, image: reqImages },
+            }).unwrap();
+
+            toast.success("Product updated successfully!");
+
+            reset();
+            onCloseEditModal();
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to update the product. Please try again.");
+        }
     };
-
-    console.log("re-rendering");
 
     return (
         <Col style={{ width: "100%", overflow: "scroll" }}>
@@ -222,10 +252,6 @@ const TableProducts: FC = () => {
                             </Box>
                             <FormInputFile<NewProduct> error={errors.image?.message} name="image" control={control} />
                         </Box>
-
-                        <Button htmlType="submit" className="mt-4 w-full py-5" type="primary">
-                            Update Product
-                        </Button>
                     </Form>
                 </Box>
             </Modal>

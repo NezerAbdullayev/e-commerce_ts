@@ -7,4 +7,5 @@ const logoSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("Logo", logoSchema);
+const Logo = mongoose.model("Logo", logoSchema);
+export default Logo;

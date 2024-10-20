@@ -1,4 +1,4 @@
-import Logo from "../models/Logo.js";
+import Logo from "../models/LogoModel.js"
 
 export const getAppLogo = async (req, res) => {
     try {

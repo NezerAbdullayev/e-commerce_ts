@@ -13,7 +13,6 @@ interface ReviewProps {
 }
 
 const Review: FC<ReviewProps> = ({ reviews }) => {
-    console.log(reviews);
     return (
         <Box sx={{ overflowY: "auto", maxHeight: "300px" }}>
             {reviews && reviews.length > 0 ? (

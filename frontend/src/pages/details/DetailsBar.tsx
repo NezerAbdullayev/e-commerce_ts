@@ -9,10 +9,7 @@ interface DetailsBarRespons {
 }
 
 const DetailsBar: FC<DetailsBarRespons> = ({ productData }) => {
-    console.log(productData);
     const [navBar, setNavBar] = useState<number>(0);
-
-    console.log(productData.reviews);
 
     const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
         setNavBar(newValue);

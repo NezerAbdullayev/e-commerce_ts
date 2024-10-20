@@ -26,9 +26,7 @@ const AddNewReview: FC<CreateReviewProps> = ({ productId }) => {
 
     const [ratingValue, setRatingValue] = useState<number | null>(0);
 
-    const [createReview, { isLoading: reviewLoading, error }] = useCreateReviewMutation();
-
-    console.log("re-renderingdir dd new", error);
+    const [createReview, { isLoading: reviewLoading }] = useCreateReviewMutation();
 
     const {
         control,
@@ -44,7 +42,7 @@ const AddNewReview: FC<CreateReviewProps> = ({ productId }) => {
         };
 
         try {
-            createReview({ review: reviewData, productId }).unwrap();
+            await createReview({ review: reviewData, productId }).unwrap();
             toast.success("Review successfully added!");
         } catch (error) {
             console.error(error);

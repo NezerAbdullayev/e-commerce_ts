@@ -18,7 +18,10 @@ const authSlice = createSlice({
             state.name = action.payload.name;
 
             const date = new Date().getTime() + 24 * 60 * 60 * 1000;
-            localStorage.setItem("auth", JSON.stringify({ role: action.payload.role, isAuthenticated: true, time: date }));
+            localStorage.setItem(
+                "auth",
+                JSON.stringify({ role: action.payload.role, isAuthenticated: true, time: date, name: action.payload.name }),
+            );
         },
         logout: (state) => {
             state.isAuthenticated = false;

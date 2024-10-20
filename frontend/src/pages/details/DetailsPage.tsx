@@ -16,6 +16,8 @@ const DetailsPage: FC = () => {
 
     const { data, isLoading, error } = useGetProductByIdQuery(id ? { id } : skipToken);
 
+    console.log(data)
+
     return (
         <Box className="bg-stone-50">
             {isLoading ? (

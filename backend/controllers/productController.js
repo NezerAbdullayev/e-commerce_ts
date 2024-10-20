@@ -177,12 +177,6 @@ export const addProductReview = async (req, res) => {
             return res.status(404).json({ message: "Product not found" });
         }
 
-        const alreadyReview = product.reviews.find((r) => r.user.toString() === req.user._id.toString());
-
-        if (alreadyReview) {
-            return res.status(400).json({ message: "Product already reviewed" });
-        }
-
         const review = {
             name: req.user.name,
             rating: Number(rating),
@@ -191,7 +185,7 @@ export const addProductReview = async (req, res) => {
         };
 
         product.reviews.push(review);
-        product.numReviews = product.reviews.length;
+        product.numRewviews = product.reviews.length;
 
         product.rating = product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length;
 

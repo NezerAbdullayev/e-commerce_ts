@@ -24,6 +24,7 @@ const productsApi = rootApi.injectEndpoints({
 
         getProductById: builder.query<Products, { id: string | undefined }>({
             query: ({ id }) => `${PRODUCTS_URL}/${id}`,
+            providesTags: (result) => (result ? [{ type: "Products", id: result._id }] : [{ type: "Products", id: "Details" }]),
         }),
 
         getTopProducts: builder.query({
@@ -66,7 +67,9 @@ const productsApi = rootApi.injectEndpoints({
                 body: review,
                 credentials: "include",
             }),
-            invalidatesTags: ["Products"],
+            async onQueryStarted({ productId }, { dispatch }) {
+                dispatch(rootApi.util.invalidateTags([{ type: "Products", id: productId }]));
+            },
         }),
     }),
 });

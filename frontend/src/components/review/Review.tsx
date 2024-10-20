@@ -32,7 +32,7 @@ const Review: FC = () => {
     // _id: "67116cb1ec52a38ea412611d";
 
     return (
-        <Typography variant="body1" sx={{ overflowY: "auto" }} className="h-[50%] w-full overflow-auto">
+        <Typography variant="body1" component={"div"} sx={{ overflowY: "auto" }} className="h-[50%] w-full overflow-auto">
             <Typography
                 variant="body2"
                 component="div"

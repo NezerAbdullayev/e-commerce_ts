@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import { useGetAllProductsQuery } from "../redux/services/productsApi";
 
-
 interface UsePaginationProps {
     limit?: number;
     initialPage?: number;
@@ -13,7 +12,7 @@ const useAllProductsPagination = ({ initialPage = 1, limit = 10 }: UsePagination
 
     const handlePageChange = useCallback((_: React.ChangeEvent<unknown>, value: number) => {
         setCurrentPage(value);
-        window.scrollTo(0, 0); // Səhifənin başına qayıt
+        window.scrollTo(0, 0);
     }, []);
 
     return {

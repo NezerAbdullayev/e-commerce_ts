@@ -10,30 +10,30 @@ const getCartProducts = async (req, res) => {
 
 const addToCart = async (req, res) => {
     try {
-        const { productId, name, image, price } = req.body;
+        const { productId, name, image, price, quantity = 1 } = req.body; 
+
+
+        console.log(quantity)
 
         const user = req.user;
 
-     
         if (!user.cartItem) {
             user.cartItem = [];
         }
-        
+
         const existingItem = user.cartItem.find((item) => 
             item.productId === productId && item.image === image
         );
-        
 
         if (existingItem) {
-            existingItem.quantity += 1;
+            existingItem.quantity += (quantity > 0) ? quantity : 1; 
         } else {
-           
-            user.cartItem.push({
+            user.cartItem.unshift({
                 productId,
                 name,
                 image,
                 price,
-                quantity: 1
+                quantity: quantity
             });
         }
 

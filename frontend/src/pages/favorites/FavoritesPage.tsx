@@ -19,8 +19,6 @@ const FavoritesPage: FC = () => {
 
     const [addToCart] = useAddToCartMutation();
 
-    console.log("re-rendering fav page")
-
     const onRemoveFavoritesItem = useCallback(
         async (id: string) => {
             Modal.confirm({

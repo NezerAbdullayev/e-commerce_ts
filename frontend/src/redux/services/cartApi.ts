@@ -1,7 +1,7 @@
-import { CartData, CartProps } from "../../types/globalTypes";
 import { CART_URL } from "../constants";
 
 import { rootApi } from "../rootApi";
+import { CartData, CartProps } from "./types/cart.types";
 
 export const cartApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -15,10 +15,10 @@ export const cartApi = rootApi.injectEndpoints({
         }),
 
         addToCart: builder.mutation<void, CartProps>({
-            query: ({ name, productId, image, price }) => ({
+            query: ({ name, productId, image, price, quantity }) => ({
                 url: `${CART_URL}/addcart`,
                 method: "POST",
-                body: { name, productId, image, price },
+                body: { name, productId, image, price, quantity: quantity },
                 credentials: "include",
             }),
             invalidatesTags: ["Cart"],

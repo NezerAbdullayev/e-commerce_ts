@@ -25,7 +25,7 @@ const ProductsPagination: FC = () => {
         initialPage: 1,
         limit: 20,
     });
-    const { data: favoritesData } = useGetAllFavoritesQuery();
+    const { data: favoritesData } = useGetAllFavoritesQuery(undefined, { skip: !isAuth });
     const [addToCart] = useAddToCartMutation();
     const [addToFavorite] = useAddtoFavoritesMutation();
 

@@ -12,6 +12,7 @@ export const useProducts = (initialPage: number, initialLimit: number) => {
     useEffect(() => {
         setCurrentPage(initialPage);
         setLimit(initialLimit);
+        window.scrollTo(0, 0);
     }, [initialPage, initialLimit]);
 
     return {

@@ -2,6 +2,8 @@ import { FC } from "react";
 import { Button } from "@mui/material";
 import { useAddToCartMutation } from "../../redux/services/cartApi";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { isAuthenticated } from "../../redux/slice/authSlice";
 
 interface AddToCartButtonProps {
     name: string;
@@ -12,9 +14,14 @@ interface AddToCartButtonProps {
 }
 
 const AddToCartButton: FC<AddToCartButtonProps> = ({ name, productId, quantity, price, selectedImage }) => {
+    const isAuth = useSelector(isAuthenticated);
     const [addToCart, { isLoading }] = useAddToCartMutation();
 
     const handleAddToCart = async () => {
+        if (!isAuth) {
+            toast.error("Please log in to your account or create a new one.");
+            return;
+        }
         if (!selectedImage) {
             alert("Please select an image");
             return;

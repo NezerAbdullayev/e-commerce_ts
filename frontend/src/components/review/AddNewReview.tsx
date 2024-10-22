@@ -79,6 +79,7 @@ const AddNewReview: FC<CreateReviewProps> = ({ productId }) => {
                 </Box>
             ) : (
                 <Box textAlign="center" marginY={2}>
+                    <Typography sx={{mb:1}}>You must log in to add a comment</Typography>
                     <Button variant="contained" color="primary" onClick={() => navigate("/login")}>
                         Log In
                     </Button>

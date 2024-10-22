@@ -16,8 +16,6 @@ const DetailsPage: FC = () => {
 
     const { data, isLoading, error } = useGetProductByIdQuery(id ? { id } : skipToken);
 
-    console.log(data);
-
     return (
         <Box className="bg-stone-50">
             {isLoading ? (
@@ -54,7 +52,7 @@ const DetailsPage: FC = () => {
                                         {data.name}
                                     </Typography>
                                     {/* categories */}
-                                    {data?.category?.length > 0 && (
+                                    {data.category?.length > 0 && (
                                         <Box className="my-4 flex items-center gap-1">
                                             <Typography>Categories: </Typography>
                                             {data.category.map((item) => (
@@ -86,7 +84,7 @@ const DetailsPage: FC = () => {
                                         </Typography>
 
                                         <Box display={"flex"} alignItems="center">
-                                            <Rating name="simple-controlled" value={data.rating} readOnly />
+                                            <Rating name="simple-controlled" value={data.rating} precision={0.5} readOnly />
                                             <Box className="font-bold">({data.rating === 0 ? 0 : data.rating.toFixed(1)})</Box>
                                         </Box>
                                     </Box>

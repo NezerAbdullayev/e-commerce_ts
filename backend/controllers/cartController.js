@@ -12,9 +12,6 @@ const addToCart = async (req, res) => {
     try {
         const { productId, name, image, price, quantity = 1 } = req.body; 
 
-
-        console.log(quantity)
-
         const user = req.user;
 
         if (!user.cartItem) {

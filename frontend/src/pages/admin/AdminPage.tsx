@@ -90,7 +90,7 @@ const AdminPage: FC = () => {
             {/* content */}
             <Layout style={{ marginInlineStart: 200 }}>
                 <Header style={{ padding: 0, background: colorBgContainer, textAlign: "center", fontWeight: "bold", fontSize: "28px" }}>
-                    WELCOME TO ADMIN
+                    ADMIN PANEL
                 </Header>
                 <Content style={{ overflow: "initial", maxWidth: "95%", margin: "10px auto", width: "1200px" }}>
                     <Box

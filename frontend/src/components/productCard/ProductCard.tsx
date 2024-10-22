@@ -91,7 +91,7 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, isF
                         sx={{ marginTop: 1 }}
                     >
                         <Box>Rating: </Box>
-                        <Rating name="simple-controlled" value={rating} readOnly />
+                        <Rating name="simple-controlled" value={rating} precision={0.5}  readOnly />
                         <Box className="font-bold">({rating === 0 ? 0 : rating.toFixed(1)})</Box>
                     </Typography>
                 </CardContent>

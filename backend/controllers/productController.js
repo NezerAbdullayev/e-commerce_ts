@@ -7,7 +7,7 @@ const getAllProducts = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
-    const { categories, search, rating, price } = req.query;
+    const { categories, search, rating, priceMin, priceMax } = req.query;
 
     try {
         const filter = {};
@@ -24,10 +24,16 @@ const getAllProducts = async (req, res) => {
             filter.rating = { $gte: parseFloat(rating) };
         }
 
-        if (price) {
-            const [minPrice, maxPrice] = price.split(",").map(Number);
-            if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+        if (priceMin || priceMax) {
+            const minPrice = priceMin ? parseFloat(priceMin) : undefined;
+            const maxPrice = priceMax ? parseFloat(priceMax) : undefined;
+
+            if (minPrice !== undefined && maxPrice !== undefined) {
                 filter.price = { $gte: minPrice, $lte: maxPrice };
+            } else if (minPrice !== undefined) {
+                filter.price = { $gte: minPrice };
+            } else if (maxPrice !== undefined) {
+                filter.price = { $lte: maxPrice };
             }
         }
 

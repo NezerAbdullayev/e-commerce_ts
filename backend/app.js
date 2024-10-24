@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
 
-
 // routes
 import productRouter from "./routes/productRoute.js";
 import authRouter from "./routes/authRoute.js";
@@ -17,7 +16,6 @@ import categoryRouter from "./routes/categoryRouter.js";
 import usersRouter from "./routes/usersRouter.js";
 import logoRouter from "./routes/logoRouter.js";
 
-
 dotenv.config();
 
 //app config
@@ -28,7 +26,8 @@ const port = process.env.PORT || 3001;
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
-app.use(cookieParser());String
+app.use(cookieParser());
+
 app.use(
     cors({
         origin: "http://localhost:5173",
@@ -39,15 +38,15 @@ app.use(
 // api entpoints
 
 app.use("/api/auth", authRouter);
-app.use("/api/users", usersRouter)
+app.use("/api/users", usersRouter);
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/coupons", couponRouter);
 app.use("/api/payments", paymentRouter);
-app.use("/api/favorites",favoritesRouter)
-app.use("/api/category",categoryRouter)
+app.use("/api/favorites", favoritesRouter);
+app.use("/api/category", categoryRouter);
 app.use("/api/analytics", analyticsRouter);
-app.use("/api/logo",logoRouter)
+app.use("/api/logo", logoRouter);
 
 app.subscribe;
 

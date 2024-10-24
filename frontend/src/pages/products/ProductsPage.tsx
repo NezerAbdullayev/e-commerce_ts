@@ -1,41 +1,43 @@
 import { Box } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import ProductsPagination from "../../components/productsPagination/ProductsPagination";
 import Filters from "../../components/filter/Filters";
 
-interface FiltersParams {
+export interface FilterState {
     search: string;
     categories: string[];
-    minPrice: number | null;
-    maxPrice: number | null;
+    priceMin: number | null;
+    priceMax: number | null;
     rating: number | null;
 }
 
 const ProductsPage: FC = () => {
-    const [filtersParams, setFiltersParams] = useState<FiltersParams>({
+    console.log("re-rendering products");
+    const [filtersParams, setFiltersParams] = useState<FilterState>({
         search: "",
         categories: [],
-        minPrice: null,
-        maxPrice: null,
+        priceMin: null,
+        priceMax: null,
         rating: null,
     });
+    console.log(filtersParams);
 
-    const handleFilterChange = (newFilters: Partial<FiltersParams>) => {
+    const handleFilterChange = useCallback((newFilters: Partial<FilterState>) => {
         setFiltersParams((prevFilters) => ({
             ...prevFilters,
             ...newFilters,
         }));
-    };
+    }, []);
 
     return (
-        <Box className="my-10">
+        <Box>
             {/* filters and search  */}
-            <Box sx={{ width: 500, maxWidth: "100%", mx: "auto" }}>
-                <Filters />
+            <Box bgcolor={"#c9c4c5"} py={10}>
+                <Filters onFilter={handleFilterChange} filtersParams={filtersParams} />
             </Box>
 
             <Box>
-                <ProductsPagination />
+                <ProductsPagination filtersParams={filtersParams} />
             </Box>
         </Box>
     );

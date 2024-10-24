@@ -1,91 +1,97 @@
-import { useEffect, useCallback, FC } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { debounce } from "lodash";
-import { validationSchema } from "../../validations/filter.validation";
+import { Input, Checkbox, Rate } from "antd";
+import { Box } from "@mui/material";
+import { FC, useEffect, useRef, useState } from "react";
+import { FilterState } from "../../pages/products/ProductsPage";
+import { debounce, DebouncedFunc } from "lodash";
+import { useGetAllCategoryQuery } from "../../redux/services/categoryApi";
 
-const FilterForm: FC = () => {
-    // Validation schema
-    // const validationSchema = Yup.object().shape({
-    //     search: Yup.string(),
-    //     rating: Yup.number().min(0).max(5, "Rating must be between 0 and 5"),
-    //     price: Yup.number().positive("Price must be positive"),
-    //     category: Yup.string(),
-    // });
-    const {
-        register,
-        watch,
-        formState: { errors },
-    } = useForm({
-        resolver: yupResolver(validationSchema),
-        defaultValues: {
-            search: "",
-            rating: "",
-            price: "",
-            category: "",
-        },
-    });
+interface FilterFormProps {
+    onFilter: (newFilters: Partial<FilterState>) => void;
+    filtersParams: FilterState;
+}
 
-    // Watch form fields
-    const watchFields = watch(["search", "rating", "price", "category"]);
+const FilterForm: FC<FilterFormProps> = ({ onFilter, filtersParams }) => {
+    const { data: categoriesData = [] } = useGetAllCategoryQuery();
+    const [search, setSearch] = useState<string>(filtersParams.search || "");
+    const debounceDelay = 600;
 
-    // Debounced function for search
-    const debouncedSearch = useCallback(
-        debounce((searchTerm) => {
-            // Simulate API call with the search term
-            console.log("Debounced Search Query: ", searchTerm);
-            // fetchFilteredResults({ search: searchTerm, rating: watchFields[1], price: watchFields[2], category: watchFields[3] });
-        }, 500), // 500ms debounce
-        [],
-    );
+    const options =
+        categoriesData?.map((category) => ({
+            label: category.name,
+            value: category._id,
+        })) || [];
+
+    const debouncedOnFilterRef = useRef<DebouncedFunc<(newFilters: Partial<FilterState>) => void> | null>(null);
 
     useEffect(() => {
-        // Only debounce the search field
-        const filterData = {
-            search: watchFields[0],
-            rating: watchFields[1],
-            price: watchFields[2],
-            category: watchFields[3],
+        const debouncedOnFilter = debounce((newFilters: Partial<FilterState>) => {
+            onFilter(newFilters);
+        }, debounceDelay);
+
+        debouncedOnFilterRef.current = debouncedOnFilter;
+
+        return () => {
+            debouncedOnFilterRef.current?.cancel();
         };
+    }, [onFilter, debounceDelay]);
 
-        // Debounce only the search input
-        debouncedSearch(filterData.search);
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setSearch(value); // Update the local state
+        debouncedOnFilterRef.current?.({ search: value });
+    };
 
-        // Call your API or update state with other fields instantly if needed
-        console.log("Rating, Price, and Category: ", filterData.rating, filterData.price, filterData.category);
-    }, [watchFields]); // Listen for changes in all fields
+    const handleCategoryChange = (checkedValues: string[]) => {
+        onFilter({ categories: checkedValues });
+    };
+
+    const handlePriceChange = (name: string, value: string | null) => {
+        debouncedOnFilterRef.current?.({ [name]: value ? Number(value) : null });
+    };
+
+    const handleRatingChange = (value: number) => {
+        onFilter({ rating: value });
+    };
 
     return (
-        <form>
-            <div>
-                <label>Search:</label>
-                <input type="text" {...register("search")} />
-                {errors.search && <p>{errors.search.message}</p>}
-            </div>
+        <Box width={"full"} sx={{ width: 700, maxWidth: "100%", mx: "auto" }}>
+            {/* Search input */}
+            <Box display={"flex"} flexDirection={"column"}>
+                <Box>Search:</Box>
+                <Input
+                    style={{ padding: "15px 10px", width: "700px" }}
+                    name="search"
+                    placeholder="Search products"
+                    value={search}
+                    onChange={handleSearchChange}
+                />
+            </Box>
 
-            <div>
-                <label>Rating:</label>
-                <input type="number" {...register("rating")} />
-                {errors.rating && <p>{errors.rating.message}</p>}
-            </div>
+            {/* Price  */}
+            <Box sx={{ display: "flex", gap: "16px", mt: 2 }}>
+                <Box>
+                    <Box>Minimum price:</Box>
+                    <Input type="number" placeholder="min price" onChange={(e) => handlePriceChange("priceMin", e.target.value)} />
+                </Box>
 
-            <div>
-                <label>Price:</label>
-                <input type="number" {...register("price")} />
-                {errors.price && <p>{errors.price.message}</p>}
-            </div>
+                <Box>
+                    <Box>Maximum price:</Box>
+                    <Input type="number" placeholder="max price" onChange={(e) => handlePriceChange("priceMax", e.target.value)} />
+                </Box>
+            </Box>
 
-            <div>
-                <label>Category:</label>
-                <select {...register("category")}>
-                    <option value="">Select...</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="fashion">Fashion</option>
-                    {/* More options */}
-                </select>
-                {errors.category && <p>{errors.category.message}</p>}
-            </div>
-        </form>
+            {/* Categories multiple filter */}
+            <Box mt={2}>
+                <Box mb={1}>Categories</Box>
+                <Checkbox.Group options={options} onChange={handleCategoryChange} />
+            </Box>
+
+            {/* Rating filter */}
+            <Box mt={1}>
+                <Box mb={1}>Rating:</Box>
+                <Rate onChange={handleRatingChange} />
+            </Box>
+        </Box>
     );
 };
 

@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { shallowEqual, useSelector } from "react-redux";
 import { isAuthenticated } from "../../redux/slice/authSlice";
 import Error from "../../pages/admin/components/Error";
+import { filtersParams } from "../../redux/services/types/products.types";
 
 export interface HandlerRes {
     name: string;
@@ -18,13 +19,21 @@ export interface HandlerRes {
     price: number;
 }
 
-const ProductsPagination: FC = () => {
+interface ProductsPaginationProps {
+    filtersParams: filtersParams;
+}
+
+const ProductsPagination: FC<ProductsPaginationProps> = ({ filtersParams }) => {
+    console.log(filtersParams);
     const isAuth = useSelector(isAuthenticated, shallowEqual);
 
     const { products, totalPages, currentPage, isLoading, error, handlePageChange } = useAllProductsPagination({
         initialPage: 1,
         limit: 20,
+        filtersParams,
     });
+
+    console.log(isLoading);
     const { data: favoritesData } = useGetAllFavoritesQuery(undefined, { skip: !isAuth });
     const [addToCart] = useAddToCartMutation();
     const [addToFavorite] = useAddtoFavoritesMutation();

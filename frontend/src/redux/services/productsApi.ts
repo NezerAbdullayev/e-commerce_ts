@@ -1,11 +1,30 @@
 import { PRODUCTS_URL } from "../constants";
 import { rootApi } from "../rootApi";
-import { Products, ProductsResponse } from "./types/products.types";
+import { Products, ProductsReq, ProductsResponse } from "./types/products.types";
 
 const productsApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
-        getAllProducts: builder.query<ProductsResponse, { page: number; limit: number }>({
-            query: ({ page, limit }) => `${PRODUCTS_URL}?page=${page}&limit=${limit}`,
+        getAllProducts: builder.query<ProductsResponse, ProductsReq>({
+            query: ({ page, limit, filtersParams }) => {
+                const queryParams = {
+                    page: page?.toString(),
+                    limit: limit?.toString(),
+                    search: filtersParams?.search,
+                    priceMin: filtersParams?.priceMin?.toString(),
+                    priceMax: filtersParams?.priceMax?.toString(),
+                    rating: filtersParams?.rating?.toString(),
+                    categories: filtersParams?.categories?.length ? filtersParams.categories.join(",") : undefined,
+                };
+
+                const queryString = Object.entries(queryParams)
+                    .filter(([, value]) => value !== undefined && value !== null && value !== "")
+                    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`)
+                    .join("&");
+
+                return {
+                    url: `${PRODUCTS_URL}?${queryString}`,
+                };
+            },
             providesTags: ["Products"],
         }),
 

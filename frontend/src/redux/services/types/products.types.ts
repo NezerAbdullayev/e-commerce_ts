@@ -30,3 +30,16 @@ export interface ProductsResponse {
     totalPages: number;
     totalProducts: number;
 }
+
+export interface filtersParams {
+    categories: string[] | [];
+    priceMax: number | null;
+    priceMin: number | null;
+    rating: number | null;
+    search?: string;
+}
+export interface ProductsReq {
+    page?: number;
+    limit?: number;
+    filtersParams?: filtersParams;
+}

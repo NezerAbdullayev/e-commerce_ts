@@ -23,7 +23,7 @@ const setCookies = (res, accessToken, refreshToken) => {
         httpOnly: true, // prevent xss attacks,cross-site scripting attack
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict", //prevents scrf attack, cross-site reuest forgery attack
-        maxAge: 24 *60 * 60 * 1000, //1d
+        maxAge: 24 * 60 * 60 * 1000, //1d
     });
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true, // prevent xss attacks,cross-site scripting attack
@@ -91,7 +91,6 @@ export const login = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-    console.log(req)
     try {
         const refreshToken = req.cookies.refreshToken;
         if (refreshToken) {
@@ -131,7 +130,7 @@ export const refreshToken = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
-            maxAge: 24*60 * 60 * 1000,
+            maxAge: 24 * 60 * 60 * 1000,
         });
 
         res.json({ message: "Token refreshed successfully" });
@@ -148,4 +147,3 @@ export const getProfile = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
-

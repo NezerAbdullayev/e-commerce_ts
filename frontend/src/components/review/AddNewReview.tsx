@@ -8,9 +8,9 @@ import { Form } from "antd";
 import { toast } from "react-toastify";
 
 import { isAuthenticated } from "../../redux/slice/authSlice";
-import { reviewSchema } from "../../validations/form.validation";
 import { useCreateReviewMutation } from "../../redux/services/productsApi";
 import FormTextarea from "../Forms/FormTextarea";
+import { reviewSchema } from "../../validations/global.validation";
 
 interface Review {
     comment: string;
@@ -79,7 +79,7 @@ const AddNewReview: FC<CreateReviewProps> = ({ productId }) => {
                 </Box>
             ) : (
                 <Box textAlign="center" marginY={2}>
-                    <Typography sx={{mb:1}}>You must log in to add a comment</Typography>
+                    <Typography sx={{ mb: 1 }}>You must log in to add a comment</Typography>
                     <Button variant="contained" color="primary" onClick={() => navigate("/login")}>
                         Log In
                     </Button>

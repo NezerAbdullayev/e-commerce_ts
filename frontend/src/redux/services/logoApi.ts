@@ -12,11 +12,11 @@ const logoApi = rootApi.injectEndpoints({
             }),
             providesTags: ["Logo"],
         }),
-        updateAppLogo: builder.mutation({
-            query: ({ logo }) => ({
+        updateAppLogo: builder.mutation<LogoResponse[], { name: string }>({
+            query: ({ name }) => ({
                 url: `${LOGO_URL}/`,
-                method: "GET",
-                body: logo,
+                method: "PUT",
+                body: { name },
                 credentials: "include",
             }),
             invalidatesTags: ["Logo"],

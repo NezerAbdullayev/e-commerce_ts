@@ -12,6 +12,8 @@ import { Outlet } from "react-router";
 import { Box, Typography } from "@mui/material";
 import Link from "./components/Link";
 import { useUserLogoutMutation } from "../../redux/services/authApi";
+import EditLogo from "./components/EditLogo";
+import LogoContainer from "../../components/logo/LogoContainer";
 
 const { Content, Sider } = Layout;
 
@@ -38,47 +40,58 @@ const AdminPage: FC = () => {
         <Layout hasSider style={{ padding: 0, minHeight: "100vh" }}>
             {/* sidebar */}
             <Sider style={siderStyle}>
-                <Box mt={2}>
-                    <Link to="/admin/dashboard">
-                        <BarChartIcon className="mr-2 text-xl" />
-                        <Typography variant="body1" component="span">
-                            Dashboard
-                        </Typography>
-                    </Link>
+                <Box className="flex h-full flex-col justify-between">
+                    <Box>
+                        {/* logo */}
+                        <Box p={1} color={"white"} mb={4} borderBottom={1} bgcolor={"#30299e"}>
+                            <LogoContainer />
+                        </Box>
+                        {/* navs */}
+                        <Link to="/admin/dashboard">
+                            <BarChartIcon className="mr-2 text-xl" />
+                            <Typography variant="body1" component="span">
+                                Dashboard
+                            </Typography>
+                        </Link>
 
-                    <Link to="/admin/products">
-                        <AppstoreAddOutlined className="mr-2 text-xl" />
-                        <Typography variant="body1" component="span">
-                            Products
-                        </Typography>
-                    </Link>
+                        <Link to="/admin/products">
+                            <AppstoreAddOutlined className="mr-2 text-xl" />
+                            <Typography variant="body1" component="span">
+                                Products
+                            </Typography>
+                        </Link>
 
-                    <Link to="/admin/createProduct">
-                        <PlaylistAddCircleIcon className="mr-2 text-xl" />
-                        <Typography variant="body1" component="span">
-                            Create New Product
-                        </Typography>
-                    </Link>
+                        <Link to="/admin/createProduct">
+                            <PlaylistAddCircleIcon className="mr-2 text-xl" />
+                            <Typography variant="body1" component="span">
+                                Create New Product
+                            </Typography>
+                        </Link>
 
-                    <Link to="/admin/categorys">
-                        <CategoryIcon className="mr-2 text-xl" />
-                        <Typography variant="body1" component="span">
-                            Category
-                        </Typography>
-                    </Link>
+                        <Link to="/admin/categorys">
+                            <CategoryIcon className="mr-2 text-xl" />
+                            <Typography variant="body1" component="span">
+                                Category
+                            </Typography>
+                        </Link>
 
-                    <Link to="/admin/users">
-                        <GroupIcon className="mr-2 text-xl" />
-                        <Typography variant="body1" component="span">
-                            Users
-                        </Typography>
-                    </Link>
+                        <Link to="/admin/users">
+                            <GroupIcon className="mr-2 text-xl" />
+                            <Typography variant="body1" component="span">
+                                Users
+                            </Typography>
+                        </Link>
+                    </Box>
 
-                    <Box className="flex cursor-pointer items-center rounded bg-zinc-700 p-2 text-gray-300 transition-colors duration-300 hover:bg-gray-500">
-                        <CiLogout className="mr-2 text-xl" />
-                        <Typography variant="body1" component="span" onClick={logout} aria-disabled={isLoading}>
-                            Logout
-                        </Typography>
+                    {/* edit and logout */}
+                    <Box>
+                        <EditLogo />
+                        <Box className="mb-14 flex cursor-pointer items-center rounded p-2 text-gray-300 transition-colors duration-300 hover:bg-gray-500">
+                            <CiLogout className="mr-2 text-xl" />
+                            <Typography variant="body1" component="span" onClick={logout} aria-disabled={isLoading}>
+                                Logout
+                            </Typography>
+                        </Box>
                     </Box>
                 </Box>
             </Sider>

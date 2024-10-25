@@ -20,7 +20,6 @@ const ProductsPage: FC = () => {
         priceMax: null,
         rating: null,
     });
-    console.log(filtersParams);
 
     const handleFilterChange = useCallback((newFilters: Partial<FilterState>) => {
         setFiltersParams((prevFilters) => ({

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const logoSchema = new mongoose.Schema({
-    logo: {
+    name: {
         type: String,
         required: true,
     },

@@ -12,17 +12,14 @@ export const getAppLogo = async (req, res) => {
 
 export const updateLogo = async (req, res) => {
     try {
-        const { logo } = req.body;
+        const { name } = req.body;
 
-        if (!logo && logo.length < 3) {
+        if (!name) {
             return res.status(404).json({ message: "Logo not found" });
         }
+        if (name.length < 3) return res.status(404).json({ message: "Logo name must be at least 3 characters long" });
 
-        const updatedLogo = await Logo.findOneAndUpdate({}, { logo }, { new: true });
-
-        if (!updatedLogo) {
-            return res.status(404).json({ message: "Logo not found" });
-        }
+        const updatedLogo = await Logo.findOneAndUpdate({}, { name }, { new: true });
 
         res.status(200).json(updatedLogo);
     } catch (error) {

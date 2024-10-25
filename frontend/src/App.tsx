@@ -8,9 +8,10 @@ import "swiper/css/pagination";
 import { userRole } from "./redux/slice/authSlice";
 import { useSelector } from "react-redux";
 
-import PirvateRoute from "./components/PirvateRoute";
+import PrivateRoute from "./components/PrivateRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import Loading from "./components/Loading";
+import IsAdminRoute from "./components/AdminRoute";
 // Lazy loading components
 const AppLayout = lazy(() => import("./layout/AppLayout"));
 const HomePage = lazy(() => import("./pages/home/HomePage"));
@@ -50,21 +51,32 @@ const App: React.FC = () => {
             <Suspense fallback={<Loading />}>
                 <Routes>
                     {/* Admin panel */}
-                    <Route path="/admin" element={role === "admin" ? <AdminPage /> : <Navigate to="/" />}>
-                        <Route index element={<Navigate to="dashboard" />} />
-                        <Route path="dashboard" element={<Dashboard />} />
-                        <Route path="products" element={<TableProducts />} />
-                        <Route path="users" element={<UsersTable />} />
-                        <Route path="createProduct" element={<AddNewProduct />} />
-                        <Route path="categorys" element={<Categories />} />
-                    </Route>
+                    {role === "admin" ? (
+                        <Route path="/admin" element={<AdminPage />}>
+                            <Route index element={<Navigate to="dashboard" />} />
+                            <Route path="dashboard" element={<Dashboard />} />
+                            <Route path="products" element={<TableProducts />} />
+                            <Route path="users" element={<UsersTable />} />
+                            <Route path="createProduct" element={<AddNewProduct />} />
+                            <Route path="categories" element={<Categories />} />
+                        </Route>
+                    ) : (
+                        <Route path="/admin" element={<Navigate to="/" />} />
+                    )}
 
-                    {/* auth */}
+                    {/* Auth */}
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignupPage />} />
 
                     {/* App layout routes */}
-                    <Route path="/" element={<AppLayout />}>
+                    <Route
+                        path="/"
+                        element={
+                            <IsAdminRoute>
+                                <AppLayout />
+                            </IsAdminRoute>
+                        }
+                    >
                         <Route index element={<HomePage />} />
                         <Route path="products" element={<ProductsPage />} />
                         <Route path="product/:id" element={<DetailsPage />} />
@@ -72,18 +84,18 @@ const App: React.FC = () => {
                         <Route
                             path="favorites"
                             element={
-                                <PirvateRoute>
+                                <PrivateRoute>
                                     <FavoritesPage />
-                                </PirvateRoute>
+                                </PrivateRoute>
                             }
                         />
 
                         <Route
                             path="cart"
                             element={
-                                <PirvateRoute>
+                                <PrivateRoute>
                                     <CartPage />
-                                </PirvateRoute>
+                                </PrivateRoute>
                             }
                         />
                     </Route>

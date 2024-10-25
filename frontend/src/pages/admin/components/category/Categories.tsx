@@ -58,7 +58,7 @@ const Categories: FC = () => {
         reset({ categoryName: "" });
         setOpen(true);
     }, [reset]);
-    
+
     const handleClose = useCallback(() => {
         setOpen(false);
         setIsEditMode(false);

@@ -6,7 +6,7 @@ import { Navigate } from "react-router";
 const IsAdminRoute: FC<{ children: ReactNode }> = ({ children }) => {
     const IsAdmin = useSelector(userRole);
 
-    return IsAdmin ? <Navigate to="/admin" replace /> : <>{children}</>;
+    return IsAdmin === "admin" ? <Navigate to="/admin" replace /> : <>{children}</>;
 };
 
 export default IsAdminRoute;

@@ -5,13 +5,13 @@ import "react-toastify/dist/ReactToastify.css";
 import "swiper/swiper-bundle.css";
 import "swiper/css";
 import "swiper/css/pagination";
-import { userRole } from "./redux/slice/authSlice";
-import { useSelector } from "react-redux";
 
 import PrivateRoute from "./components/PrivateRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import Loading from "./components/Loading";
 import IsAdminRoute from "./components/AdminRoute";
+import { useSelector } from "react-redux";
+import { userRole } from "./redux/slice/authSlice";
 // Lazy loading components
 const AppLayout = lazy(() => import("./layout/AppLayout"));
 const HomePage = lazy(() => import("./pages/home/HomePage"));
@@ -51,18 +51,14 @@ const App: React.FC = () => {
             <Suspense fallback={<Loading />}>
                 <Routes>
                     {/* Admin panel */}
-                    {role === "admin" ? (
-                        <Route path="/admin" element={<AdminPage />}>
-                            <Route index element={<Navigate to="dashboard" />} />
-                            <Route path="dashboard" element={<Dashboard />} />
-                            <Route path="products" element={<TableProducts />} />
-                            <Route path="users" element={<UsersTable />} />
-                            <Route path="createProduct" element={<AddNewProduct />} />
-                            <Route path="categories" element={<Categories />} />
-                        </Route>
-                    ) : (
-                        <Route path="/admin" element={<Navigate to="/" />} />
-                    )}
+                    <Route path="/admin" element={role === "admin" ? <AdminPage /> : <Navigate to="/" />}>
+                        <Route index element={<Navigate to="dashboard" />} />
+                        <Route path="dashboard" element={<Dashboard />} />
+                        <Route path="products" element={<TableProducts />} />
+                        <Route path="users" element={<UsersTable />} />
+                        <Route path="createProduct" element={<AddNewProduct />} />
+                        <Route path="categories" element={<Categories />} />
+                    </Route>
 
                     {/* Auth */}
                     <Route path="/login" element={<LoginPage />} />

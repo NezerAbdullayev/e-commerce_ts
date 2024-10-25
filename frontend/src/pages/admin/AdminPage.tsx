@@ -68,7 +68,7 @@ const AdminPage: FC = () => {
                             </Typography>
                         </Link>
 
-                        <Link to="/admin/categorys">
+                        <Link to="/admin/categories">
                             <CategoryIcon className="mr-2 text-xl" />
                             <Typography variant="body1" component="span">
                                 Category

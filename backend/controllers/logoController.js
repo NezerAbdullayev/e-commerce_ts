@@ -1,4 +1,4 @@
-import Logo from "../models/LogoModel.js"
+import Logo from "../models/LogoModel.js";
 
 export const getAppLogo = async (req, res) => {
     try {
@@ -13,6 +13,10 @@ export const getAppLogo = async (req, res) => {
 export const updateLogo = async (req, res) => {
     try {
         const { logo } = req.body;
+
+        if (!logo && logo.length < 3) {
+            return res.status(404).json({ message: "Logo not found" });
+        }
 
         const updatedLogo = await Logo.findOneAndUpdate({}, { logo }, { new: true });
 

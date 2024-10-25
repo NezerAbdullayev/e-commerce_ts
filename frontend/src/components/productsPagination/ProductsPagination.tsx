@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo } from "react";
-import { Alert, Box, Pagination } from "@mui/material";
+import { Box, Pagination } from "@mui/material";
 import ProductCard from "../productCard/ProductCard";
 import CardContainer from "../productCard/CardContainer";
 import useAllProductsPagination from "../../hooks/use-allProductsPagination";
@@ -24,7 +24,6 @@ interface ProductsPaginationProps {
 }
 
 const ProductsPagination: FC<ProductsPaginationProps> = ({ filtersParams }) => {
-    console.log(filtersParams);
     const isAuth = useSelector(isAuthenticated, shallowEqual);
 
     const { products, totalPages, currentPage, isLoading, error, handlePageChange } = useAllProductsPagination({
@@ -33,7 +32,6 @@ const ProductsPagination: FC<ProductsPaginationProps> = ({ filtersParams }) => {
         filtersParams,
     });
 
-    console.log(isLoading);
     const { data: favoritesData } = useGetAllFavoritesQuery(undefined, { skip: !isAuth });
     const [addToCart] = useAddToCartMutation();
     const [addToFavorite] = useAddtoFavoritesMutation();
@@ -103,9 +101,7 @@ const ProductsPagination: FC<ProductsPaginationProps> = ({ filtersParams }) => {
                         </Box>
                     </>
                 ) : (
-                    <Box display="flex" justifyContent="center" alignItems={"center"} p={2}>
-                        <Alert severity="info">No products found.</Alert>
-                    </Box>
+                    <Error message="No products found." />
                 )}
             </CardContainer>
         </Box>

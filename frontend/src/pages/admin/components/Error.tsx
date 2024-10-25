@@ -7,8 +7,8 @@ interface ErrorProps {
 
 const Error: FC<ErrorProps> = ({ message }) => {
     return (
-        <Box display="flex" justifyContent="center" alignItems={"center"} p={2}>
-            <Alert severity="error" >{message}</Alert>
+        <Box display="flex" justifyContent="center" alignItems={"center"} width={"100%"} p={2}>
+            <Alert severity="error">{message}</Alert>
         </Box>
     );
 };

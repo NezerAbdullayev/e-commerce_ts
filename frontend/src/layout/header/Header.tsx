@@ -13,6 +13,7 @@ import { isAuthenticated } from "../../redux/slice/authSlice";
 import { Avatar, Menu, MenuItem } from "@mui/material";
 import UserActions from "./UserActions";
 import { useUserLogoutMutation } from "../../redux/services/authApi";
+import Logo from "./Logo";
 
 function Header() {
     const isAuth = useSelector(isAuthenticated);
@@ -45,9 +46,9 @@ function Header() {
     return (
         <AppBar position="sticky" sx={{ background: "#055160" }}>
             <Toolbar>
-                <Typography variant="h6" component={NavLink} to="/" sx={{ mr: 2 }}>
+                <Typography variant="h6" component={NavLink} to="/" sx={{ mr: 2 }} className="flex relative">
                     <StoreIcon sx={{ mr: 1 }} />
-                    TrendTee
+                    <Logo />
                 </Typography>
 
                 <Box sx={{ flexGrow: 1, display: "flex" }}>

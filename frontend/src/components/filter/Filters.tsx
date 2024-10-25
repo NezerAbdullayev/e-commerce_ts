@@ -37,8 +37,8 @@ const FilterForm: FC<FilterFormProps> = ({ onFilter, filtersParams }) => {
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
-        setSearch(value); // Update the local state
-        debouncedOnFilterRef.current?.({ search: value });
+        setSearch(value);
+        debouncedOnFilterRef.current?.({ search: value.trim() });
     };
 
     const handleCategoryChange = (checkedValues: string[]) => {

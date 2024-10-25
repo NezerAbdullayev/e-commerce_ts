@@ -6,14 +6,14 @@ import CategoryIcon from "@mui/icons-material/Category";
 import GroupIcon from "@mui/icons-material/Group";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import { CiLogout } from "react-icons/ci";
-import { Layout, theme } from "antd";
+import { Layout } from "antd";
 
 import { Outlet } from "react-router";
 import { Box, Typography } from "@mui/material";
 import Link from "./components/Link";
 import { useUserLogoutMutation } from "../../redux/services/authApi";
 
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 const siderStyle: React.CSSProperties = {
     overflow: "auto",
@@ -28,10 +28,6 @@ const siderStyle: React.CSSProperties = {
 };
 
 const AdminPage: FC = () => {
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
-
     const [userLogout, { isLoading }] = useUserLogoutMutation();
 
     const logout = () => {
@@ -89,16 +85,13 @@ const AdminPage: FC = () => {
 
             {/* content */}
             <Layout style={{ marginInlineStart: 200 }}>
-                <Header style={{ padding: 0, background: colorBgContainer, textAlign: "center", fontWeight: "bold", fontSize: "28px" }}>
-                    ADMIN PANEL
-                </Header>
                 <Content style={{ overflow: "initial", maxWidth: "95%", margin: "10px auto", width: "1200px" }}>
                     <Box
                         style={{
                             textAlign: "center",
                         }}
                         minHeight={"90vh"}
-                        mt={3}
+                        mt={10}
                     >
                         <Outlet />
                     </Box>

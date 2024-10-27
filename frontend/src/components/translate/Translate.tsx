@@ -11,7 +11,7 @@ const Translate: FC = () => {
     };
 
     return (
-        <Box mx={5}>
+        <Box className="flex items-center gap-2">
             <Button
                 onClick={() => changeLanguage("az")}
                 sx={{

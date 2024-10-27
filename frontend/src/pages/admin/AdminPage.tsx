@@ -14,6 +14,7 @@ import { useUserLogoutMutation } from "../../redux/services/authApi";
 import EditLogo from "./components/EditLogo";
 import LogoContainer from "../../components/logo/LogoContainer";
 import { useTranslation } from "react-i18next";
+import Translate from "../../components/translate/Translate";
 
 const { Content, Sider } = Layout;
 
@@ -47,6 +48,12 @@ const AdminPage: FC = () => {
                         <Box p={1} color={"white"} mb={4} borderBottom={1} bgcolor={"#30299e"}>
                             <LogoContainer />
                         </Box>
+
+                        {/* translate */}
+                        <Box className="border-b mb-2">
+                            <Translate />
+                        </Box>
+
                         {/* navs */}
                         <Link to="/admin/dashboard">
                             <BarChartIcon className="mr-2 text-xl" />

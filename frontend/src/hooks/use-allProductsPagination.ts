@@ -17,8 +17,6 @@ const useAllProductsPagination = ({ initialPage = 1, limit = 10, filtersParams }
         window.scrollTo(0, 0);
     }, []);
 
-    console.log(data, "data", "isLoading", isLoading);
-
     return {
         products: data?.products || [],
         totalPages: data?.totalPages || 0,

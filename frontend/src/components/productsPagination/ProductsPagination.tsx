@@ -10,8 +10,8 @@ import { toast } from "react-toastify";
 import { shallowEqual, useSelector } from "react-redux";
 import { isAuthenticated } from "../../redux/slice/authSlice";
 import Error from "../../pages/admin/components/Error";
-import { filtersParams } from "../../redux/services/types/products.types";
 import { useTranslation } from "react-i18next";
+import { FilterState } from "../../hooks/use-filters";
 
 export interface HandlerRes {
     name: string;
@@ -21,7 +21,7 @@ export interface HandlerRes {
 }
 
 interface ProductsPaginationProps {
-    filtersParams: filtersParams;
+    filtersParams: FilterState;
 }
 
 const ProductsPagination: FC<ProductsPaginationProps> = ({ filtersParams }) => {

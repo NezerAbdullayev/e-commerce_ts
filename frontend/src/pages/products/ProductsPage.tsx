@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
-import { FC, useCallback, useState } from "react";
+import { FC } from "react";
 import ProductsPagination from "../../components/productsPagination/ProductsPagination";
 import Filters from "../../components/filter/Filters";
+import { useFilters } from "../../hooks/use-filters";
 
 export interface FilterState {
     search: string;
@@ -12,21 +13,7 @@ export interface FilterState {
 }
 
 const ProductsPage: FC = () => {
-    console.log("re-rendering products");
-    const [filtersParams, setFiltersParams] = useState<FilterState>({
-        search: "",
-        categories: [],
-        priceMin: null,
-        priceMax: null,
-        rating: null,
-    });
-
-    const handleFilterChange = useCallback((newFilters: Partial<FilterState>) => {
-        setFiltersParams((prevFilters) => ({
-            ...prevFilters,
-            ...newFilters,
-        }));
-    }, []);
+    const [filtersParams, handleFilterChange] = useFilters();
 
     return (
         <Box>

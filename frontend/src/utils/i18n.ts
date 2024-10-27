@@ -22,7 +22,7 @@ const resources = {
             galery: "Galery",
 
             //filters
-            search: "Search:",
+            search: "Search",
             searchProducts: "Search products",
             minimumPrice: "Minimum price",
             minPrice: "min price",
@@ -163,7 +163,7 @@ const resources = {
             galery: "Qaleriya",
 
             // filters
-            search: "Axtar: ",
+            search: "Axtar ",
             searchProducts: "Məhsulları axtarın",
             minimumPrice: "Minimum qiymət",
             minPrice: "minimum qiymət",
@@ -288,7 +288,7 @@ const resources = {
 
 i18n.use(initReactI18next).init({
     resources,
-    lng: "az",
+    lng: "en",
     fallbackLng: "en",
     interpolation: {
         escapeValue: false,

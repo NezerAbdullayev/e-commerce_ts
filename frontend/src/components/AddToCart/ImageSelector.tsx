@@ -21,11 +21,9 @@ const ImageSelector: FC<ImageSelectorProps> = ({ images, selectedImage, onSelect
                         src={img}
                         alt={`product-image-${index}`}
                         sx={{
-                            width: "70px",
-                            height: "70px",
                             border: selectedImage === img ? "2px solid blue" : "1px solid gray",
-                            cursor: "pointer",
                         }}
+                        className="h-[70px] w-[70px] cursor-pointer object-cover"
                         onClick={() => onSelectImage(img)}
                     />
                 ))}

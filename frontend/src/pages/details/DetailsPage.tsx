@@ -85,6 +85,7 @@ const DetailsPage: FC = () => {
                                             ${data.price}
                                         </Typography>
 
+                                        {/* rating */}
                                         <Box display={"flex"} alignItems="center">
                                             <Rating name="simple-controlled" value={data.rating} precision={0.5} readOnly />
                                             <Box className="font-bold">({data.rating === 0 ? 0 : data.rating.toFixed(1)})</Box>

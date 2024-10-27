@@ -1,15 +1,15 @@
 import { FC, useCallback } from "react";
-
 import { Alert, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-
 import { useGetAllCartQuery, useRemoveAllCartMutation, useUpdateCartQuantityMutation } from "../../redux/services/cartApi";
-
 import CartItem from "../../components/cart/CartItem";
 import Loading from "../../components/Loading";
 import Error from "../admin/components/Error";
 import { Modal } from "antd";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
+
 const CartPage: FC = () => {
+    const { t } = useTranslation();
     const { data: userCartData, error, isLoading: cartLoading } = useGetAllCartQuery();
     const [updateCartQuantity] = useUpdateCartQuantityMutation();
     const [removeCart] = useRemoveAllCartMutation();
@@ -17,44 +17,44 @@ const CartPage: FC = () => {
     const onUpdateQuantity = useCallback(
         ({ quantity, id }: { quantity: number; id: string }) => {
             Modal.confirm({
-                title: "Do you want to change the product count?",
+                title: t("confirm_change_quantity"),
                 onOk: async () => {
                     try {
                         await updateCartQuantity({ quantity, id });
-                        toast.success("Product quantity updated successfully!");
+                        toast.success(t("quantity_updated_successfully"));
                     } catch (error) {
                         console.error(error);
-                        toast.error("Failed to update the product quantity. Please try again.");
+                        toast.error(t("failed_to_update_quantity"));
                     }
                 },
-                okText: "Yes",
+                okText: t("yes"),
             });
         },
-        [updateCartQuantity],
+        [updateCartQuantity, t],
     );
 
     const onDeleteCart = useCallback(
         (id: string) => {
             Modal.confirm({
-                title: "Do you want to delete this Cart?",
+                title: t("confirm_delete_cart"),
                 onOk: async () => {
                     try {
                         await removeCart({ id });
-                        toast.success("Cart item deleted successfully!");
+                        toast.success(t("cart_item_deleted_successfully"));
                     } catch (error) {
                         console.error(error);
-                        toast.error("Failed to delete the cart item. Please try again.");
+                        toast.error(t("failed_to_delete_cart_item"));
                     }
                 },
-                okText: "Yes",
+                okText: t("yes"),
                 okType: "danger",
             });
         },
-        [removeCart],
+        [removeCart, t],
     );
 
     if (error) {
-        return <Error message="An error occurred while fetching the cart data." />;
+        return <Error message={t("error_fetching_cart_data")} />;
     }
 
     return (
@@ -66,11 +66,11 @@ const CartPage: FC = () => {
                     {/* table header */}
                     <TableHead>
                         <TableRow>
-                            <TableCell>Product</TableCell>
-                            <TableCell align="center">Quantity</TableCell>
-                            <TableCell align="center">Price</TableCell>
-                            <TableCell align="center">Total Price</TableCell>
-                            <TableCell align="center">Action</TableCell>
+                            <TableCell>{t("product")}</TableCell>
+                            <TableCell align="center">{t("quantity")}</TableCell>
+                            <TableCell align="center">{t("price")}</TableCell>
+                            <TableCell align="center">{t("total_price")}</TableCell>
+                            <TableCell align="center">{t("action")}</TableCell>
                         </TableRow>
                     </TableHead>
 
@@ -93,7 +93,7 @@ const CartPage: FC = () => {
                             <TableRow>
                                 <TableCell colSpan={5}>
                                     <Box display="flex" justifyContent="center" p={2}>
-                                        <Alert severity="warning">Your cart is empty.</Alert>
+                                        <Alert severity="warning">{t("cart_empty_warning")}</Alert>
                                     </Box>
                                 </TableCell>
                             </TableRow>

@@ -7,13 +7,13 @@ import GroupIcon from "@mui/icons-material/Group";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import { CiLogout } from "react-icons/ci";
 import { Layout } from "antd";
-
 import { Outlet } from "react-router";
 import { Box, Typography } from "@mui/material";
 import Link from "./components/Link";
 import { useUserLogoutMutation } from "../../redux/services/authApi";
 import EditLogo from "./components/EditLogo";
 import LogoContainer from "../../components/logo/LogoContainer";
+import { useTranslation } from "react-i18next";
 
 const { Content, Sider } = Layout;
 
@@ -30,6 +30,7 @@ const siderStyle: React.CSSProperties = {
 };
 
 const AdminPage: FC = () => {
+    const { t } = useTranslation();
     const [userLogout, { isLoading }] = useUserLogoutMutation();
 
     const logout = () => {
@@ -50,35 +51,35 @@ const AdminPage: FC = () => {
                         <Link to="/admin/dashboard">
                             <BarChartIcon className="mr-2 text-xl" />
                             <Typography variant="body1" component="span">
-                                Dashboard
+                                {t("dashboard")}
                             </Typography>
                         </Link>
 
                         <Link to="/admin/products">
                             <AppstoreAddOutlined className="mr-2 text-xl" />
                             <Typography variant="body1" component="span">
-                                Products
+                                {t("products")}
                             </Typography>
                         </Link>
 
                         <Link to="/admin/createProduct">
                             <PlaylistAddCircleIcon className="mr-2 text-xl" />
                             <Typography variant="body1" component="span">
-                                Create New Product
+                                {t("createNewProduct")}
                             </Typography>
                         </Link>
 
                         <Link to="/admin/categories">
                             <CategoryIcon className="mr-2 text-xl" />
                             <Typography variant="body1" component="span">
-                                Category
+                                {t("category")}
                             </Typography>
                         </Link>
 
                         <Link to="/admin/users">
                             <GroupIcon className="mr-2 text-xl" />
                             <Typography variant="body1" component="span">
-                                Users
+                                {t("users")}
                             </Typography>
                         </Link>
                     </Box>
@@ -89,7 +90,7 @@ const AdminPage: FC = () => {
                         <Box className="mb-14 flex cursor-pointer items-center rounded p-2 text-gray-300 transition-colors duration-300 hover:bg-gray-500">
                             <CiLogout className="mr-2 text-xl" />
                             <Typography variant="body1" component="span" onClick={logout} aria-disabled={isLoading}>
-                                Logout
+                                {t("logout")}
                             </Typography>
                         </Box>
                     </Box>

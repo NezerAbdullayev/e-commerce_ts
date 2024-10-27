@@ -1,4 +1,4 @@
-import { CategoryResponse } from "../../../types/globalTypes";
+import { CategoryResponse } from "../../../globalTypes/globalTypes";
 
 export interface ReviewProps {
     _id: string;

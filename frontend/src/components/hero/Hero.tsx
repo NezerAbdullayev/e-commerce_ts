@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import Video from "../../assets/video_hero .mp4";
 import Logo from "../logo/Logo";
+import { useTranslation } from "react-i18next";
 
 const HeroContainer = styled(Box)({
     display: "flex",
@@ -48,16 +49,20 @@ const subtitleStyles = {
 };
 
 const Hero: FC = () => {
+    const { t } = useTranslation();
+
     return (
         <Box sx={heroBoxStyles}>
             <Box component="video" src={Video} autoPlay loop muted sx={videoStyles} />
             <HeroContainer sx={heroContainerStyles}>
                 <Typography variant="h2" component="h1" gutterBottom sx={titleStyles} className="flex gap-4">
                     <Logo />
-                    <Box>Store</Box>
+                    <Box>
+                        <Box>{t("store")}</Box>
+                    </Box>
                 </Typography>
                 <Typography variant="h5" component="p" gutterBottom sx={subtitleStyles}>
-                    Discover amazing products at unbeatable prices!
+                    {t("discoverProducts")}
                 </Typography>
             </HeroContainer>
         </Box>

@@ -14,6 +14,7 @@ import PageTitle from "../../../../components/PageTitle";
 import Error from "../Error";
 import CategoryItem from "./CategoryItem";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next"; // import useTranslation
 
 // Modal stili
 const style = {
@@ -36,6 +37,7 @@ const CategoriesSchema = object().shape({
 });
 
 const Categories: FC = () => {
+    const { t } = useTranslation(); // useTranslation hook-unun istifadəsi
     const { data: categoryData, isLoading: loadingCategories, error: categoriesError } = useGetAllCategoryQuery();
     const [createCategory, { isLoading: createLoading }] = useCreateCategoryMutation();
     const [deleteCategory] = useDeleteCategoryMutation();
@@ -90,34 +92,32 @@ const Categories: FC = () => {
         async (categoryId: string) => {
             try {
                 await deleteCategory({ id: categoryId }).unwrap();
-                toast.success("Category deleted successfully!");
+                toast.success(t("deleteSuccess"));
             } catch (error) {
                 console.error(error);
-                toast.error("Failed to delete category. Please try again.");
+                toast.error(t("deleteError"));
             }
         },
-        [deleteCategory],
+        [deleteCategory, t],
     );
 
     return (
         <Box>
-            <PageTitle>Categories</PageTitle>
-
+            <PageTitle>{t("categories")}</PageTitle>
             <Button onClick={handleOpen} variant="contained" color="primary">
-                Add New Category
+                {t("addCategory")}
             </Button>
-
             <Box minWidth={"80%"} width={"800px"} mx={"auto"}>
                 <Box display="flex" justifyContent="start" mb={2}>
                     <Typography variant="h5" className="text-bold text-[#2e2e2e]">
-                        Category name :
+                        {t("categoryName")}
                     </Typography>
                 </Box>
 
                 {loadingCategories ? (
                     <Loading />
                 ) : categoriesError ? (
-                    <Error message="There was an error fetching the categories." />
+                    <Error message={t("errorFetching")} />
                 ) : (
                     categoryData &&
                     categoryData.map((category) => (
@@ -131,12 +131,11 @@ const Categories: FC = () => {
                     ))
                 )}
             </Box>
-
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-title" aria-describedby="modal-description">
                 <Box sx={style}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <TextField
-                            label="Category Name"
+                            label={t("categoryName")}
                             fullWidth
                             margin="normal"
                             {...control.register("categoryName")}
@@ -144,7 +143,7 @@ const Categories: FC = () => {
                             helperText={errors.categoryName?.message}
                         />
                         <Button type="submit" variant="contained" color="primary" disabled={createLoading || updateLoading}>
-                            {isEditMode ? "Update Category" : "Create Category"}
+                            {isEditMode ? t("updateCategory") : t("createCategory")}
                         </Button>
                     </form>
                 </Box>

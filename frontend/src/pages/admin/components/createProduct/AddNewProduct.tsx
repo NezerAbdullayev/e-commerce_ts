@@ -1,6 +1,6 @@
 import { FC, useCallback } from "react";
 import { createProductSchema } from "../../../../validations/product.validation";
-import { FileObject } from "../../../../types/globalTypes";
+import { FileObject } from "../../../../globalTypes/globalTypes";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Form } from "antd";
@@ -16,6 +16,7 @@ import PageTitle from "../../../../components/PageTitle";
 import Loading from "../../../../components/Loading";
 import Error from "../Error";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export interface NewProduct {
     brand?: string;
@@ -28,6 +29,7 @@ export interface NewProduct {
 }
 
 const AddNewProduct: FC = () => {
+    const { t } = useTranslation();
     const [createNewProduct, { isLoading: createLoading }] = useCreateNewProductMutation();
     const { data: categoriesData, isLoading: CategiresLoading, error: categoriesError } = useGetAllCategoryQuery();
 
@@ -48,22 +50,21 @@ const AddNewProduct: FC = () => {
                 };
                 console.log(newProduct);
                 await createNewProduct({ newProduct });
-                toast.success("Product created successfully!");
+                toast.success(t("productCreatedSuccess"));
                 reset({
                     image: [],
                 });
             } catch (error) {
                 console.error(error);
-                toast.error("Failed to create the product. Please try again.");
+                toast.error(t("productCreationFailed"));
             }
         },
-        [createNewProduct, reset],
+        [createNewProduct, reset, t],
     );
 
     return (
         <Box>
-            <PageTitle>Add new product</PageTitle>
-
+            <PageTitle>{t("addNewProduct")}</PageTitle>
             <Box className="mx-auto max-w-[600px] rounded-xl border-2 bg-[#e1daed] px-10 py-5">
                 <Form onFinish={handleSubmit(onSubmit)} className="w-full">
                     <FormInput<NewProduct> error={errors.name?.message} name="name" control={control} />
@@ -77,7 +78,7 @@ const AddNewProduct: FC = () => {
                             {CategiresLoading ? (
                                 <Loading />
                             ) : categoriesError ? (
-                                <Error message="Category not found" />
+                                <Error message={t("categoryNotFound")} />
                             ) : (
                                 categoriesData && (
                                     <FormSelect<NewProduct>
@@ -95,7 +96,7 @@ const AddNewProduct: FC = () => {
                     <FormInputFile<NewProduct> error={errors.image?.message} name="image" control={control} />
 
                     <Button htmlType="submit" disabled={createLoading} className="mt-4 w-full py-5" type="primary">
-                        Create Product
+                        {t("createProduct")}
                     </Button>
                 </Form>
             </Box>

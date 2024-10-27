@@ -1,6 +1,6 @@
 import { Control, FieldValues, Path, PathValue } from "react-hook-form";
 import { ReactNode } from "react";
-import { CategoryResponse } from "../../types/globalTypes";
+import { CategoryResponse } from "../../globalTypes/globalTypes";
 
 export interface BaseFormProps<T extends FieldValues> {
     name: Path<T>;

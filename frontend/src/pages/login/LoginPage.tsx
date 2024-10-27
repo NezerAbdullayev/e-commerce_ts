@@ -17,8 +17,10 @@ import { useLoginMutation } from "../../redux/services/authApi";
 // schema
 import { loginSchema } from "../../validations/authform.validation";
 import { MdEmail } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 
 const LoginPage: FC = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     // RHF hook
     const {
@@ -42,7 +44,7 @@ const LoginPage: FC = () => {
             }
         } catch (error) {
             const typedError = error as ErrorRes;
-            toast.error(typedError.error ? typedError.error.error : "An unexpected error occurred.");
+            toast.error(typedError.error ? typedError.error.error : t("unexpectedError"));
         }
 
         reset();
@@ -51,19 +53,19 @@ const LoginPage: FC = () => {
     return (
         <AuthContainer>
             <Form onFinish={handleSubmit(onSubmit)} className="w-full">
-                <PageTitle className="text-stone-600">Login</PageTitle>
+                <PageTitle className="text-stone-600">{t("login")}</PageTitle>
 
                 <FormInput error={errors.email?.message} name="email" control={control} icon={<MdEmail />} />
                 <FormPasswordInput error={errors.password?.message} name="password" control={control} />
                 <Button type="primary" htmlType="submit" disabled={isLoading} className="mt-3 h-11 w-full">
-                    Login
+                    {t("login")}
                 </Button>
             </Form>
             <Col className="mt-2.5 flex items-center">
-                <Row>Don't have an account? </Row>
+                <Row>{t("dontHaveAccount")} </Row>
                 <Button type="link" danger className="font-bold">
                     <NavLink to="/signup" className="text-red-500">
-                        Sign up now!
+                        {t("signUpNow")}
                     </NavLink>
                 </Button>
             </Col>

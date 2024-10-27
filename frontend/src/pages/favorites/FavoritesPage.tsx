@@ -1,5 +1,4 @@
 import { FC, useCallback } from "react";
-
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { useGetAllFavoritesQuery, useRemoveAllFavoritesMutation, useRemoveFavoritesItemMutation } from "../../redux/services/favoritesApi";
 import FavoritesItem from "./FavoritesItem";
@@ -8,67 +7,68 @@ import Error from "../admin/components/Error";
 import { toast } from "react-toastify";
 import { Modal } from "antd";
 import { useAddToCartMutation } from "../../redux/services/cartApi";
-import { FavorityItem } from "../../types/globalTypes";
+import { FavorityItem } from "../../globalTypes/globalTypes";
+import { useTranslation } from "react-i18next";
 
 const FavoritesPage: FC = () => {
     const { data: favoriteProducts, isLoading: favoritesLoading, error: favoritesError } = useGetAllFavoritesQuery();
 
     const [removeAllFavoritesItems] = useRemoveAllFavoritesMutation();
-
     const [removeFavoritesItem] = useRemoveFavoritesItemMutation();
-
     const [addToCart] = useAddToCartMutation();
+    const { t } = useTranslation();
 
     const onRemoveFavoritesItem = useCallback(
         async (id: string) => {
             Modal.confirm({
-                title: "Are you sure you want to remove this item from favorites?",
-                okText: "Yes",
-                cancelText: "No",
+                title: t("confirm_remove_favorite"),
+                okText: t("yes"),
+                cancelText: t("no"),
                 onOk: async () => {
                     try {
                         await removeFavoritesItem({ id }).unwrap();
-                        toast.success("Item removed from favorites successfully!");
+                        toast.success(t("item_removed_from_favorites"));
                     } catch (error) {
                         console.error(error);
-                        toast.error("Failed to remove item from favorites.");
+                        toast.error(t("failed_to_remove_item"));
                     }
                 },
             });
         },
-        [removeFavoritesItem],
+        [removeFavoritesItem, t],
     );
 
     const onAddToCart = useCallback(
         async ({ productId, image, name, price }: FavorityItem) => {
             Modal.confirm({
-                title: "Do you want to add this product to the cart?",
+                title: t("confirm_add_to_cart"),
                 onOk: async () => {
                     try {
                         await addToCart({ productId, image, name, price }).unwrap();
                         console.log(productId, image, name, price);
                     } catch (error) {
-                        toast.error("Failed to add product to cart.");
+                        toast.error(t("failed_to_add_to_cart"));
                         console.error(error);
                     }
                 },
             });
         },
-        [addToCart],
+        [addToCart, t],
     );
 
     const removeAllFavorites = useCallback(async () => {
         try {
             await removeAllFavoritesItems().unwrap();
-            toast.success("Favorites cleared successfully!");
+            toast.success(t("favorites_cleared"));
         } catch (error) {
             console.error(error);
-            toast.error("Failed to clear favorites. Try again.");
+            toast.error(t("failed_to_clear_favorites"));
         }
-    }, [removeAllFavoritesItems]);
+    }, [removeAllFavoritesItems, t]);
 
+    
     if (favoritesError) {
-        return <Error message="An error occurred while fetching the favorites data." />;
+        return <Error message={t("error_fetching_favorites")} />;
     }
 
     return (
@@ -76,22 +76,20 @@ const FavoritesPage: FC = () => {
             {favoritesLoading && <Loading />}
 
             <Typography variant="h4" gutterBottom className="font-bold text-white" align="center">
-                Favorites
+                {t("favorites")}
             </Typography>
 
             <TableContainer component={Paper}>
                 <Table stickyHeader aria-label="sticky table">
-                    {/* tabel headers */}
                     <TableHead>
                         <TableRow>
-                            <TableCell>Image</TableCell>
-                            <TableCell align="center">Name</TableCell>
-                            <TableCell align="center">Price</TableCell>
-                            <TableCell align="center">Action</TableCell>
+                            <TableCell>{t("image")}</TableCell>
+                            <TableCell align="center">{t("name")}</TableCell>
+                            <TableCell align="center">{t("price")}</TableCell>
+                            <TableCell align="center">{t("action")}</TableCell>
                         </TableRow>
                     </TableHead>
 
-                    {/* table body */}
                     <TableBody sx={{ alignItems: "center" }}>
                         {favoriteProducts && favoriteProducts.length > 0 ? (
                             favoriteProducts.map((item) => (
@@ -110,7 +108,7 @@ const FavoritesPage: FC = () => {
                             <TableRow>
                                 <TableCell colSpan={4} align="center">
                                     <Typography variant="body1" color="red">
-                                        Product not found
+                                        {t("product_not_found")}
                                     </Typography>
                                 </TableCell>
                             </TableRow>
@@ -119,7 +117,6 @@ const FavoritesPage: FC = () => {
                 </Table>
             </TableContainer>
 
-            {/* Remove All Favorites Button */}
             <Box display="flex" justifyContent="end" mt={2}>
                 <Button
                     variant="contained"
@@ -127,7 +124,7 @@ const FavoritesPage: FC = () => {
                     onClick={removeAllFavorites}
                     disabled={favoritesLoading || !favoriteProducts || favoriteProducts.length === 0}
                 >
-                    Remove All Favorites
+                    {t("remove_all_favorites")}
                 </Button>
             </Box>
         </Box>

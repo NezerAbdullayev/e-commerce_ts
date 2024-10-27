@@ -14,10 +14,12 @@ import { toast } from "react-toastify";
 import { FaRegUser } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import FormPasswordInput from "../../components/Forms/FormPasswordInput";
+import { useTranslation } from "react-i18next";
 
 // Form layout
 
 const SignupPage: FC = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     // rhf library
     const {
@@ -36,11 +38,11 @@ const SignupPage: FC = () => {
             const res = await signup(data).unwrap();
             if (res._id) {
                 navigate("/login");
-                toast.success("Signup successful!");
+                toast.success(t("signupSuccessful"));
             }
         } catch (error) {
             const typedError = error as ErrorRes;
-            toast.error(typedError.error ? typedError.error.error : "Signup failed! Please try again.");
+            toast.error(typedError.error ? typedError.error.error : t("signupFailed"));
         }
         reset();
     };
@@ -48,21 +50,21 @@ const SignupPage: FC = () => {
     return (
         <AuthContainer>
             <Form onFinish={handleSubmit(onSubmit)} className="w-full">
-                <PageTitle className="text-stone-600">Signup</PageTitle>
+                <PageTitle className="text-stone-600">{t("signup")}</PageTitle>
                 <FormInput error={errors.name?.message} name="name" control={control} icon={<FaRegUser />} />
                 <FormInput error={errors.email?.message} name="email" control={control} icon={<MdEmail />} />
                 <FormPasswordInput error={errors.password?.message} name="password" control={control} />
 
                 <Button type="primary" htmlType="submit" disabled={isLoading} className="mt-3 h-11 w-full">
-                    Sign Up
+                    {t("signUp")}
                 </Button>
             </Form>
 
             <Col className="mt-2.5 flex items-center">
-                <Row>Already have an account? </Row>
+                <Row>{t("alreadyHaveAccount")}</Row>
                 <Button type="link" danger className="font-bold">
                     <NavLink to="/login" className="text-red-500">
-                        Log in now!
+                        {t("logInNow")}
                     </NavLink>
                 </Button>
             </Col>

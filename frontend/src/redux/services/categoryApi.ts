@@ -1,4 +1,4 @@
-import { CategoryResponse } from "../../types/globalTypes";
+import { CategoryResponse } from "../../globalTypes/globalTypes";
 import { CATEGORY_URL } from "../constants";
 import { rootApi } from "../rootApi";
 

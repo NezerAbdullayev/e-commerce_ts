@@ -26,8 +26,9 @@ import FormSelect from "../../../../components/Forms/FormSellect";
 import { useDeleteProductMutation, useUpdateProductMutation } from "../../../../redux/services/productsApi";
 import { useProducts } from "../../../../hooks/use-TableProduct";
 import { NewProduct } from "../createProduct/AddNewProduct";
-import { CategoryResponse } from "../../../../types/globalTypes";
+import { CategoryResponse } from "../../../../globalTypes/globalTypes";
 import { convertImagesToBase64 } from "../../../../utils/convertImagesToBase64";
+import { useTranslation } from "react-i18next";
 
 interface BaseProduct {
     id: string;
@@ -48,6 +49,8 @@ interface ProductRecord extends BaseProduct {
     category: { _id: string }[];
 }
 const TableProducts: FC = () => {
+    const { t } = useTranslation();
+
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [productResData, setProductResData] = useState<DataType[]>([]);
@@ -71,23 +74,23 @@ const TableProducts: FC = () => {
     const onDeleteProduct = useCallback(
         async (id: string) => {
             Modal.confirm({
-                title: "Do you want to delete this product?",
+                title: t("deleteConfirmation"),
                 onOk: async () => {
                     try {
                         await deleteProduct({ id });
-                        toast.success("Product deleted successfully!");
+                        toast.success(t("deleteSuccess"));
                     } catch (error) {
                         console.error(error);
-                        toast.error("Failed to delete the product. Please try again.");
+                        toast.error(t("deleteError"));
                     }
                 },
             });
         },
-        [deleteProduct],
+        [deleteProduct, t],
     );
 
     const onEditProduct = useCallback(
-        (record: ProductRecord) => {
+        (record: ProductRecord | ProductRecord) => {
             setEditPorductId(record.id);
             setIsEdit(true);
             reset({
@@ -185,14 +188,12 @@ const TableProducts: FC = () => {
             await updateProduct({
                 data: { ...data, id: editProductId, image: reqImages },
             }).unwrap();
-
-            toast.success("Product updated successfully!");
-
+            toast.success(t("editSuccess"));
             reset();
             onCloseEditModal();
         } catch (error) {
             console.error(error);
-            toast.error("Failed to update the product. Please try again.");
+            toast.error(t("editError"));
         }
     };
 
@@ -201,7 +202,7 @@ const TableProducts: FC = () => {
             {productLoading ? (
                 <Loading />
             ) : productError ? (
-                <Error message="There was an issue fetching the products. Please try again later." />
+                <Error message={t("fetchError")} />
             ) : (
                 productsData?.products && (
                     <Table
@@ -220,7 +221,7 @@ const TableProducts: FC = () => {
             )}
 
             {/* modal */}
-            <Modal title="Edit Product" open={isEdit} onCancel={onCloseEditModal} onOk={handleSubmit(onSubmit)} okText="Save">
+            <Modal title={t("edit_product")} open={isEdit} onCancel={onCloseEditModal} onOk={handleSubmit(onSubmit)} okText="Save">
                 <Box className="py-5">
                     <Form onFinish={handleSubmit(onSubmit)}>
                         <Box display="grid" gridTemplateColumns={"1fr 1fr"} mb={2} gap={2}>
@@ -237,7 +238,7 @@ const TableProducts: FC = () => {
                                 {categoryLoading ? (
                                     <Loading />
                                 ) : categoryError ? (
-                                    <Error message="An error occurred while fetching the categories" />
+                                    <Error message={t("error_categories")} />
                                 ) : (
                                     AllCategories && (
                                         <FormSelect<NewProduct>

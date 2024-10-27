@@ -10,9 +10,11 @@ import { useGetProductByIdQuery } from "../../redux/services/productsApi";
 import { skipToken } from "@reduxjs/toolkit/query";
 import AddToBasket from "../../components/AddToCart/AddToCart";
 import DetailsBar from "./DetailsBar";
+import { useTranslation } from "react-i18next";
 
 const DetailsPage: FC = () => {
     const { id } = useParams();
+    const { t } = useTranslation();
 
     const { data, isLoading, error } = useGetProductByIdQuery(id ? { id } : skipToken);
 
@@ -21,7 +23,7 @@ const DetailsPage: FC = () => {
             {isLoading ? (
                 <Loading />
             ) : error ? (
-                <Error message={"There was an error fetching the product details."} />
+                <Error message={t("error_fetching_details_data")} />
             ) : (
                 data && (
                     <Card className="min-h-screen py-2">
@@ -54,7 +56,7 @@ const DetailsPage: FC = () => {
                                     {/* categories */}
                                     {data.category?.length > 0 && (
                                         <Box className="my-4 flex items-center gap-1">
-                                            <Typography>Categories: </Typography>
+                                            <Typography>{t("categories")}: </Typography>
                                             {data.category.map((item) => (
                                                 <Chip
                                                     key={item._id}
@@ -72,7 +74,7 @@ const DetailsPage: FC = () => {
 
                                     {data?.brand && (
                                         <Box className="my-1 flex items-center gap-1">
-                                            <Typography>Brand: </Typography>
+                                            <Typography>{t("brand")}: </Typography>
                                             <Typography>{data.brand}</Typography>
                                         </Box>
                                     )}

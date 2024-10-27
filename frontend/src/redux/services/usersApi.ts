@@ -1,4 +1,4 @@
-import { UserResponse } from "../../types/globalTypes";
+import { UserResponse } from "../../globalTypes/globalTypes";
 import { USERS_URL } from "../constants";
 import { rootApi } from "../rootApi";
 

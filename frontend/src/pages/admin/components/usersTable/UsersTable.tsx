@@ -23,7 +23,7 @@ import { useAllUsersQuery, useLazyGetSearchUsersQuery } from "../../../../redux/
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 
-import { SearchParams, UserResponse } from "../../../../types/globalTypes";
+import { SearchParams, UserResponse } from "../../../../globalTypes/globalTypes";
 import UserTableRow from "./UserTableRow";
 import PageTitle from "../../../../components/PageTitle";
 

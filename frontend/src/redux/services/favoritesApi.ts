@@ -1,4 +1,4 @@
-import { FavoritesResponse } from "../../types/globalTypes";
+import { FavoritesResponse } from "../../globalTypes/globalTypes";
 import { rootApi } from "../rootApi";
 import { FAVORITES_URL } from "../constants";
 import { FavoritesRes } from "./types/favorites.types";

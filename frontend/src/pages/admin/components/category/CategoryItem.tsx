@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import { FC, memo } from "react";
+import { useTranslation } from "react-i18next";
 
 interface CategoryItemProps {
     name: string;
@@ -9,6 +10,7 @@ interface CategoryItemProps {
 }
 
 const CategoryItem: FC<CategoryItemProps> = ({ name, id, onEdit, onDelete }) => {
+    const { t } = useTranslation();
     return (
         <Box
             display="flex"
@@ -19,10 +21,10 @@ const CategoryItem: FC<CategoryItemProps> = ({ name, id, onEdit, onDelete }) => 
             <Typography variant="h6">{name}</Typography>
             <Box display={"flex"} gap={2}>
                 <Button variant="outlined" color="primary" onClick={() => onEdit({ id, name })}>
-                    Edit
+                    {t("edit")}
                 </Button>
                 <Button variant="outlined" color="secondary" onClick={() => onDelete(id)}>
-                    Delete
+                   {t("delete")}
                 </Button>
             </Box>
         </Box>

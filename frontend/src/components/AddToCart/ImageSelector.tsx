@@ -1,5 +1,6 @@
 import { FC, memo } from "react";
 import { Box, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 interface ImageSelectorProps {
     images: string[];
@@ -8,9 +9,10 @@ interface ImageSelectorProps {
 }
 
 const ImageSelector: FC<ImageSelectorProps> = ({ images, selectedImage, onSelectImage }) => {
+    const { t } = useTranslation();
     return (
         <Box>
-            <Typography variant="h6">Select an image</Typography>
+            <Typography variant="h6">{t("sellect_img")}</Typography>
             <Box mb={2} display="flex" gap={2}>
                 {images.map((img, index) => (
                     <Box

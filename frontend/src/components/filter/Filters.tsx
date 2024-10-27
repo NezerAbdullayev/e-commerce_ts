@@ -4,6 +4,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import { FilterState } from "../../pages/products/ProductsPage";
 import { debounce, DebouncedFunc } from "lodash";
 import { useGetAllCategoryQuery } from "../../redux/services/categoryApi";
+import { useTranslation } from "react-i18next";
 
 interface FilterFormProps {
     onFilter: (newFilters: Partial<FilterState>) => void;
@@ -11,6 +12,7 @@ interface FilterFormProps {
 }
 
 const FilterForm: FC<FilterFormProps> = ({ onFilter, filtersParams }) => {
+    const { t } = useTranslation();
     const { data: categoriesData = [] } = useGetAllCategoryQuery();
     const [search, setSearch] = useState<string>(filtersParams.search || "");
     const debounceDelay = 600;
@@ -57,11 +59,11 @@ const FilterForm: FC<FilterFormProps> = ({ onFilter, filtersParams }) => {
         <Box width={"full"} sx={{ width: 700, maxWidth: "100%", mx: "auto" }}>
             {/* Search input */}
             <Box display={"flex"} flexDirection={"column"}>
-                <Box>Search:</Box>
+                <Box>{t("search")}</Box>
                 <Input
                     style={{ padding: "15px 10px", width: "700px" }}
                     name="search"
-                    placeholder="Search products"
+                    placeholder={t("searchProducts")}
                     value={search}
                     onChange={handleSearchChange}
                 />
@@ -70,25 +72,25 @@ const FilterForm: FC<FilterFormProps> = ({ onFilter, filtersParams }) => {
             {/* Price  */}
             <Box sx={{ display: "flex", gap: "16px", mt: 2 }}>
                 <Box>
-                    <Box>Minimum price:</Box>
-                    <Input type="number" placeholder="min price" onChange={(e) => handlePriceChange("priceMin", e.target.value)} />
+                    <Box>{t("minimumPrice")}:</Box>
+                    <Input type="number" placeholder={t("minPrice")} onChange={(e) => handlePriceChange("priceMin", e.target.value)} />
                 </Box>
 
                 <Box>
-                    <Box>Maximum price:</Box>
-                    <Input type="number" placeholder="max price" onChange={(e) => handlePriceChange("priceMax", e.target.value)} />
+                    <Box>{t("maximumPrice")}:</Box>
+                    <Input type="number" placeholder={t("maxPrice")} onChange={(e) => handlePriceChange("priceMax", e.target.value)} />
                 </Box>
             </Box>
 
             {/* Categories multiple filter */}
             <Box mt={2}>
-                <Box mb={1}>Categories</Box>
+                <Box mb={1}>{t("categories")}</Box>
                 <Checkbox.Group options={options} onChange={handleCategoryChange} />
             </Box>
 
             {/* Rating filter */}
             <Box mt={1}>
-                <Box mb={1}>Rating:</Box>
+                <Box mb={1}>{t("rating")}</Box>
                 <Rate onChange={handleRatingChange} />
             </Box>
         </Box>

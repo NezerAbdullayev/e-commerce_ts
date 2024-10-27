@@ -11,6 +11,7 @@ import { shallowEqual, useSelector } from "react-redux";
 import { isAuthenticated } from "../../redux/slice/authSlice";
 import Error from "../../pages/admin/components/Error";
 import { filtersParams } from "../../redux/services/types/products.types";
+import { useTranslation } from "react-i18next";
 
 export interface HandlerRes {
     name: string;
@@ -25,6 +26,7 @@ interface ProductsPaginationProps {
 
 const ProductsPagination: FC<ProductsPaginationProps> = ({ filtersParams }) => {
     const isAuth = useSelector(isAuthenticated, shallowEqual);
+    const { t } = useTranslation();
 
     const { products, totalPages, currentPage, isLoading, error, handlePageChange } = useAllProductsPagination({
         initialPage: 1,
@@ -43,35 +45,35 @@ const ProductsPagination: FC<ProductsPaginationProps> = ({ filtersParams }) => {
     const onAddToFavorites = useCallback(
         async ({ name, productId, image, price }: HandlerRes) => {
             if (!isAuth) {
-                toast.error("Please log in to your account or create a new one.");
+                toast.error(t("please_log_in"));
                 return;
             }
             try {
                 await addToFavorite({ name, productId, image, price });
-                toast.success("Product added to the favorite successfully!");
+                toast.success(t("product_added_to_favorites"));
             } catch (error) {
                 console.error(error);
-                toast.error("Failed to add the product to the favorite. Please try again.");
+                toast.error(t("failed_to_add_favorite"));
             }
         },
-        [addToFavorite, isAuth],
+        [addToFavorite, isAuth, t],
     );
 
     const onAddToBasket = useCallback(
         async ({ name, productId, image, price }: HandlerRes) => {
             if (!isAuth) {
-                toast.error("Please log in to your account or create a new one.");
+                toast.error(t("please_log_in"));
                 return;
             }
             try {
                 await addToCart({ name, productId, image, price });
-                toast.success("Product added to the basket successfully!");
+                toast.success(t("product_added_to_basket"));
             } catch (error) {
-                toast.error("Failed to add the product to the basket. Please try again.");
+                toast.error(t("failed_to_add_basket"));
                 console.error(error);
             }
         },
-        [addToCart, isAuth],
+        [addToCart, isAuth, t],
     );
 
     return (
@@ -80,7 +82,7 @@ const ProductsPagination: FC<ProductsPaginationProps> = ({ filtersParams }) => {
                 {isLoading ? (
                     <Loading />
                 ) : error ? (
-                    <Error message="An error occurred while fetching the products data." />
+                    <Error message={t("error_fetching_products")} />
                 ) : products?.length > 0 ? (
                     <>
                         {products.map((product) => (
@@ -101,7 +103,7 @@ const ProductsPagination: FC<ProductsPaginationProps> = ({ filtersParams }) => {
                         </Box>
                     </>
                 ) : (
-                    <Error message="No products found." />
+                    <Error message={t("no_products_found")} />
                 )}
             </CardContainer>
         </Box>

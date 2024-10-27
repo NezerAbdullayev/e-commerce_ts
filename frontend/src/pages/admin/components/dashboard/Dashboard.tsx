@@ -1,28 +1,29 @@
+import { FC } from "react";
 import { Box, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next"; // Import useTranslation
 import { useGetAnalitcsQuery } from "../../../../redux/services/analyticsApi";
 import { Line, Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, Tooltip, Legend, ArcElement, Filler } from "chart.js";
-import { FC } from "react";
 import Loading from "../../../../components/Loading";
 
-// Chart.js-in qeydiyyatı
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip, Legend, ArcElement, Filler);
 
 const Dashboard: FC = () => {
+    const { t } = useTranslation();
     const { data, isLoading } = useGetAnalitcsQuery();
 
     const dailySalesData = data?.dailySalesData || [];
-    const categoriesCount = data?.analyticsData.categories;
+    const categoriesCount = data?.analyticsData?.categories || 0;
 
     const labels = dailySalesData.map((item) => item.date);
     const usersData = dailySalesData.map((item) => item.users);
     const productsData = dailySalesData.map((item) => item.products);
 
     const lineChartData = {
-        labels: labels,
+        labels,
         datasets: [
             {
-                label: "Users",
+                label: t("usersProductsDistribution"),
                 data: usersData,
                 borderColor: "rgba(75, 192, 192, 1)",
                 backgroundColor: "rgba(75, 192, 192, 0.2)",
@@ -41,10 +42,10 @@ const Dashboard: FC = () => {
     };
 
     const combinedDoughnutData = {
-        labels: ["Users", "Products"],
+        labels: [t("totalUsers"), t("totalProducts")],
         datasets: [
             {
-                data: [data?.analyticsData.users, data?.analyticsData.products],
+                data: [data?.analyticsData?.users || 0, data?.analyticsData?.products || 0],
                 backgroundColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)"],
                 hoverOffset: 4,
             },
@@ -52,7 +53,7 @@ const Dashboard: FC = () => {
     };
 
     const categoriesDoughnutData = {
-        labels: ["Categories"],
+        labels: [t("totalCategories")],
         datasets: [
             {
                 data: [categoriesCount],
@@ -67,35 +68,37 @@ const Dashboard: FC = () => {
     return (
         <Box>
             <Typography variant="h4" gutterBottom>
-                Dashboard
+                {t("dashboard")}
             </Typography>
 
             <Box>
                 <Box className="flex items-center justify-evenly">
                     <Box width="400px" mb={4}>
                         <Typography variant="h6" align="center">
-                            Users and Products Distribution
+                            {t("usersProductsDistribution")}
                         </Typography>
                         <Doughnut data={combinedDoughnutData} />
                     </Box>
 
                     <Box width="400px" mb={4}>
                         <Typography variant="h6" align="center">
-                            Total Categories
+                            {t("totalCategories")}
                         </Typography>
                         <Doughnut data={categoriesDoughnutData} />
                     </Box>
                 </Box>
 
-                <Box>
-                    <Box mb={2}>
-                        <Typography>Total Products: {data?.analyticsData.products}</Typography>
-                        <Typography>Total Users: {data?.analyticsData.users}</Typography>
-                    </Box>
+                <Box mb={4}>
+                    <Typography>
+                        {t("totalProducts")}: {data?.analyticsData?.products || 0}
+                    </Typography>
+                    <Typography>
+                        {t("totalUsers")}: {data?.analyticsData?.users || 0}
+                    </Typography>
+                </Box>
 
-                    <Box mb={4}>
-                        <Line data={lineChartData} />
-                    </Box>
+                <Box mb={4}>
+                    <Line data={lineChartData} />
                 </Box>
             </Box>
         </Box>

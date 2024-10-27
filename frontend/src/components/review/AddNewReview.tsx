@@ -6,6 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Form } from "antd";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 import { isAuthenticated } from "../../redux/slice/authSlice";
 import { useCreateReviewMutation } from "../../redux/services/productsApi";
@@ -21,11 +22,11 @@ interface CreateReviewProps {
 }
 
 const AddNewReview: FC<CreateReviewProps> = ({ productId }) => {
+    const { t } = useTranslation();
     const isAuth = useSelector(isAuthenticated);
     const navigate = useNavigate();
 
     const [ratingValue, setRatingValue] = useState<number | null>(0);
-
     const [createReview, { isLoading: reviewLoading }] = useCreateReviewMutation();
 
     const {
@@ -43,10 +44,10 @@ const AddNewReview: FC<CreateReviewProps> = ({ productId }) => {
 
         try {
             await createReview({ review: reviewData, productId }).unwrap();
-            toast.success("Review successfully added!");
+            toast.success(t("successfullyAdded"));
         } catch (error) {
             console.error(error);
-            toast.error("Failed to add review. Please try again.");
+            toast.error(t("failedToAdd"));
         }
         reset();
         setRatingValue(null);
@@ -57,7 +58,7 @@ const AddNewReview: FC<CreateReviewProps> = ({ productId }) => {
             {isAuth ? (
                 <Box maxWidth={400}>
                     <Box className="mb-2.5 flex items-center gap-5">
-                        <Typography variant="h5">Add Your Review</Typography>
+                        <Typography variant="h5">{t("addYourReview")}</Typography>
                         <Rating
                             name="simple-controlled"
                             value={ratingValue}
@@ -68,20 +69,20 @@ const AddNewReview: FC<CreateReviewProps> = ({ productId }) => {
                     </Box>
 
                     <Form onFinish={handleSubmit(onSubmit)}>
-                        {/* Comment Input */}
+                        {/* Şərh Inputu */}
                         <FormTextarea control={control} name="comment" error={errors.comment?.message} />
 
-                        {/* Submit Button */}
+                        {/* Göndərmə Düyməsi */}
                         <Button type="submit" variant="contained" color="primary" fullWidth disabled={reviewLoading}>
-                            Add Comment
+                            {t("addComment")}
                         </Button>
                     </Form>
                 </Box>
             ) : (
                 <Box textAlign="center" marginY={2}>
-                    <Typography sx={{ mb: 1 }}>You must log in to add a comment</Typography>
+                    <Typography sx={{ mb: 1 }}>{t("youMustLogIn")}</Typography>
                     <Button variant="contained" color="primary" onClick={() => navigate("/login")}>
-                        Log In
+                        {t("logIn")}
                     </Button>
                 </Box>
             )}

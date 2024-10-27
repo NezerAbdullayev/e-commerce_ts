@@ -1,6 +1,6 @@
 import { IconButton, TableCell, TableRow } from "@mui/material";
 import { FC, memo } from "react";
-import { FavorityItem } from "../../types/globalTypes";
+import { FavorityItem } from "../../globalTypes/globalTypes";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -15,8 +15,6 @@ const FavoritesItem: FC<FavoritesProps> = ({ id, name, productId, price, image, 
     const handleAddCart = () => {
         onAddToCart({ name, productId, price, image });
     };
-
-    console.log("re-rendering fav");
 
     return (
         <TableRow>

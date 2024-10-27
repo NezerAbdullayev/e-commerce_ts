@@ -1,31 +1,29 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { useTranslation } from "react-i18next";
 
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { isAuthenticated } from "../../redux/slice/authSlice";
+import { isAuthenticated, userName } from "../../redux/slice/authSlice";
 import { Avatar, Menu, MenuItem } from "@mui/material";
 import UserActions from "./UserActions";
 import { useUserLogoutMutation } from "../../redux/services/authApi";
 import LogoContainer from "../../components/logo/LogoContainer";
+import Translate from "../../components/translate/Translate";
+import Navbars from "./Navbars";
 
 function Header() {
+    const { t } = useTranslation();
     const isAuth = useSelector(isAuthenticated);
+    const user = useSelector(userName);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const [userLogout] = useUserLogoutMutation();
-
-    const location = useLocation();
-    const [navBar, setNavBar] = useState<string>("");
-
-    useEffect(() => {
-        setNavBar(location.pathname);
-    }, [location.pathname]);
 
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -34,31 +32,29 @@ function Header() {
         setAnchorEl(null);
     };
 
-    const handleLogout = useCallback(async () => {
+    const handleLogout = async () => {
         try {
             await userLogout().unwrap();
         } catch (error) {
             console.error("Logout error:", error);
         }
-    }, [userLogout]);
+    };
 
     return (
         <AppBar position="sticky" sx={{ background: "#055160" }}>
             <Toolbar>
+                {/* logo */}
                 <Typography variant="h6" component={NavLink} to="/" sx={{ mr: 2 }} className="relative flex">
                     <LogoContainer />
                 </Typography>
 
-                <Box sx={{ flexGrow: 1, display: "flex" }}>
-                    <Button component={NavLink} to="/" color={navBar === "/" ? "primary" : "inherit"} sx={{ mx: 2 }}>
-                        Home
-                    </Button>
-                    <Button component={NavLink} to="/products" color={navBar === "/products" ? "primary" : "inherit"} sx={{ mx: 2 }}>
-                        Products
-                    </Button>
-                </Box>
+                {/* navs */}
+                <Navbars />
 
                 <Box sx={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
+                    {/* translate */}
+                    <Translate />
+
                     {/* favorites and cart */}
                     {isAuth && <UserActions />}
 
@@ -66,10 +62,10 @@ function Header() {
                     {!isAuth && (
                         <Box>
                             <Button component={NavLink} to="/login" variant="contained" sx={{ mr: 2, backgroundColor: "#159792" }}>
-                                Login
+                                {t("login")}
                             </Button>
                             <Button component={NavLink} to="/signup" variant="contained" sx={{ backgroundColor: "#406e84" }}>
-                                Sign Up
+                                {t("signUp")}
                             </Button>
                         </Box>
                     )}
@@ -78,15 +74,11 @@ function Header() {
                     {isAuth && (
                         <>
                             <IconButton onClick={handleMenuClick} size="large" color="inherit">
-                                <Avatar alt="User Profile" src="/path-to-profile-picture.jpg" />
+                                <Avatar alt="User Profile">{user?.[0].toUpperCase()}</Avatar>
                             </IconButton>
 
                             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-                                <MenuItem onClick={handleMenuClose} component={NavLink} to="/profile">
-                                    Profile
-                                </MenuItem>
-                                <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
-                                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                                <MenuItem onClick={handleLogout}>{t("logout")}</MenuItem>
                             </Menu>
                         </>
                     )}

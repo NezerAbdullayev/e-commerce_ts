@@ -12,6 +12,8 @@ import Loading from "./components/Loading";
 import IsAdminRoute from "./components/AdminRoute";
 import { useSelector } from "react-redux";
 import { userRole } from "./redux/slice/authSlice";
+import "./utils/i18n";
+
 // Lazy loading components
 const AppLayout = lazy(() => import("./layout/AppLayout"));
 const HomePage = lazy(() => import("./pages/home/HomePage"));

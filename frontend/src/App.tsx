@@ -28,7 +28,7 @@ const PageNotFound = lazy(() => import("./pages/error/PageNotFound"));
 const Dashboard = lazy(() => import("./pages/admin/components/dashboard/Dashboard"));
 const UsersTable = lazy(() => import("./pages/admin/components/usersTable/UsersTable"));
 const AddNewProduct = lazy(() => import("./pages/admin/components/createProduct/AddNewProduct"));
-const TableProducts = lazy(() => import("./pages/admin/components/productsTable/TableProducts"));
+const AdminProducts = lazy(() => import("./pages/admin/components/productsTable/AdminProducts"));
 const Categories = lazy(() => import("./pages/admin/components/category/Categories"));
 
 const App: React.FC = () => {
@@ -56,7 +56,7 @@ const App: React.FC = () => {
                     <Route path="/admin" element={role === "admin" ? <AdminPage /> : <Navigate to="/" />}>
                         <Route index element={<Navigate to="dashboard" />} />
                         <Route path="dashboard" element={<Dashboard />} />
-                        <Route path="products" element={<TableProducts />} />
+                        <Route path="products" element={<AdminProducts />} />
                         <Route path="users" element={<UsersTable />} />
                         <Route path="createProduct" element={<AddNewProduct />} />
                         <Route path="categories" element={<Categories />} />

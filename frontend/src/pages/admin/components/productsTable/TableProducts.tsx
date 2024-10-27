@@ -29,6 +29,7 @@ import { NewProduct } from "../createProduct/AddNewProduct";
 import { CategoryResponse } from "../../../../globalTypes/globalTypes";
 import { convertImagesToBase64 } from "../../../../utils/convertImagesToBase64";
 import { useTranslation } from "react-i18next";
+import { FilterState } from "../../../../hooks/use-filters";
 
 interface BaseProduct {
     id: string;
@@ -39,6 +40,8 @@ interface BaseProduct {
 }
 
 interface DataType extends BaseProduct {
+    stock: number;
+    brand: string;
     key: React.Key;
     category: CategoryResponse[];
 }
@@ -48,7 +51,12 @@ interface ProductRecord extends BaseProduct {
     brand: string;
     category: { _id: string }[];
 }
-const TableProducts: FC = () => {
+
+interface TableProductsResponse {
+    filtersParams: FilterState;
+}
+
+const TableProducts: FC<TableProductsResponse> = ({ filtersParams }) => {
     const { t } = useTranslation();
 
     const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -59,7 +67,11 @@ const TableProducts: FC = () => {
     const limit = 14;
 
     // useProducts hookunu çağırın
-    const { productsData, productError, productLoading, AllCategories, categoryLoading, categoryError } = useProducts(currentPage, limit);
+    const { productsData, productError, productLoading, AllCategories, categoryLoading, categoryError } = useProducts(
+        currentPage,
+        limit,
+        filtersParams,
+    );
 
     const [deleteProduct] = useDeleteProductMutation();
     const [updateProduct] = useUpdateProductMutation();
@@ -171,7 +183,7 @@ const TableProducts: FC = () => {
     const onSubmit: SubmitHandler<NewProduct> = async (data) => {
         console.log({ ...data, id: editProductId });
 
-        const imagesUrl = data.image.filter((img): img is { url: string } => !!img.url).map((i) => i.url);
+        const imagesUrl = data.image.filter((img) => !!img.url).map((i) => i.url);
 
         const convertedImages = data.image.filter((img) => !img.url);
 

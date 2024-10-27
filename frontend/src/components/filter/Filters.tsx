@@ -57,7 +57,7 @@ const FilterForm: FC<FilterFormProps> = ({ onFilter, filtersParams }) => {
     };
 
     return (
-        <Box width={"full"} sx={{ width: 700, maxWidth: "100%", mx: "auto" }}>
+        <Box width={"full"} sx={{ width: 700, maxWidth: "100%", mx: "auto" }} textAlign={"start"}>
             {/* Search input */}
             <Box display={"flex"} flexDirection={"column"}>
                 <Box className="text-center text-xl text-stone-700">{t("search")}</Box>

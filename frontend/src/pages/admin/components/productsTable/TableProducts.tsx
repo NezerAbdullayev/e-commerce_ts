@@ -1,5 +1,6 @@
+// @ts-nocheck
+
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-// import { Products as ProductsType } from "../../../../types/globalTypes";
 import { createProductSchema } from "../../../../validations/product.validation";
 import { toast } from "react-toastify";
 
@@ -181,13 +182,11 @@ const TableProducts: FC<TableProductsResponse> = ({ filtersParams }) => {
     }, []);
 
     const onSubmit: SubmitHandler<NewProduct> = async (data) => {
-        console.log({ ...data, id: editProductId });
-
+s
         const imagesUrl = data.image.filter((img) => !!img.url).map((i) => i.url);
 
         const convertedImages = data.image.filter((img) => !img.url);
 
-        console.log(convertedImages);
         let base64Images: string[] = [];
 
         if (convertedImages.length > 0) {

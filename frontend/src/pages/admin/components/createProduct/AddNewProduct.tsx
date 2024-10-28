@@ -48,7 +48,6 @@ const AddNewProduct: FC = () => {
                     ...data,
                     image: base64Images,
                 };
-                console.log(newProduct);
                 await createNewProduct({ newProduct });
                 toast.success(t("productCreatedSuccess"));
                 reset({

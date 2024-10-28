@@ -50,7 +50,7 @@ const AdminPage: FC = () => {
                         </Box>
 
                         {/* translate */}
-                        <Box className="border-b mb-2">
+                        <Box className="mb-2 border-b">
                             <Translate />
                         </Box>
 

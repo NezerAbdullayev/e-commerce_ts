@@ -45,7 +45,6 @@ const FavoritesPage: FC = () => {
                 onOk: async () => {
                     try {
                         await addToCart({ productId, image, name, price }).unwrap();
-                        console.log(productId, image, name, price);
                     } catch (error) {
                         toast.error(t("failed_to_add_to_cart"));
                         console.error(error);
@@ -66,7 +65,6 @@ const FavoritesPage: FC = () => {
         }
     }, [removeAllFavoritesItems, t]);
 
-    
     if (favoritesError) {
         return <Error message={t("error_fetching_favorites")} />;
     }

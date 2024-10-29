@@ -1,16 +1,12 @@
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import { useSelector } from "react-redux";
 import { isAuthenticated } from "../redux/slice/authSlice";
-import { Navigate } from "react-router";
+import { Navigate, Outlet } from "react-router-dom";
 
-interface PrivateRouteProps {
-    children: ReactNode;
-}
-
-const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
+const PrivateRoute: FC = () => {
     const isAuth = useSelector(isAuthenticated);
 
-    return isAuth ? <>{children}</> : <Navigate to="/login" replace />;
+    return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default PrivateRoute;

@@ -17,13 +17,13 @@ const MediaGallery: FC = () => {
                     <Box component="video" src={Video} autoPlay loop muted />
                 </Grid>
                 <Grid size={6}>
-                    <img src={Image_1} />
+                    <img src={Image_1} className="h-full" />
                 </Grid>
                 <Grid size={6}>
-                    <img src={Image_2} />
+                    <img src={Image_2} className="h-full" />
                 </Grid>
                 <Grid size={6}>
-                    <img src={Image_3} />
+                    <img src={Image_3} className="h-full" />
                 </Grid>
             </Grid>
         </Box>

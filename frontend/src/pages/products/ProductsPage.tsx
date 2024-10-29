@@ -18,7 +18,7 @@ const ProductsPage: FC = () => {
     return (
         <Box>
             {/* filters and search  */}
-            <Box bgcolor={"#c9c4c5"} py={10}>
+            <Box py={10}>
                 <Filters onFilter={handleFilterChange} filtersParams={filtersParams} />
             </Box>
 

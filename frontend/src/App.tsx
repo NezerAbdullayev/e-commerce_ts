@@ -6,15 +6,18 @@ import "swiper/swiper-bundle.css";
 import "swiper/css";
 import "swiper/css/pagination";
 
-import PrivateRoute from "./components/PrivateRoute";
-import ScrollToTop from "./components/ScrollToTop";
-import Loading from "./components/Loading";
-import IsAdminRoute from "./components/AdminRoute";
 import { useSelector } from "react-redux";
 import { userRole } from "./redux/slice/authSlice";
 import "./utils/i18n";
 
+import PrivateRoute from "./components/PrivateRoute";
+import ScrollToTop from "./components/ScrollToTop";
+import Loading from "./components/Loading";
+import IsAdminRoute from "./components/AdminRoute";
+
 // Lazy loading components
+
+// client
 const AppLayout = lazy(() => import("./layout/AppLayout"));
 const HomePage = lazy(() => import("./pages/home/HomePage"));
 const CartPage = lazy(() => import("./pages/cart/CartPage"));
@@ -25,11 +28,15 @@ const ProductsPage = lazy(() => import("./pages/products/ProductsPage"));
 const DetailsPage = lazy(() => import("./pages/details/DetailsPage"));
 const FavoritesPage = lazy(() => import("./pages/favorites/FavoritesPage"));
 const PageNotFound = lazy(() => import("./pages/error/PageNotFound"));
+const MyOrders = lazy(() => import("./pages/orders/MyOrders"));
+
+// admin
 const Dashboard = lazy(() => import("./pages/admin/components/dashboard/Dashboard"));
 const UsersTable = lazy(() => import("./pages/admin/components/usersTable/UsersTable"));
 const AddNewProduct = lazy(() => import("./pages/admin/components/createProduct/AddNewProduct"));
 const AdminProducts = lazy(() => import("./pages/admin/components/productsTable/AdminProducts"));
 const Categories = lazy(() => import("./pages/admin/components/category/Categories"));
+const AdminOrders = lazy(() => import("./pages/admin/components/order/AdminOrders"));
 
 const App: React.FC = () => {
     const role = useSelector(userRole);
@@ -60,6 +67,7 @@ const App: React.FC = () => {
                         <Route path="users" element={<UsersTable />} />
                         <Route path="createProduct" element={<AddNewProduct />} />
                         <Route path="categories" element={<Categories />} />
+                        <Route path="orders" element={<AdminOrders />} />
                     </Route>
 
                     {/* Auth */}
@@ -78,24 +86,11 @@ const App: React.FC = () => {
                         <Route index element={<HomePage />} />
                         <Route path="products" element={<ProductsPage />} />
                         <Route path="product/:id" element={<DetailsPage />} />
-
-                        <Route
-                            path="favorites"
-                            element={
-                                <PrivateRoute>
-                                    <FavoritesPage />
-                                </PrivateRoute>
-                            }
-                        />
-
-                        <Route
-                            path="cart"
-                            element={
-                                <PrivateRoute>
-                                    <CartPage />
-                                </PrivateRoute>
-                            }
-                        />
+                        <Route element={<PrivateRoute />}>
+                            <Route path="favorites" element={<FavoritesPage />} />
+                            <Route path="cart" element={<CartPage />} />
+                            <Route path="orders" element={<MyOrders />} />
+                        </Route>
                     </Route>
 
                     <Route path="*" element={<PageNotFound />} />

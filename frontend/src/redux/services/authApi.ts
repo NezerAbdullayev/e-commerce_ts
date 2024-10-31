@@ -40,8 +40,7 @@ const authApi = rootApi.injectEndpoints({
             }),
             async onQueryStarted(_, { dispatch, queryFulfilled }) {
                 try {
-                    await queryFulfilled;
-                    dispatch(logout());
+                    await queryFulfilled.then(() => dispatch(logout()));
                 } catch (error) {
                     console.error("Login error:", error);
                 }

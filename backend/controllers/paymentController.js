@@ -13,7 +13,7 @@ const createCheckoutSession = async (req, res) => {
         let totalAmount = 0;
 
         const lineItems = products.map((product) => {
-            const amount = Math.random(product.price * 100); //stripe wants u to in the format of cents
+            const amount = Math.random(product.price * 100); 
             totalAmount += amount * product.quantity;
 
             return {

@@ -15,6 +15,7 @@ import EditLogo from "./components/EditLogo";
 import LogoContainer from "../../components/logo/LogoContainer";
 import { useTranslation } from "react-i18next";
 import Translate from "../../components/translate/Translate";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 const { Content, Sider } = Layout;
 
@@ -55,35 +56,42 @@ const AdminPage: FC = () => {
                         </Box>
 
                         {/* navs */}
-                        <Link to="/admin/dashboard">
+                        <Link to="dashboard">
                             <BarChartIcon className="mr-2 text-xl" />
                             <Typography variant="body1" component="span">
                                 {t("dashboard")}
                             </Typography>
                         </Link>
 
-                        <Link to="/admin/products">
+                        <Link to="products">
                             <AppstoreAddOutlined className="mr-2 text-xl" />
                             <Typography variant="body1" component="span">
                                 {t("products")}
                             </Typography>
                         </Link>
 
-                        <Link to="/admin/createProduct">
+                        <Link to="createProduct">
                             <PlaylistAddCircleIcon className="mr-2 text-xl" />
                             <Typography variant="body1" component="span">
                                 {t("createNewProduct")}
                             </Typography>
                         </Link>
 
-                        <Link to="/admin/categories">
+                        <Link to="orders">
+                            <LocalShippingIcon className="mr-2 text-xl" />
+                            <Typography variant="body1" component="span">
+                                {t("orders")}
+                            </Typography>
+                        </Link>
+
+                        <Link to="categories">
                             <CategoryIcon className="mr-2 text-xl" />
                             <Typography variant="body1" component="span">
                                 {t("category")}
                             </Typography>
                         </Link>
 
-                        <Link to="/admin/users">
+                        <Link to="users">
                             <GroupIcon className="mr-2 text-xl" />
                             <Typography variant="body1" component="span">
                                 {t("users")}
@@ -107,13 +115,7 @@ const AdminPage: FC = () => {
             {/* content */}
             <Layout style={{ marginInlineStart: 200 }}>
                 <Content style={{ overflow: "initial", maxWidth: "95%", margin: "10px auto", width: "1200px" }}>
-                    <Box
-                        style={{
-                            textAlign: "center",
-                        }}
-                        minHeight={"90vh"}
-                        mt={10}
-                    >
+                    <Box minHeight={"90vh"} mt={10} textAlign={"center"}>
                         <Outlet />
                     </Box>
                 </Content>

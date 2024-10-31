@@ -1,5 +1,4 @@
 import { CART_URL } from "../constants";
-
 import { rootApi } from "../rootApi";
 import { CartData, CartProps } from "./types/cart.types";
 
@@ -23,6 +22,7 @@ export const cartApi = rootApi.injectEndpoints({
             }),
             invalidatesTags: ["Cart"],
         }),
+
         updateCartQuantity: builder.mutation<void, { id: string; quantity: number }>({
             query: ({ id, quantity }) => ({
                 url: `${CART_URL}/${id}`,
@@ -32,6 +32,7 @@ export const cartApi = rootApi.injectEndpoints({
             }),
             invalidatesTags: ["Cart"],
         }),
+
         removeAllCart: builder.mutation<void, { id?: string }>({
             query: ({ id }) => ({
                 url: `${CART_URL}/`,

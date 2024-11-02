@@ -16,10 +16,3 @@ export interface AuthResponse {
 export interface Auth extends Login {
     name?: string;
 }
-
-export interface ErrorRes {
-    error: {
-        error: string;
-        type: string;
-    };
-}

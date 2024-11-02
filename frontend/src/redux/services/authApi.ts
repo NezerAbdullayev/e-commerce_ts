@@ -2,7 +2,8 @@ import { logout, setUser } from "../slice/authSlice";
 import { AUTH_URL } from "../constants";
 import { rootApi } from "../rootApi";
 import { toast } from "react-toastify";
-import { AuthResponse, ErrorRes, Login, Signup } from "./types/auth.types";
+import { AuthResponse, Login, Signup } from "./types/auth.types";
+import { ErrorRes } from "../../globalTypes/globalTypes";
 
 const authApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -12,14 +13,13 @@ const authApi = rootApi.injectEndpoints({
                 method: "POST",
                 body: user,
                 credentials: "include",
-            }), // _  =user
+            }),
             async onQueryStarted(_, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
                     dispatch(setUser({ role: data.role, name: data.name }));
                 } catch (error) {
-                    const typedError = error as ErrorRes;
-                    toast.error(typedError.error ? typedError.error.error : "An unexpected error occurred.");
+                    toast.error((error as ErrorRes).error?.error || "An unexpected error occurred.");
                 }
             },
         }),

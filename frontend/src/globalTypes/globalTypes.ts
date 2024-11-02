@@ -72,3 +72,10 @@ export interface FavorityItem {
     name: string;
     price: number;
 }
+
+export interface ErrorRes {
+    error: {
+        error: string;
+        type: string;
+    };
+}

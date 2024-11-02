@@ -4,13 +4,12 @@ import { useNavigate } from "react-router";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { toast } from "react-toastify";
-import { useAddToCartMutation } from "../../redux/services/cartApi";
 import { useAddtoFavoritesMutation, useRemoveFavoritesItemMutation } from "../../redux/services/favoritesApi";
 import { shallowEqual, useSelector } from "react-redux";
 import { isAuthenticated } from "../../redux/slice/authSlice";
 import { useTranslation } from "react-i18next";
+import AddtoBasket from "./AddtoBasket";
 
 interface ProductCardProps {
     id: string;
@@ -19,14 +18,14 @@ interface ProductCardProps {
     price: number;
     rating: number;
     isFavorited: boolean;
+    favId: string | undefined;
 }
 
-const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, isFavorited }) => {
+const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, isFavorited, favId }) => {
     const isAuth = useSelector(isAuthenticated, shallowEqual);
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const [addToCart, { isLoading: addCartLoading }] = useAddToCartMutation();
     const [addToFavorite, { isLoading: addFavoriteLoading }] = useAddtoFavoritesMutation();
     const [removeFavItem, { isLoading: favRemoveLoading }] = useRemoveFavoritesItemMutation();
 
@@ -46,23 +45,9 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, isF
         }
     };
 
-    const onAddToBasket = async () => {
-        if (!isAuth) {
-            toast.error(t("please_log_in"));
-            return;
-        }
-        try {
-            await addToCart({ name, productId: id, image, price }).unwrap();
-            toast.success(t("product_added_to_basket"));
-        } catch (error) {
-            toast.error(t("failed_to_add_basket"));
-            console.error(error);
-        }
-    };
-
     const onDeleteToFavorite = async () => {
         try {
-            await removeFavItem({ id }).unwrap();
+            await removeFavItem({ id: favId }).unwrap();
         } catch (error) {
             toast.error(t("failed_to_add_basket"));
             console.error(error);
@@ -94,20 +79,20 @@ const ProductCard: FC<ProductCardProps> = ({ id, name, image, price, rating, isF
                     />
 
                     <Box className="absolute bottom-3 right-3 z-40 rounded-md bg-stone-50/40">
+                        {/* add to favorite */}
                         <IconButton
                             aria-label="Add to favorites"
                             color="error"
                             onClick={onToggleFavoriteClick}
-                            disabled={addFavoriteLoading}
+                            disabled={addFavoriteLoading || favRemoveLoading}
                         >
                             <FavoriteIcon
                                 className={`w-5 transition-all duration-300 hover:text-red-700 ${isFavorited ? "text-red-700" : "text-stone-50"}`}
                                 sx={{ fontSize: 30 }}
                             />
                         </IconButton>
-                        <IconButton aria-label="Add to basket" color="primary" onClick={onAddToBasket} disabled={addCartLoading}>
-                            <AddShoppingCartIcon className="hover:text-blue-400" />
-                        </IconButton>
+                        {/* add to basket */}
+                        <AddtoBasket name={name} productId={id} image={image} price={price} />
                     </Box>
 
                     <Box

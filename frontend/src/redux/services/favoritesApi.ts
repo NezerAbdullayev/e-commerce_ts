@@ -32,7 +32,7 @@ const favoritesApi = rootApi.injectEndpoints({
             }),
             invalidatesTags: ["Favorites"],
         }),
-        removeFavoritesItem: builder.mutation<void, { id: string }>({
+        removeFavoritesItem: builder.mutation<void, { id: string | undefined }>({
             query: ({ id }) => ({
                 url: `${FAVORITES_URL}/${id}`,
                 method: "DELETE",

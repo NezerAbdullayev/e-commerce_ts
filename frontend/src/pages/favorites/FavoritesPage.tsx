@@ -1,59 +1,17 @@
 import { FC, useCallback } from "react";
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { useGetAllFavoritesQuery, useRemoveAllFavoritesMutation, useRemoveFavoritesItemMutation } from "../../redux/services/favoritesApi";
+import { useGetAllFavoritesQuery, useRemoveAllFavoritesMutation } from "../../redux/services/favoritesApi";
 import FavoritesItem from "./FavoritesItem";
 import Loading from "../../components/Loading";
 import Error from "../admin/components/Error";
 import { toast } from "react-toastify";
-import { Modal } from "antd";
-import { useAddToCartMutation } from "../../redux/services/cartApi";
-import { FavorityItem } from "../../globalTypes/globalTypes";
 import { useTranslation } from "react-i18next";
 
 const FavoritesPage: FC = () => {
     const { data: favoriteProducts, isLoading: favoritesLoading, error: favoritesError } = useGetAllFavoritesQuery();
 
     const [removeAllFavoritesItems] = useRemoveAllFavoritesMutation();
-    const [removeFavoritesItem] = useRemoveFavoritesItemMutation();
-    const [addToCart] = useAddToCartMutation();
     const { t } = useTranslation();
-
-    const onRemoveFavoritesItem = useCallback(
-        async (id: string) => {
-            Modal.confirm({
-                title: t("confirm_remove_favorite"),
-                okText: t("yes"),
-                cancelText: t("no"),
-                onOk: async () => {
-                    try {
-                        await removeFavoritesItem({ id }).unwrap();
-                        toast.success(t("item_removed_from_favorites"));
-                    } catch (error) {
-                        console.error(error);
-                        toast.error(t("failed_to_remove_item"));
-                    }
-                },
-            });
-        },
-        [removeFavoritesItem, t],
-    );
-
-    const onAddToCart = useCallback(
-        async ({ productId, image, name, price }: FavorityItem) => {
-            Modal.confirm({
-                title: t("confirm_add_to_cart"),
-                onOk: async () => {
-                    try {
-                        await addToCart({ productId, image, name, price }).unwrap();
-                    } catch (error) {
-                        toast.error(t("failed_to_add_to_cart"));
-                        console.error(error);
-                    }
-                },
-            });
-        },
-        [addToCart, t],
-    );
 
     const removeAllFavorites = useCallback(async () => {
         try {
@@ -98,8 +56,6 @@ const FavoritesPage: FC = () => {
                                     name={item.name}
                                     price={item.price}
                                     image={item.image}
-                                    onRemove={onRemoveFavoritesItem}
-                                    onAddToCart={onAddToCart}
                                 />
                             ))
                         ) : (

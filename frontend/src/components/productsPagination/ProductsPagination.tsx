@@ -1,12 +1,10 @@
-import { FC, useCallback, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { Box, Pagination } from "@mui/material";
 import ProductCard from "../productCard/ProductCard";
 import CardContainer from "../productCard/CardContainer";
 import useAllProductsPagination from "../../hooks/use-allProductsPagination";
 import Loading from "../Loading";
-import { useAddtoFavoritesMutation, useGetAllFavoritesQuery } from "../../redux/services/favoritesApi";
-import { useAddToCartMutation } from "../../redux/services/cartApi";
-import { toast } from "react-toastify";
+import { useGetAllFavoritesQuery } from "../../redux/services/favoritesApi";
 import { shallowEqual, useSelector } from "react-redux";
 import { isAuthenticated } from "../../redux/slice/authSlice";
 import Error from "../../pages/admin/components/Error";
@@ -35,46 +33,11 @@ const ProductsPagination: FC<ProductsPaginationProps> = ({ filtersParams }) => {
     });
 
     const { data: favoritesData } = useGetAllFavoritesQuery(undefined, { skip: !isAuth });
-    const [addToCart] = useAddToCartMutation();
-    const [addToFavorite] = useAddtoFavoritesMutation();
+    console.log("re-re", favoritesData);
 
     const favoriteIds = useMemo(() => {
         return favoritesData ? favoritesData.map((fav) => fav.productId) : [];
     }, [favoritesData]);
-
-    const onAddToFavorites = useCallback(
-        async ({ name, productId, image, price }: HandlerRes) => {
-            if (!isAuth) {
-                toast.error(t("please_log_in"));
-                return;
-            }
-            try {
-                await addToFavorite({ name, productId, image, price });
-                toast.success(t("product_added_to_favorites"));
-            } catch (error) {
-                console.error(error);
-                toast.error(t("failed_to_add_favorite"));
-            }
-        },
-        [addToFavorite, isAuth, t],
-    );
-
-    const onAddToBasket = useCallback(
-        async ({ name, productId, image, price }: HandlerRes) => {
-            if (!isAuth) {
-                toast.error(t("please_log_in"));
-                return;
-            }
-            try {
-                await addToCart({ name, productId, image, price });
-                toast.success(t("product_added_to_basket"));
-            } catch (error) {
-                toast.error(t("failed_to_add_basket"));
-                console.error(error);
-            }
-        },
-        [addToCart, isAuth, t],
-    );
 
     return (
         <Box className="my-10">
@@ -93,8 +56,6 @@ const ProductsPagination: FC<ProductsPaginationProps> = ({ filtersParams }) => {
                                 image={product.image[0]}
                                 price={product.price}
                                 rating={product.rating}
-                                onAddToFavorites={onAddToFavorites}
-                                onAddToBasket={onAddToBasket}
                                 isFavorited={favoriteIds.includes(product._id)}
                             />
                         ))}

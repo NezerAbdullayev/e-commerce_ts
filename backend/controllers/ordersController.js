@@ -2,7 +2,7 @@ import Order from "../models/orderModel.js";
 
 export const getAllOrders = async (_, res) => {
     try {
-        const orders = await Order.find().populate("user", "name email").populate("products.product", "name price");
+        const orders = await Order.find().populate("user", "name email").populate("product.product", "name price");
         res.status(200).json(orders);
     } catch (error) {
         res.status(500).json({ message: "Failed to retrieve orders", error: error.message });
@@ -13,7 +13,7 @@ export const getMyOrders = async (req, res) => {
     try {
         const userId = req.user._id; 
 
-        const orders = await Order.find({ user: userId }).populate('product.product');
+        const orders = await Order.find({ user: userId }).populate('product.product',"name price");
 
         if (!orders || orders.length === 0) {
             return res.status(404).json({ message: "No orders found for this user." });
@@ -69,7 +69,6 @@ export const updateOrder = async (req, res) => {
         const { id } = req.params;
         const { status } = req.body;
 
-        // Validate status if provided
         if (status && !["Pending", "Completed", "Shipped"].includes(status)) {
             return res.status(400).json({ message: "Invalid status value" });
         }

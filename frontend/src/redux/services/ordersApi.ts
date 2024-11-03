@@ -1,6 +1,5 @@
 import { rootApi } from "../rootApi";
 import { ORDERS_URL } from "../constants";
-import { LogoResponse } from "./types/logo.types";
 import { CreateOrders, OrdersResponse } from "./types/order.types";
 
 const ordersApi = rootApi.injectEndpoints({
@@ -16,7 +15,10 @@ const ordersApi = rootApi.injectEndpoints({
         getAllOrders: builder.query<OrdersResponse[], void>({
             query: () => ({
                 url: `${ORDERS_URL}/`,
+                method: "GET",
+                credentials: "include",
             }),
+            providesTags: ["ORDER"],
         }),
         createOrder: builder.mutation<void, CreateOrders>({
             query: ({ productId, quantity, price }) => ({
@@ -25,12 +27,13 @@ const ordersApi = rootApi.injectEndpoints({
                 body: { productId, quantity, price },
                 credentials: "include",
             }),
+            invalidatesTags: ["ORDER"],
         }),
-        updateOrder: builder.mutation<LogoResponse[], { name: string }>({
-            query: ({ name }) => ({
-                url: `${ORDERS_URL}/`,
+        updateOrder: builder.mutation<void, { status: string; id: string }>({
+            query: ({ id, status }) => ({
+                url: `${ORDERS_URL}/${id}`,
                 method: "PUT",
-                body: { name },
+                body: { status },
                 credentials: "include",
             }),
             invalidatesTags: ["ORDER"],

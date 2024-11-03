@@ -22,4 +22,5 @@ export interface OrdersResponse {
     totalAmount: number;
     product: ProductsRef;
     _id: string;
+    user: { name: string; price: number };
 }

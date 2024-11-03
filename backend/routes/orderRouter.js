@@ -9,6 +9,6 @@ orderRouter.get("/my-orders",protectRoute,getMyOrders);
 orderRouter.get("/", protectRoute,adminRoute, getAllOrders);
 orderRouter.post("/", protectRoute, createOrder);
 orderRouter.delete("/:id", protectRoute, adminRoute, deleteOrder);
-orderRouter.patch("/:id", protectRoute, adminRoute, updateOrder);
+orderRouter.put("/:id", protectRoute, adminRoute, updateOrder);
 
 export default orderRouter;

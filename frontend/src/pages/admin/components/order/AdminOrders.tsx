@@ -6,9 +6,11 @@ import { useGetAllOrdersQuery, useUpdateOrderMutation } from "../../../../redux/
 import Loading from "../../../../components/Loading";
 import Error from "../Error";
 import { ErrorRes } from "../../../../globalTypes/globalTypes";
+import { useTranslation } from "react-i18next";
 
 const AdminOrders: FC = () => {
     const { data, isLoading, error } = useGetAllOrdersQuery();
+    const { t } = useTranslation();
 
     const [updateOrder] = useUpdateOrderMutation();
 
@@ -23,22 +25,20 @@ const AdminOrders: FC = () => {
         [updateOrder],
     );
 
-    console.log(data);
-
     return (
         <Box className="relative mx-auto my-10 w-[1280px] max-w-[90%]">
-            <PageTitle>Order Management</PageTitle>
+            <PageTitle>{t("order_man")}</PageTitle>
 
             <TableContainer component={Paper} sx={{ mt: 4 }}>
                 <Table>
                     {/* header */}
                     <TableHead>
                         <TableRow>
-                            <TableCell>Order</TableCell>
-                            <TableCell>User</TableCell>
-                            <TableCell>Date</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell align="right">Amount</TableCell>
+                            <TableCell>{t("order")}</TableCell>
+                            <TableCell>{t("user")}</TableCell>
+                            <TableCell>{t("date")}</TableCell>
+                            <TableCell>{t("status")}</TableCell>
+                            <TableCell align="right">{t("amount")}</TableCell>
                         </TableRow>
                     </TableHead>
 

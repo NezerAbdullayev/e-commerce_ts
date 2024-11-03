@@ -170,13 +170,27 @@ const resources = {
             invalid_email_format: "Invalid email format",
             password_required: "Password is required",
             min_password: "Minimum 6 characters",
-        },
 
-        // global
-        //logo schema
-        logo_required: "Logo is required",
-        min_logo: "Logo name must be at least 3 characters long",
-        review_message_required: "Message is required",
+            // global
+            //logo schema
+            logo_required: "Logo is required",
+            min_logo: "Logo name must be at least 3 characters long",
+            review_message_required: "Message is required",
+
+            // orders
+            My_orders: "My Orders",
+            status: "Status",
+            amount: "Amount",
+            date: "Date",
+            user: "User",
+            order: "Order",
+            order_man: "Order Management",
+            product_name: "product name",
+
+            confirm_order_placement: "Confirm Order Placement",
+            order_placed_successfully: "Your order has been placed successfully",
+            order_placement_failed: "Failed to place the order",
+        },
     },
     az: {
         translation: {
@@ -352,6 +366,20 @@ const resources = {
             logo_required: "Logo tələb ulunur",
             min_logo: "Loqo adı ən azı 3 simvol uzunluğunda olmalıdır",
             review_message_required: "Mesaj tələb ulunur",
+
+            // My_orders
+            My_orders: "Mənim siparislerim",
+            status: "Vəziyyət",
+            amount: "məbləğ",
+            date: "Tarix",
+            user: "Istifadəçi",
+            order: "Siparis",
+            order_man: "Siparis Idareetme",
+            product_name: "Mehsul adi",
+
+            confirm_order_placement: "Sifarişi təsdiq edin",
+            order_placed_successfully: "Sifarişiniz uğurla yerləşdirildi",
+            order_placement_failed: "Sifariş yerləşdirmək mümkün olmadı",
         },
     },
 };

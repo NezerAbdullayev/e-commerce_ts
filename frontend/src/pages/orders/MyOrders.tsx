@@ -5,9 +5,11 @@ import OrderTable from "./OrderTable";
 import Loading from "../../components/Loading";
 import Error from "../admin/components/Error";
 import { ErrorRes } from "../../globalTypes/globalTypes";
+import { useTranslation } from "react-i18next";
 
 function MyOrders() {
     const { data, isLoading, error } = useGetMyOrdersQuery();
+    const { t } = useTranslation();
 
     if (isLoading) return <Loading />;
 
@@ -15,16 +17,16 @@ function MyOrders() {
 
     return (
         <Box className="relative mx-auto my-10 w-[1280px] max-w-[90%]">
-            <PageTitle>My Orders</PageTitle>
+            <PageTitle>{t("My_orders")}</PageTitle>
 
             <TableContainer component={Paper} sx={{ mt: 4 }}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>product name</TableCell>
-                            <TableCell>Date</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell>Amount</TableCell>
+                            <TableCell>{t("product_name")}</TableCell>
+                            <TableCell>{t("date")}</TableCell>
+                            <TableCell>{t("status")}</TableCell>
+                            <TableCell>{t("amount")}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

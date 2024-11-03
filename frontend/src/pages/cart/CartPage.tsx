@@ -60,15 +60,15 @@ const CartPage: FC = () => {
     const onAddOrder = useCallback(
         ({ productId, price, quantity, id }: CreateOrderFN) => {
             Modal.confirm({
-                title: t("confirm_delete_cart"),
+                title: t("confirm_order_placement"),
                 onOk: async () => {
                     try {
                         await createOrder({ productId, price, quantity });
                         await removeCart({ id });
-                        toast.success(t("cart_item_deleted_successfully"));
+                        toast.success(t("order_placed_successfully"));
                     } catch (error) {
                         console.error(error);
-                        toast.error(t("failed_to_delete_cart_item"));
+                        toast.error(t("order_placement_failed"));
                     }
                 },
                 okText: t("yes"),

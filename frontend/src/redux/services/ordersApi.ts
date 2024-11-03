@@ -1,19 +1,19 @@
 import { rootApi } from "../rootApi";
 import { ORDERS_URL } from "../constants";
 import { LogoResponse } from "./types/logo.types";
-import { CreateOrders } from "./types/order.types";
+import { CreateOrders, OrdersResponse } from "./types/order.types";
 
 const ordersApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
-        getMyOrders: builder.query<LogoResponse[], void>({
+        getMyOrders: builder.query<OrdersResponse[], void>({
             query: () => ({
-                url: `${ORDERS_URL}/`,
+                url: `${ORDERS_URL}/my-orders`,
                 method: "GET",
                 credentials: "include",
             }),
             providesTags: ["ORDER"],
         }),
-        getAllOrders: builder.query({
+        getAllOrders: builder.query<OrdersResponse[], void>({
             query: () => ({
                 url: `${ORDERS_URL}/`,
             }),

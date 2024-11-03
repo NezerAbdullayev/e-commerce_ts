@@ -9,6 +9,22 @@ export const getAllOrders = async (_, res) => {
     }
 };
 
+export const getMyOrders = async (req, res) => {
+    try {
+        const userId = req.user._id; 
+
+        const orders = await Order.find({ user: userId }).populate('product.product');
+
+        if (!orders || orders.length === 0) {
+            return res.status(404).json({ message: "No orders found for this user." });
+        }
+
+        res.status(200).json(orders.reverse());
+    } catch (error) {
+        res.status(500).json({ message: "Failed to retrieve orders", error: error.message });
+    }
+};
+
 export const createOrder = async (req, res) => {
     try {
         const { quantity, price, productId } = req.body;

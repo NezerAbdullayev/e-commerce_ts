@@ -10,7 +10,7 @@ const orderSchema = new mongoose.Schema(
         product: {
             product: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "Products",
+                ref: "Product",
                 required: true,
             },
             quantity: {
@@ -42,7 +42,7 @@ const orderSchema = new mongoose.Schema(
 
 
 orderSchema.pre("save", function (next) {
-    this.totalAmount = this.product.quantity * this.product.price;
+    this.totalAmount = this.quantity * this.price; 
     next();
 });
 

@@ -13,7 +13,6 @@ import { CreateOrderFN } from "../../redux/services/types/order.types";
 const CartPage: FC = () => {
     const { t } = useTranslation();
     const { data: userCartData, error, isLoading: cartLoading } = useGetAllCartQuery();
-    console.log(userCartData);
 
     const [updateCartQuantity] = useUpdateCartQuantityMutation();
     const [removeCart] = useRemoveAllCartMutation();

@@ -6,7 +6,7 @@ const categoryApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllCategory: builder.query<CategoryResponse[], void>({
             query: () => `${CATEGORY_URL}/`,
-            providesTags: ["Category"],
+            providesTags: ["CATEGORY"],
         }),
 
         createCategory: builder.mutation<void, { categoryName: string }>({
@@ -16,7 +16,7 @@ const categoryApi = rootApi.injectEndpoints({
                 body: { categoryName },
                 credentials: "include",
             }),
-            invalidatesTags: ["Category"],
+            invalidatesTags: ["CATEGORY"],
         }),
 
         deleteCategory: builder.mutation<void, { id: string }>({
@@ -25,7 +25,7 @@ const categoryApi = rootApi.injectEndpoints({
                 method: "DELETE",
                 credentials: "include",
             }),
-            invalidatesTags: ["Category"],
+            invalidatesTags: ["CATEGORY"],
         }),
 
         updateCategory: builder.mutation<void, { categoryName: string; id: string }>({
@@ -35,7 +35,7 @@ const categoryApi = rootApi.injectEndpoints({
                 body: { categoryName },
                 credentials: "include",
             }),
-            invalidatesTags: ["Category"],
+            invalidatesTags: ["CATEGORY"],
         }),
     }),
 });

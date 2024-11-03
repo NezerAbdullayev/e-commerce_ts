@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 const orderSchema = new mongoose.Schema(
     {
         user: {
@@ -8,25 +7,23 @@ const orderSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
-        products: [
-            {
-                product: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "Products",
-                    required: true,
-                },
-                quantity: {
-                    type: Number,
-                    required: true,
-                    min: 1,
-                },
-                price: {
-                    type: Number,
-                    required: true,
-                    min: 0,
-                },
+        product: {
+            product: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Products",
+                required: true,
             },
-        ],
+            quantity: {
+                type: Number,
+                required: true,
+                min: 1,
+            },
+            price: {
+                type: Number,
+                required: true,
+                min: 0,
+            },
+        },
         totalAmount: {
             type: Number,
             required: true,
@@ -36,17 +33,16 @@ const orderSchema = new mongoose.Schema(
             type: String,
             enum: ["Pending", "Completed", "Shipped"],
             default: "Pending",
-        },
+        }
     },
     {
         timestamps: true,
     }
 );
 
+
 orderSchema.pre("save", function (next) {
-    this.totalAmount = this.products.reduce((total, item) => {
-        return total + item.quantity * item.price;
-    }, 0);
+    this.totalAmount = this.product.quantity * this.product.price;
     next();
 });
 

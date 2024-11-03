@@ -7,6 +7,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
 import { FaRegCreditCard } from "react-icons/fa6";
+import { CreateOrderFN } from "../../redux/services/types/order.types";
 
 interface CartItemProp {
     id: string;
@@ -14,11 +15,13 @@ interface CartItemProp {
     image: string;
     price: number;
     quantity: number;
+    productId: string;
     onUpdateQuantity: ({ quantity, id }: { quantity: number; id: string }) => void;
     onDeleteCart: (id: string) => void;
+    onAddOrder: ({ productId, price, quantity, id }: CreateOrderFN) => void;
 }
 
-const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity, onUpdateQuantity, onDeleteCart }) => {
+const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity, productId, onUpdateQuantity, onDeleteCart, onAddOrder }) => {
     const [quantityEL, setQuantityEl] = useState<number>(quantity);
     const [saveIsActive, setSaveIsActive] = useState<boolean>(false);
 
@@ -44,6 +47,10 @@ const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity, onUpdate
 
     const handleUpdate = () => {
         onUpdateQuantity({ quantity: quantityEL, id });
+    };
+
+    const handleAddOrder = () => {
+        onAddOrder({ productId, price, quantity, id });
     };
 
     return (
@@ -80,7 +87,7 @@ const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity, onUpdate
                     <DeleteIcon />
                 </IconButton>
 
-                <IconButton aria-label="Orders" color="primary">
+                <IconButton aria-label="Orders" color="primary" onClick={handleAddOrder}>
                     <FaRegCreditCard />
                 </IconButton>
             </TableCell>

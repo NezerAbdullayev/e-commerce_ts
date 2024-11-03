@@ -7,12 +7,17 @@ import Error from "../admin/components/Error";
 import { Modal } from "antd";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import { useCreateOrderMutation } from "../../redux/services/ordersApi";
+import { CreateOrderFN } from "../../redux/services/types/order.types";
 
 const CartPage: FC = () => {
     const { t } = useTranslation();
     const { data: userCartData, error, isLoading: cartLoading } = useGetAllCartQuery();
+    console.log(userCartData);
+
     const [updateCartQuantity] = useUpdateCartQuantityMutation();
     const [removeCart] = useRemoveAllCartMutation();
+    const [createOrder] = useCreateOrderMutation();
 
     const onUpdateQuantity = useCallback(
         ({ quantity, id }: { quantity: number; id: string }) => {
@@ -53,6 +58,27 @@ const CartPage: FC = () => {
         [removeCart, t],
     );
 
+    const onAddOrder = useCallback(
+        ({ productId, price, quantity, id }: CreateOrderFN) => {
+            Modal.confirm({
+                title: t("confirm_delete_cart"),
+                onOk: async () => {
+                    try {
+                        await createOrder({ productId, price, quantity });
+                        await removeCart({ id });
+                        toast.success(t("cart_item_deleted_successfully"));
+                    } catch (error) {
+                        console.error(error);
+                        toast.error(t("failed_to_delete_cart_item"));
+                    }
+                },
+                okText: t("yes"),
+                okType: "danger",
+            });
+        },
+        [createOrder, removeCart, t],
+    );
+
     if (error) {
         return <Error message={t("error_fetching_cart_data")} />;
     }
@@ -85,8 +111,10 @@ const CartPage: FC = () => {
                                     image={cart.image}
                                     price={cart.price}
                                     quantity={cart.quantity}
+                                    productId={cart.productId}
                                     onUpdateQuantity={onUpdateQuantity}
                                     onDeleteCart={onDeleteCart}
+                                    onAddOrder={onAddOrder}
                                 />
                             ))
                         ) : (

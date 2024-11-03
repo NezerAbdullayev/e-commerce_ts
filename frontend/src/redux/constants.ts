@@ -7,3 +7,4 @@ export const CATEGORY_URL = "/api/category";
 export const USERS_URL = "/api/users";
 export const ANALYTICS_URL = "/api/analytics";
 export const LOGO_URL = "/api/logo";
+export const ORDERS_URL = "/api/order";

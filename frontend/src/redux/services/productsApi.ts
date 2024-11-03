@@ -25,13 +25,13 @@ const productsApi = rootApi.injectEndpoints({
                     url: `${PRODUCTS_URL}?${queryString}`,
                 };
             },
-            providesTags: ["Products"],
+            providesTags: ["PRODUCTS"],
         }),
 
         getRandomProducts: builder.query<Products[], { count: number }>({
             query: ({ count }) => `${PRODUCTS_URL}/random/${count}`,
             providesTags: (result) =>
-                result ? result.map((product) => ({ type: "Products", id: product._id })) : [{ type: "Products", id: "LIST" }],
+                result ? result.map((product) => ({ type: "PRODUCTS", id: product._id })) : [{ type: "PRODUCTS", id: "LIST" }],
         }),
 
         getProductsByCategory: builder.query<Products[], { categories: string; page?: number; limit?: number }>({
@@ -43,7 +43,7 @@ const productsApi = rootApi.injectEndpoints({
 
         getProductById: builder.query<Products, { id: string | undefined }>({
             query: ({ id }) => `${PRODUCTS_URL}/${id}`,
-            providesTags: (result) => (result ? [{ type: "Products", id: result._id }] : [{ type: "Products", id: "Details" }]),
+            providesTags: (result) => (result ? [{ type: "PRODUCTS", id: result._id }] : [{ type: "PRODUCTS", id: "Details" }]),
         }),
 
         getTopProducts: builder.query({
@@ -57,7 +57,7 @@ const productsApi = rootApi.injectEndpoints({
                 body: newProduct,
                 credentials: "include",
             }),
-            invalidatesTags: ["Products"],
+            invalidatesTags: ["PRODUCTS"],
         }),
 
         deleteProduct: builder.mutation({
@@ -66,7 +66,7 @@ const productsApi = rootApi.injectEndpoints({
                 method: "DELETE",
                 credentials: "include",
             }),
-            invalidatesTags: ["Products"],
+            invalidatesTags: ["PRODUCTS"],
         }),
 
         updateProduct: builder.mutation({
@@ -76,7 +76,7 @@ const productsApi = rootApi.injectEndpoints({
                 body: updateProduct,
                 credentials: "include",
             }),
-            invalidatesTags: ["Products"],
+            invalidatesTags: ["PRODUCTS"],
         }),
 
         createReview: builder.mutation({
@@ -87,7 +87,7 @@ const productsApi = rootApi.injectEndpoints({
                 credentials: "include",
             }),
             async onQueryStarted({ productId }, { dispatch }) {
-                dispatch(rootApi.util.invalidateTags([{ type: "Products", id: productId }]));
+                dispatch(rootApi.util.invalidateTags([{ type: "PRODUCTS", id: productId }]));
             },
         }),
     }),

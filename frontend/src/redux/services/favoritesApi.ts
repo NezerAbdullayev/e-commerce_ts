@@ -11,7 +11,7 @@ const favoritesApi = rootApi.injectEndpoints({
                 method: "GET",
                 credentials: "include",
             }),
-            providesTags: ["Favorites"],
+            providesTags: ["FAVORITES"],
         }),
 
         addtoFavorites: builder.mutation<void, FavoritesRes>({
@@ -21,7 +21,7 @@ const favoritesApi = rootApi.injectEndpoints({
                 body: { productId, name, image, price },
                 credentials: "include",
             }),
-            invalidatesTags: ["Favorites"],
+            invalidatesTags: ["FAVORITES"],
         }),
 
         removeAllFavorites: builder.mutation<void, void>({
@@ -30,7 +30,7 @@ const favoritesApi = rootApi.injectEndpoints({
                 method: "DELETE",
                 credentials: "include",
             }),
-            invalidatesTags: ["Favorites"],
+            invalidatesTags: ["FAVORITES"],
         }),
         removeFavoritesItem: builder.mutation<void, { id: string | undefined }>({
             query: ({ id }) => ({
@@ -38,7 +38,7 @@ const favoritesApi = rootApi.injectEndpoints({
                 method: "DELETE",
                 credentials: "include",
             }),
-            invalidatesTags: ["Favorites"],
+            invalidatesTags: ["FAVORITES"],
         }),
     }),
 });

@@ -41,9 +41,7 @@ const UserActions: FC = () => {
             </IconButton>
 
             <IconButton component={NavLink} to="/orders" size="large" edge="end" color="inherit" aria-label="Cart" sx={{ mr: 2 }}>
-                <Badge badgeContent>
-                    <LocalShippingIcon />
-                </Badge>
+                <LocalShippingIcon />
             </IconButton>
         </Box>
     );

@@ -11,17 +11,18 @@ export const getAllOrders = async (_, res) => {
 
 export const createOrder = async (req, res) => {
     try {
-        const { user, products } = req.body;
+        const { quantity, price, productId } = req.body;
 
-        // Calculate total amount based on products array
-        const totalAmount = products.reduce((total, item) => {
-            return total + item.quantity * item.price;
-        }, 0);
+        const user = req.user; 
 
         const newOrder = new Order({
-            user,
-            products,
-            totalAmount,
+            user: user._id,
+            product: {
+                product: productId, 
+                quantity,
+                price,
+            },
+            totalAmount: quantity * price, 
             status: "Pending",
         });
 

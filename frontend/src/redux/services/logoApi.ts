@@ -10,7 +10,7 @@ const logoApi = rootApi.injectEndpoints({
                 method: "GET",
                 credentials: "include",
             }),
-            providesTags: ["Logo"],
+            providesTags: ["LOGO"],
         }),
         updateAppLogo: builder.mutation<LogoResponse[], { name: string }>({
             query: ({ name }) => ({
@@ -19,7 +19,7 @@ const logoApi = rootApi.injectEndpoints({
                 body: { name },
                 credentials: "include",
             }),
-            invalidatesTags: ["Logo"],
+            invalidatesTags: ["LOGO"],
         }),
     }),
 });

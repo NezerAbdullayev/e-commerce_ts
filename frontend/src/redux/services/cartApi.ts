@@ -10,7 +10,7 @@ export const cartApi = rootApi.injectEndpoints({
                 method: "GET",
                 credentials: "include",
             }),
-            providesTags: ["Cart"],
+            providesTags: ["CART"],
         }),
 
         addToCart: builder.mutation<void, CartProps>({
@@ -20,7 +20,7 @@ export const cartApi = rootApi.injectEndpoints({
                 body: { name, productId, image, price, quantity: quantity },
                 credentials: "include",
             }),
-            invalidatesTags: ["Cart"],
+            invalidatesTags: ["CART"],
         }),
 
         updateCartQuantity: builder.mutation<void, { id: string; quantity: number }>({
@@ -30,7 +30,7 @@ export const cartApi = rootApi.injectEndpoints({
                 method: "PUT",
                 credentials: "include",
             }),
-            invalidatesTags: ["Cart"],
+            invalidatesTags: ["CART"],
         }),
 
         removeAllCart: builder.mutation<void, { id?: string }>({
@@ -40,7 +40,7 @@ export const cartApi = rootApi.injectEndpoints({
                 method: "DELETE",
                 credentials: "include",
             }),
-            invalidatesTags: ["Cart"],
+            invalidatesTags: ["CART"],
         }),
     }),
 });

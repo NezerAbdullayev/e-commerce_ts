@@ -2,11 +2,6 @@ import { UserResponse } from "../../globalTypes/globalTypes";
 import { USERS_URL } from "../constants";
 import { rootApi } from "../rootApi";
 
-// currentPage: 1
-// totalPages : 1
-// totalUsers:  2
-// users :  (2) [{…}, {…}]
-
 const usersApi = rootApi.injectEndpoints({
     endpoints: (builder) => ({
         allUsers: builder.query<UserResponse, void>({
@@ -15,7 +10,7 @@ const usersApi = rootApi.injectEndpoints({
                 method: "GET",
                 credentials: "include",
             }),
-            providesTags: ["Users"],
+            providesTags: ["USERS"],
         }),
 
         getSearchUsers: builder.query<UserResponse, { search: string }>({
@@ -24,7 +19,7 @@ const usersApi = rootApi.injectEndpoints({
                 method: "GET",
                 credentials: "include",
             }),
-            providesTags: ["Users"],
+            providesTags: ["USERS"],
         }),
 
         deleteUser: builder.mutation<void, { id: string }>({
@@ -33,7 +28,7 @@ const usersApi = rootApi.injectEndpoints({
                 method: "DELETE",
                 credentials: "include",
             }),
-            invalidatesTags: ["Users"],
+            invalidatesTags: ["USERS"],
         }),
     }),
 });

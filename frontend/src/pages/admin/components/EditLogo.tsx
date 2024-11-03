@@ -6,8 +6,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { logoSchema } from "../../../validations/global.validation";
+import { useTranslation } from "react-i18next";
 
 const EditLogo: FC = () => {
+    const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
     const { data } = useGetAppLogoQuery();
     const [updateLogo, { isLoading }] = useUpdateAppLogoMutation();
@@ -26,9 +28,9 @@ const EditLogo: FC = () => {
         try {
             await updateLogo({ name: formData.name }).unwrap();
             setIsEditing(false);
-            toast.success("Logo changed successfully!");
+            toast.success(t("change_logo_success_message"));
         } catch (error) {
-            toast.error("Failed to update logo. Please try again.");
+            toast.error(t("change_logo_fail_message"));
             console.error("Logo update failed:", error);
         }
     };
@@ -36,8 +38,8 @@ const EditLogo: FC = () => {
     return (
         <Box>
             <Box p={1}>
-                <Button onClick={handleEditClick} variant="outlined" color="primary">
-                    <Box mr={1}>Change Logo </Box>
+                <Button onClick={handleEditClick} variant="outlined" color="primary" sx={{ fontSize: "10px" }}>
+                    <Box mr={1}>{t("change_logo")} </Box>
                     <TiEdit className="text-2xl text-[#1060b1]" />
                 </Button>
             </Box>
@@ -58,7 +60,7 @@ const EditLogo: FC = () => {
                                         padding: "8px 12px",
                                         fontSize: "14px",
                                     }}
-                                    placeholder="Enter new logo name"
+                                    placeholder={t("logo_input_placeholder")}
                                 />
                             )}
                         />
@@ -74,9 +76,9 @@ const EditLogo: FC = () => {
                             disabled={isLoading}
                             variant="contained"
                             color="primary"
-                            sx={{ minHeight: "32px", fontSize: "14px" }}
+                            sx={{ minHeight: "32px", fontSize: "10px" }}
                         >
-                            {isLoading ? "Saving..." : "Change Logo"}
+                            {isLoading ? t("saving") : t("change_logo")}
                         </Button>
                     </form>
                 </Box>

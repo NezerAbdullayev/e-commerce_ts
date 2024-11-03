@@ -5,6 +5,7 @@ import { FC, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useGetAllFavoritesQuery } from "../../redux/services/favoritesApi";
 import { useGetAllCartQuery } from "../../redux/services/cartApi";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 const UserActions: FC = () => {
     const [favCount, setFavCount] = useState<number | null>(null);
@@ -36,6 +37,12 @@ const UserActions: FC = () => {
             <IconButton component={NavLink} to="/cart" size="large" edge="end" color="inherit" aria-label="Cart" sx={{ mr: 2 }}>
                 <Badge badgeContent={cartCount} color="error">
                     <ShoppingCartIcon />
+                </Badge>
+            </IconButton>
+
+            <IconButton component={NavLink} to="/orders" size="large" edge="end" color="inherit" aria-label="Cart" sx={{ mr: 2 }}>
+                <Badge badgeContent>
+                    <LocalShippingIcon />
                 </Badge>
             </IconButton>
         </Box>

@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { FC } from "react";
 import ProductsPagination from "../../components/productsPagination/ProductsPagination";
 import Filters from "../../components/filter/Filters";
@@ -16,7 +16,7 @@ const ProductsPage: FC = () => {
     const [filtersParams, handleFilterChange] = useFilters();
 
     return (
-        <Box>
+        <Container maxWidth="xl">
             {/* filters and search  */}
             <Box py={10}>
                 <Filters onFilter={handleFilterChange} filtersParams={filtersParams} />
@@ -25,7 +25,7 @@ const ProductsPage: FC = () => {
             <Box>
                 <ProductsPagination filtersParams={filtersParams} />
             </Box>
-        </Box>
+        </Container>
     );
 };
 

@@ -42,7 +42,7 @@ function Header() {
 
     return (
         <AppBar position="sticky" sx={{ background: "#055160" }}>
-            <Toolbar>
+            <Toolbar className="max-w-[100%] w-[1480px] mx-auto">
                 {/* logo */}
                 <Typography variant="h6" component={NavLink} to="/" sx={{ mr: 2 }} className="relative flex">
                     <LogoContainer />
@@ -56,7 +56,7 @@ function Header() {
                     <Translate />
 
                     {/* favorites and cart */}
-                    {isAuth && <UserActions />}
+                    {isAuth &&<UserActions /> }
 
                     {/* login and register */}
                     {!isAuth && (

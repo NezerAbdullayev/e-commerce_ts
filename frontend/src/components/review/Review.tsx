@@ -18,8 +18,10 @@ const Review: FC<ReviewProps> = ({ reviews }) => {
             {reviews && reviews.length > 0 ? (
                 reviews.map((review) => (
                     <Box key={review._id} sx={{ marginBottom: 2 }}>
-                        <Typography variant="h6">{review.name}</Typography>
-                        <Rating value={review.rating} readOnly />
+                        <Box display={"flex"} alignItems={"center"} gap={1}> 
+                            <Typography variant="h6">{review.name}</Typography>
+                            <Rating value={review.rating} readOnly />
+                        </Box>
                         <Typography variant="body2">{review.comment}</Typography>
                         <Typography variant="caption" color="text.secondary">
                             {new Date(review.createdAt).toLocaleDateString()}

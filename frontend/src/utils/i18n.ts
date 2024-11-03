@@ -22,6 +22,7 @@ const resources = {
             galery: "Galery",
 
             //filters
+            filters: "filters",
             search: "Search",
             searchProducts: "Search products",
             minimumPrice: "Minimum price",
@@ -141,6 +142,13 @@ const resources = {
             error_categories: "An error occurred while fetching the categories",
             edit_product: "Edit Product",
             okText: "Update",
+
+            // logo
+            change_logo_success_message: "Logo changed successfully!",
+            change_logo_fail_message: "Failed to update logo. Please try again.",
+            change_logo: "Change logo",
+            logo_input_placeholder: "Enter new logo name",
+            saving: "Saving",
         },
     },
     az: {
@@ -163,6 +171,7 @@ const resources = {
             galery: "Qaleriya",
 
             // filters
+            filters: "Filtirlə",
             search: "Axtar ",
             searchProducts: "Məhsulları axtarın",
             minimumPrice: "Minimum qiymət",
@@ -282,6 +291,13 @@ const resources = {
             error_categories: "Kateqoriyaları gətirərkən bir xəta baş verdi",
             edit_product: "Məhsul redaktəsi",
             okText: "yenilə",
+
+            // logo
+            change_logo_success_message: "Logo uğurla dəyişdirildi!",
+            change_logo_fail_message: "Logonu dəyişərkən xəta baş verdi.Bir daha sınayın!",
+            change_logo: "Logonu dəyişdir",
+            logo_input_placeholder: "Yeni Logonu daxil edin",
+            saving: "Saxlanır...",
         },
     },
 };

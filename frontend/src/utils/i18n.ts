@@ -149,7 +149,34 @@ const resources = {
             change_logo: "Change logo",
             logo_input_placeholder: "Enter new logo name",
             saving: "Saving",
+
+            // products validation
+            name_is_required: "Name is required",
+            min_name_chareacter: "Invalid name format, minimum 3 characters",
+            img_required: "Image is required",
+            price_required: "Price is required",
+            positive_numbers: "Price must be a positive number",
+            min_price: "Price must be at least 0.01",
+            category_format: "Invalid category format",
+            category_required: "Category is required",
+            min_sellected_category: "At least one category must be selected",
+            stock_required: "Stock is required",
+            positve_stock: "Stock must be a positive number",
+            min_stock: "Stock must be at least 1",
+            required_desc: "Description is required",
+
+            // auth validation
+            email_required: "Email is required",
+            invalid_email_format: "Invalid email format",
+            password_required: "Password is required",
+            min_password: "Minimum 6 characters",
         },
+
+        // global
+        //logo schema
+        logo_required: "Logo is required",
+        min_logo: "Logo name must be at least 3 characters long",
+        review_message_required: "Message is required",
     },
     az: {
         translation: {
@@ -298,6 +325,33 @@ const resources = {
             change_logo: "Logonu dəyişdir",
             logo_input_placeholder: "Yeni Logonu daxil edin",
             saving: "Saxlanır...",
+
+            // products validation
+            name_is_required: "Ad tələb olunur",
+            min_name_chareacter: "Yanlış ad formatı, minimum 3 simvol",
+            img_required: "Şəkil tələb olunur",
+            price_required: "Qiymət tələb olunur",
+            positive_numbers: "Qiymət müsbət rəqəm olmalıdır",
+            min_price: "Qiymət ən azı 0,01 olmalıdır",
+            category_format: "Yanlış kateqoriya formatı",
+            category_required: "Kataqoriya tələb olunur",
+            min_sellected_category: "Ən azı bir kateqoriya seçilməlidir",
+            stock_required: "Stok tələb olunur",
+            positive_stock: "Səhm müsbət rəqəm olmalıdır",
+            min_stock: "Stok ən azı 1 olmalıdır",
+            required_desc: "Təsvir tələb olunur",
+
+            // auth validation
+            email_required: " E-poçt tələb olunur",
+            invalid_email_format: "Yanlış e-poçt formatı",
+            password_required: "Şifrə tələb ulunur",
+            min_password: "Minimum 6 simvol",
+
+            // global
+            //logo schema
+            logo_required: "Logo tələb ulunur",
+            min_logo: "Loqo adı ən azı 3 simvol uzunluğunda olmalıdır",
+            review_message_required: "Mesaj tələb ulunur",
         },
     },
 };

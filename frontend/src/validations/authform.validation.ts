@@ -1,12 +1,17 @@
 import { object, string } from "yup";
+import { TFunction } from "i18next";
 
-export const loginSchema = object().shape({
-    email: string().required("Email is required").email("Invalid email format"),
-    password: string().required("Password is required").min(6, "Password must be at least 6 characters"),
-});
+export const getLoginSchema = (t: TFunction) => {
+    return object().shape({
+        email: string().required(t("email_required")).email(t("invalid_email_format")),
+        password: string().required(t("password_required")).min(6, t("min_password")),
+    });
+};
 
-export const signupSchema = object().shape({
-    name: string().required("Name is required").min(3, "Minimum 3 characters"),
-    email: string().required("Email is required").email("Invalid email"),
-    password: string().required("Password is required").min(6, "Minimum 6 characters"),
-});
+export const getSignupSchema = (t: TFunction) => {
+    return object().shape({
+        name: string().required(t("Name is required")).min(3, t("Minimum 3 characters")),
+        email: string().required(t("email_required")).email(t("invalid_email_format")),
+        password: string().required(t("password_required")).min(6, t("min_password")),
+    });
+};

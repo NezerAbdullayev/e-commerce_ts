@@ -6,6 +6,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
+import { FaRegCreditCard } from "react-icons/fa6";
 
 interface CartItemProp {
     id: string;
@@ -77,6 +78,10 @@ const CartItem: FC<CartItemProp> = ({ id, name, image, price, quantity, onUpdate
 
                 <IconButton aria-label="Delete" color="error" onClick={handleDelete}>
                     <DeleteIcon />
+                </IconButton>
+
+                <IconButton aria-label="Orders" color="primary">
+                    <FaRegCreditCard />
                 </IconButton>
             </TableCell>
         </TableRow>

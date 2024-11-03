@@ -5,11 +5,12 @@ import { useGetAppLogoQuery, useUpdateAppLogoMutation } from "../../../redux/ser
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { logoSchema } from "../../../validations/global.validation";
+import { getLogoSchema } from "../../../validations/global.validation";
 import { useTranslation } from "react-i18next";
 
 const EditLogo: FC = () => {
     const { t } = useTranslation();
+    const logoSchema = getLogoSchema(t);
     const [isEditing, setIsEditing] = useState(false);
     const { data } = useGetAppLogoQuery();
     const [updateLogo, { isLoading }] = useUpdateAppLogoMutation();

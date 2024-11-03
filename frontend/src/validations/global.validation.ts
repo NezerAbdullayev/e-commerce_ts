@@ -1,11 +1,16 @@
 import { object, string } from "yup";
+import { TFunction } from "i18next";
 
-// logo
-export const logoSchema = object().shape({
-    name: string().required("Logo is required").min(3, "Logo name must be at least 3 characters long"),
-});
+// logo schema
+export const getLogoSchema = (t: TFunction) => {
+    return object().shape({
+        name: string().required(t("logo_required")).min(3, t("min_logo")),
+    });
+};
 
-// review
-export const reviewSchema = object().shape({
-    comment: string().required("Message is required"),
-});
+// review schema
+export const getReviewSchema = (t: TFunction) => {
+    return object().shape({
+        comment: string().required(t("review_message_required")),
+    });
+};

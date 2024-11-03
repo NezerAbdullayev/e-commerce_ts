@@ -59,6 +59,7 @@ interface TableProductsResponse {
 
 const TableProducts: FC<TableProductsResponse> = ({ filtersParams }) => {
     const { t } = useTranslation();
+    const schema = createProductSchema(t);
 
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -82,7 +83,7 @@ const TableProducts: FC<TableProductsResponse> = ({ filtersParams }) => {
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm<NewProduct>({ resolver: yupResolver(createProductSchema) });
+    } = useForm<NewProduct>({ resolver: yupResolver(schema) });
 
     const onDeleteProduct = useCallback(
         async (id: string) => {
@@ -182,7 +183,6 @@ const TableProducts: FC<TableProductsResponse> = ({ filtersParams }) => {
     }, []);
 
     const onSubmit: SubmitHandler<NewProduct> = async (data) => {
-s
         const imagesUrl = data.image.filter((img) => !!img.url).map((i) => i.url);
 
         const convertedImages = data.image.filter((img) => !img.url);

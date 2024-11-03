@@ -4,9 +4,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Col, Form, Row } from "antd";
 import AuthContainer from "../../components/AuthContainer";
 import { useSignupMutation } from "../../redux/services/authApi";
-import { signupSchema } from "../../validations/authform.validation";
+import { getSignupSchema } from "../../validations/authform.validation";
 import { useNavigate } from "react-router";
-import { ErrorRes, Signup } from "../../redux/services/types/auth.types";
+import { Signup } from "../../redux/services/types/auth.types";
 import PageTitle from "../../components/PageTitle";
 import FormInput from "../../components/Forms/FormInput";
 import { NavLink } from "react-router-dom";
@@ -15,11 +15,13 @@ import { FaRegUser } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import FormPasswordInput from "../../components/Forms/FormPasswordInput";
 import { useTranslation } from "react-i18next";
+import { ErrorRes } from "../../globalTypes/globalTypes";
 
 // Form layout
 
 const SignupPage: FC = () => {
     const { t } = useTranslation();
+    const schema = getSignupSchema(t);
     const navigate = useNavigate();
     // rhf library
     const {
@@ -27,7 +29,7 @@ const SignupPage: FC = () => {
         control,
         reset,
         formState: { errors },
-    } = useForm<Signup>({ resolver: yupResolver(signupSchema) });
+    } = useForm<Signup>({ resolver: yupResolver(schema) });
 
     // query hooks
     const [signup, { isLoading }] = useSignupMutation();

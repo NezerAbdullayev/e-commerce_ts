@@ -1,15 +1,16 @@
 import { array, mixed, number, object, string } from "yup";
 
-// create product schema
-export const createProductSchema = object().shape({
-    name: string().required("Name is required").min(3, "Invalid name format,minumum 3 characters"),
-    image: mixed().required("Image is required"),
-    price: number().required("Price is required").positive("Price must be a positive number").min(0.01, "Price must be at least 0.01"),
-    category: array()
-        .of(string().min(3, "Invalid category format"))
-        .required("Category is required")
-        .min(1, "At least one category must be selected"),
-    stock: number().required("Stock is required").positive("Stock must be a positive number").min(1, "Stock must be at least 1"),
-    brand: string(),
-    description: string().required("Description is required"),
-});
+export const createProductSchema = (t: (key: string) => string) => {
+    return object().shape({
+        name: string().required(t("name_is_required")).min(3, t("min_name_chareacter")),
+        image: mixed().required(t("img_required")),
+        price: number().required(t("price_required")).positive(t("positive_numbers")).min(0.01, t("min_price")),
+        category: array()
+            .of(string().min(3, t("category_format")))
+            .required(t("category_required"))
+            .min(1, t("min_sellected_category")),
+        stock: number().required(t("stock_required")).positive(t("positive_stock")).min(1, t("min_stock")),
+        brand: string(),
+        description: string().required(t("required_desc")),
+    });
+};

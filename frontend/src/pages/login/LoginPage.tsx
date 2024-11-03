@@ -7,7 +7,7 @@ import { Button, Col, Form, Row } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import AuthContainer from "../../components/AuthContainer";
 import FormInput from "../../components/Forms/FormInput";
-import { ErrorRes, Login } from "../../redux/services/types/auth.types";
+import { Login } from "../../redux/services/types/auth.types";
 import FormPasswordInput from "../../components/Forms/FormPasswordInput";
 import PageTitle from "../../components/PageTitle";
 import { toast } from "react-toastify";
@@ -15,12 +15,14 @@ import { toast } from "react-toastify";
 // api
 import { useLoginMutation } from "../../redux/services/authApi";
 // schema
-import { loginSchema } from "../../validations/authform.validation";
+import { getLoginSchema } from "../../validations/authform.validation";
 import { MdEmail } from "react-icons/md";
 import { useTranslation } from "react-i18next";
+import { ErrorRes } from "../../globalTypes/globalTypes";
 
 const LoginPage: FC = () => {
     const { t } = useTranslation();
+    const schema = getLoginSchema(t);
     const navigate = useNavigate();
     // RHF hook
     const {
@@ -28,7 +30,7 @@ const LoginPage: FC = () => {
         control,
         reset,
         formState: { errors },
-    } = useForm<Login>({ resolver: yupResolver(loginSchema) });
+    } = useForm<Login>({ resolver: yupResolver(schema) });
 
     // rtk hooks
     const [login, { isLoading }] = useLoginMutation();

@@ -30,6 +30,7 @@ export interface NewProduct {
 
 const AddNewProduct: FC = () => {
     const { t } = useTranslation();
+    const schema = createProductSchema(t);
     const [createNewProduct, { isLoading: createLoading }] = useCreateNewProductMutation();
     const { data: categoriesData, isLoading: CategiresLoading, error: categoriesError } = useGetAllCategoryQuery();
 
@@ -38,7 +39,7 @@ const AddNewProduct: FC = () => {
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm<NewProduct>({ resolver: yupResolver(createProductSchema) });
+    } = useForm<NewProduct>({ resolver: yupResolver(schema) });
 
     const onSubmit: SubmitHandler<NewProduct> = useCallback(
         async (data) => {

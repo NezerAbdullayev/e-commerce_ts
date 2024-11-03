@@ -14,7 +14,7 @@ import PageTitle from "../../../../components/PageTitle";
 import Error from "../Error";
 import CategoryItem from "./CategoryItem";
 import { toast } from "react-toastify";
-import { useTranslation } from "react-i18next"; // import useTranslation
+import { useTranslation } from "react-i18next";
 
 // Modal stili
 const style = {
@@ -37,7 +37,7 @@ const CategoriesSchema = object().shape({
 });
 
 const Categories: FC = () => {
-    const { t } = useTranslation(); // useTranslation hook-unun istifadəsi
+    const { t } = useTranslation(); 
     const { data: categoryData, isLoading: loadingCategories, error: categoriesError } = useGetAllCategoryQuery();
     const [createCategory, { isLoading: createLoading }] = useCreateCategoryMutation();
     const [deleteCategory] = useDeleteCategoryMutation();

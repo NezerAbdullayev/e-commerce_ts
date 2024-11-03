@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 const orderSchema = new mongoose.Schema(
     {
         user: {
@@ -11,7 +12,7 @@ const orderSchema = new mongoose.Schema(
             {
                 product: {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: "Product",
+                    ref: "Products",
                     required: true,
                 },
                 quantity: {
@@ -31,15 +32,23 @@ const orderSchema = new mongoose.Schema(
             required: true,
             min: 0,
         },
-        stripeSessionId: {
-            type: Number,
-            unique: true,
+        status: {
+            type: String,
+            enum: ["Pending", "Completed", "Shipped"],
+            default: "Pending",
         },
     },
     {
         timestamps: true,
     }
 );
+
+orderSchema.pre("save", function (next) {
+    this.totalAmount = this.products.reduce((total, item) => {
+        return total + item.quantity * item.price;
+    }, 0);
+    next();
+});
 
 const Order = mongoose.model("Order", orderSchema);
 

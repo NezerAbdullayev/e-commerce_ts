@@ -15,6 +15,8 @@ import favoritesRouter from "./routes/favoritesRouter.js";
 import categoryRouter from "./routes/categoryRouter.js";
 import usersRouter from "./routes/usersRouter.js";
 import logoRouter from "./routes/logoRouter.js";
+import orderRouter from "./routes/orderRouter.js"
+
 
 dotenv.config();
 
@@ -24,8 +26,7 @@ const port = process.env.PORT || 3001;
 
 //middleware
 app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "10mb", extended: true }));
-
+app.use(express.urlencoded({ limit: "10mb", extended: true }))
 app.use(cookieParser());
 
 app.use(
@@ -43,6 +44,7 @@ app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/coupons", couponRouter);
 app.use("/api/payments", paymentRouter);
+app.use("/api/order",orderRouter)
 app.use("/api/favorites", favoritesRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/analytics", analyticsRouter);

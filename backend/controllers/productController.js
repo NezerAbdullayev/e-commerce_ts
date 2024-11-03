@@ -65,10 +65,6 @@ const getFeaturedProducts = async (_, res) => {
             return res.json(JSON.parse(featuredProducts));
         }
 
-        // if not in redis,fetch from mongoDB
-        // .Lean() is gonna return  a plain js obj  instead od a mongodb doc
-        // which is good for ferformance
-
         featuredProducts = await ProductModel.find({ isFeatured: true }).lean();
 
         if (!featuredProducts) return res.status(404).json({ message: "No featured products found" });

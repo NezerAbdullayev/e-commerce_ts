@@ -37,7 +37,7 @@ const getAllProducts = async (req, res) => {
             }
         }
 
-        // get all products
+        // get all products  
         const products = await ProductModel.find(filter)
             .populate("category", "name")
             .sort({ $natural: -1 })
@@ -87,7 +87,7 @@ const createProduct = async (req, res) => {
             for (const img of image) {
                 try {
                     const cloudinaryResponse = await cloudinary.uploader.upload(img, { folder: "products" });
-                    cloudinaryResponses.push(cloudinaryResponse.secure_url);
+                cloudinaryResponses.push(cloudinaryResponse.secure_url);
                 } catch (err) {
                     console.error("Error uploading image:", err.message);
                     return res.status(500).json({ message: "Image upload failed", error: err.message || "Unknown error" });

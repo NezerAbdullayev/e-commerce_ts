@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { isAuthenticated } from "../../redux/slice/authSlice";
 import { useCreateReviewMutation } from "../../redux/services/productsApi";
 import FormTextarea from "../Forms/FormTextarea";
-import { reviewSchema } from "../../validations/global.validation";
+import { getReviewSchema } from "../../validations/global.validation";
 
 interface Review {
     comment: string;
@@ -23,6 +23,7 @@ interface CreateReviewProps {
 
 const AddNewReview: FC<CreateReviewProps> = ({ productId }) => {
     const { t } = useTranslation();
+    const reviewSchema = getReviewSchema(t);
     const isAuth = useSelector(isAuthenticated);
     const navigate = useNavigate();
 
